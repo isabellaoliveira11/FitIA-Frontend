@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Risco de Evasão | FitIA</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <!-- Flatpickr CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+ <link rel="icon" type="image/png" href="logo.png" />
+
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+    /* Estilo para o ícone de submenu */
+    .submenu-toggle {
+        transition: transform 0.2s ease-in-out;
+    }
+    .submenu-toggle.rotated {
+        transform: rotate(180deg);
+    }
+    /* Estilos para o modal do calendário */
+    #calendarModal {
+        background-color: rgba(0, 0, 0, 0.5);
+        display: none; /* Escondido por padrão */
+        justify-content: center;
+        align-items: center;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 1000;
+    }
+    #calendarModalContent {
+        background-color: white;
+        padding: 2rem;
+        border-radius: 0.5rem;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        max-width: 400px;
+        width: 90%;
+        position: relative;
+    }
+    #calendarModalClose {
+        position: absolute;
+        top: 0.75rem;
+        right: 1rem;
+        font-size: 1.5rem;
+        cursor: pointer;
+        color: #6b7280; /* gray-500 */
+    }
+    /* Estilo para destacar datas no Flatpickr */
+    .flatpickr-day.selected, .flatpickr-day.startRange, .flatpickr-day.endRange, .flatpickr-day.inRange {
+        background: #22c55e !important;
+        border-color: #22c55e !important;
+        color: white !important;
+    }
+  </style>
+</head>
+<body class="bg-gray-100 text-gray-800">
+
+<!-- MODAL de Edição (Mantido caso seja necessário para ações futuras) -->
+<div id="editModal" class="fixed inset-0 z-50 bg-black bg-opacity-50 hidden items-center justify-center">
+  <div class="bg-white w-full max-w-md p-6 rounded-lg shadow-lg">
+    <h2 class="text-xl font-bold mb-4">Editar Aluno</h2>
+    <form id="editForm">
+      <div class="mb-3"><label class="text-sm">Nome</label><input type="text" id="editNome" class="w-full border px-3 py-2 rounded" /></div>
+      <div class="mb-3"><label class="text-sm">Email</label><input type="email" id="editEmail" class="w-full border px-3 py-2 rounded" /></div>
+      <div class="mb-3"><label class="text-sm">Status</label>
+        <select id="editStatus" class="w-full border px-3 py-2 rounded">
+          <option>Ativo</option><option>Pendente</option><option>Cancelado</option>
+        </select>
+      </div>
+      <div class="mb-3"><label class="text-sm">Pagamento</label>
+        <select id="editPagamento" class="w-full border px-3 py-2 rounded">
+          <option>Pago</option><option>Pagamento Pendente</option><option>Vencido</option>
+        </select>
+      </div>
+      <div class="mb-3"><label class="text-sm">Risco de Evasão</label>
+        <select id="editRisco" class="w-full border px-3 py-2 rounded">
+          <option>Baixo</option><option>Médio</option><option>Alto</option>
+        </select>
+      </div>
+      <div class="flex justify-end space-x-2 mt-4">
+        <button type="button" onclick="closeModal()" class="px-4 py-2 bg-gray-300 rounded">Cancelar</button>
+        <button type="submit" class="px-4 py-2 bg-green-600 text-white rounded">Salvar</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- MODAL do Calendário -->
+<div id="calendarModal" class="hidden">
+  <div id="calendarModalContent">
+    <button id="calendarModalClose" onclick="closeCalendarModal()">&times;</button>
+    <h2 id="calendarModalTitle" class="text-xl font-bold mb-4"></h2>
+    <div id="calendarContainer"></div>
+  </div>
+</div>
+
+<div class="flex min-h-screen">
+  <aside class="w-64 bg-white shadow-lg p-6 hidden md:block">
+    <h1 class="text-2xl font-bold mb-10 text-green-600 flex items-center">
+      <i class="fas fa-dumbbell mr-2"></i> FitIA
+    </h1>
+    <nav class="space-y-4 text-sm text-gray-700">
+      <a href="dashboard.html" class="flex items-center space-x-2 hover:text-green-600">
+        <i class="fas fa-home"></i><span>Dashboard</span>
+      </a>
+      
+      <!-- Submenu Alunos -->
+      <div>
+        <div class="flex items-center justify-between hover:text-green-600 cursor-pointer" onclick="toggleSubmenu('alunosSubmenu')">
+          <div class="flex items-center space-x-2">
+              <i class="fas fa-user-friends"></i><span>Alunos</span>
+          </div>
+          <i class="fas fa-chevron-down text-xs submenu-toggle rotated" id="alunosToggleIcon"></i> <!-- Rotated para começar aberto -->
+        </div>
+        <div class="ml-6 space-y-2 text-sm mt-2" id="alunosSubmenu">
+          <a href="lista-alunos.html" class="flex items-center space-x-2 hover:text-green-600"><i class="fas fa-users w-4"></i><span>Lista de Alunos</span></a>
+          <a href="risco-evasao.html" class="flex items-center space-x-2 text-green-600"><i class="fas fa-exclamation-triangle w-4"></i><span>Risco de Evasão</span></a>
+          <a href="comunicacoes.html" class="flex items-center space-x-2 hover:text-green-600"><i class="fas fa-comment-dots w-4"></i><span>Comunicações</span></a>
+        </div>
+      </div>
+
+      <!-- Submenu Financeiro -->
+      <div>
+        <div class="flex items-center justify-between hover:text-green-600 cursor-pointer" onclick="toggleSubmenu('financeiroSubmenu')">
+          <div class="flex items-center space-x-2">
+              <i class="fas fa-wallet"></i><span>Financeiro</span>
+          </div>
+          <i class="fas fa-chevron-down text-xs submenu-toggle" id="financeiroToggleIcon"></i>
+        </div>
+        <div class="ml-6 space-y-2 text-sm mt-2 hidden" id="financeiroSubmenu">
+          <a href="caixa.html" class="flex items-center space-x-2 hover:text-green-600"><i class="fas fa-cash-register w-4"></i><span>Caixa</span></a>
+          <a href="despesas.html" class="flex items-center space-x-2 hover:text-green-600"><i class="fas fa-file-invoice-dollar w-4"></i><span>Despesas</span></a>
+          <a href="pagamentos.html" class="flex items-center space-x-2 hover:text-green-600"><i class="fas fa-receipt w-4"></i><span>Pagamentos</span></a>
+          <a href="planos.html" class="flex items-center space-x-2 hover:text-green-600"><i class="fas fa-clipboard-list w-4"></i><span>Planos</span></a>
+          <a href="descontos.html" class="flex items-center space-x-2 hover:text-green-600"><i class="fas fa-tags w-4"></i><span>Descontos</span></a>
+        </div>
+      </div>
+
+      <a href="relatorios.html" class="flex items-center space-x-2 hover:text-green-600">
+        <i class="fas fa-chart-line"></i><span>Relatórios</span>
+      </a>
+      
+      <!-- Item de menu para IA com o emoji de brilho -->
+      <a href="ia.html" class="flex items-center space-x-2 hover:text-green-600">
+        ✨<span>IA</span>
+      </a>
+
+      <a href="configuracoes.html" class="flex items-center space-x-2 hover:text-green-600">
+        <i class="fas fa-cog"></i><span>Configurações</span>
+      </a>
+      <a href="login.html" class="flex items-center space-x-2 hover:text-red-500 mt-10">
+        <i class="fas fa-sign-out-alt"></i><span>Sair</span>
+      </a>
+    </nav>
+  </aside>
+
+  <main class="flex-1 p-6 md:p-10">
+    <!-- Topbar - Inclui perfil do utilizador e notificações -->
+    <div class="flex justify-between items-center mb-6">
+      <div>
+        <h2 class="text-2xl font-bold">Risco de Evasão</h2>
+        <p class="text-sm text-gray-500">Monitorize e previna a evasão de alunos</p>
+      </div>
+      
+      <!-- Botões de filtro e Perfil do Utilizador -->
+      <div class="flex items-center space-x-4">
+        <div class="flex items-center space-x-2">
+          <button class="px-3 py-1 text-sm bg-gray-200 rounded hover:bg-gray-300">Hoje</button>
+          <button class="px-3 py-1 text-sm bg-gray-200 rounded hover:bg-gray-300">Semana</button>
+          <button class="px-3 py-1 text-sm bg-green-600 text-white rounded">Este mês</button>
+        </div>
+
+        <!-- Ícone de Notificação -->
+        <div class="relative">
+          <i class="fas fa-bell text-gray-600 text-xl cursor-pointer hover:text-green-600"></i>
+          <span class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">3</span>
+        </div>
+
+        <!-- Perfil do Utilizador -->
+        <div class="flex items-center space-x-2 cursor-pointer hover:opacity-80 transition-opacity">
+          <img src="https://i.pravatar.cc/40?img=15" alt="Avatar Isabela" class="w-10 h-10 rounded-full border-2 border-green-500" />
+          <span class="font-medium text-gray-700 hidden sm:block">Isabela</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="mb-4">
+      <input type="text" placeholder="Buscar por nome, email ou CPF..." class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500" />
+    </div>
+
+    <div class="overflow-x-auto bg-white rounded-lg shadow">
+      <table class="min-w-full text-sm text-left">
+        <thead class="bg-gray-100 text-gray-600">
+          <tr>
+            <th class="py-3 px-4">Nome</th>
+            <th class="py-3 px-4">Email</th>
+            <th class="py-3 px-4">Uso da App (últimas 4 sem.)</th>
+            <th class="py-3 px-4">Frequência (últimas 4 sem.)</th>
+            <th class="py-3 px-4">Total de Visitas</th>
+            <th class="py-3 px-4">Risco de Evasão</th>
+            <th class="py-3 px-4">Ações</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y">
+          <!-- Exemplo de Aluno com Risco Baixo -->
+          <tr>
+            <td class="py-3 px-4 flex items-center space-x-2">
+              <img src="https://i.pravatar.cc/30?img=1" class="rounded-full w-8 h-8" />
+              <span>Alexandre Mendes</span>
+            </td>
+            <td class="py-3 px-4">alexandre@email.com</td>
+            <td class="py-3 px-4">Ativo (10x)</td>
+            <td class="py-3 px-4">80%</td>
+            <td class="py-3 px-4">45</td>
+            <td class="py-3 px-4">
+              <span class="px-2 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-800">Baixo</span>
+            </td>
+            <td class="py-3 px-4 space-x-2">
+              <button onclick="abrirDetalhes()" class="text-blue-500 hover:text-blue-700" title="Ver Detalhes"><i class="fas fa-eye"></i></button>
+              <button onclick="showCalendarCheckins('Alexandre Mendes', 10)" class="text-purple-500 hover:text-purple-700" title="Ver Check-ins"><i class="fas fa-calendar-alt"></i></button>
+              <button class="text-green-500 hover:text-green-600" title="Comunicar Aluno"><i class="fas fa-paper-plane"></i></button>
+            </td>
+          </tr>
+          <!-- Exemplo de Aluno com Risco Médio -->
+          <tr>
+            <td class="py-3 px-4 flex items-center space-x-2">
+              <img src="https://i.pravatar.cc/30?img=8" class="rounded-full w-8 h-8" />
+              <span>Sofia Almeida</span>
+            </td>
+            <td class="py-3 px-4">sofia@email.com</td>
+            <td class="py-3 px-4">Moderado (4x)</td>
+            <td class="py-3 px-4">50%</td>
+            <td class="py-3 px-4">20</td>
+            <td class="py-3 px-4">
+              <span class="px-2 py-1 rounded-full text-xs font-semibold bg-yellow-100 text-yellow-800">Médio</span>
+            </td>
+            <td class="py-3 px-4 space-x-2">
+              <button onclick="abrirDetalhes()" class="text-blue-500 hover:text-blue-700" title="Ver Detalhes"><i class="fas fa-eye"></i></button>
+              <button onclick="showCalendarCheckins('Sofia Almeida', 4)" class="text-purple-500 hover:text-purple-700" title="Ver Check-ins"><i class="fas fa-calendar-alt"></i></button>
+              <button class="text-green-500 hover:text-green-600" title="Comunicar Aluno"><i class="fas fa-paper-plane"></i></button>
+            </td>
+          </tr>
+          <!-- Exemplo de Aluno com Risco Alto -->
+          <tr>
+            <td class="py-3 px-4 flex items-center space-x-2">
+              <img src="https://i.pravatar.cc/30?img=9" class="rounded-full w-8 h-8" />
+              <span>Ricardo Neves</span>
+            </td>
+            <td class="py-3 px-4">ricardo@email.com</td>
+            <td class="py-3 px-4">Inativo (1x)</td>
+            <td class="py-3 px-4">10%</td>
+            <td class="py-3 px-4">8</td>
+            <td class="py-3 px-4">
+              <span class="px-2 py-1 rounded-full text-xs font-semibold bg-red-100 text-red-800">Alto</span>
+            </td>
+            <td class="py-3 px-4 space-x-2">
+              <button onclick="abrirDetalhes()" class="text-blue-500 hover:text-blue-700" title="Ver Detalhes"><i class="fas fa-eye"></i></button>
+              <button onclick="showCalendarCheckins('Ricardo Neves', 1)" class="text-purple-500 hover:text-purple-700" title="Ver Check-ins"><i class="fas fa-calendar-alt"></i></button>
+              <button class="text-green-500 hover:text-green-600" title="Comunicar Aluno"><i class="fas fa-paper-plane"></i></button>
+            </td>
+          </tr>
+          <!-- Mais exemplos de alunos com diferentes níveis de risco -->
+          <tr>
+            <td class="py-3 px-4 flex items-center space-x-2">
+              <img src="https://i.pravatar.cc/30?img=10" class="rounded-full w-8 h-8" />
+              <span>Beatriz Santos</span>
+            </td>
+            <td class="py-3 px-4">beatriz@email.com</td>
+            <td class="py-3 px-4">Ativo (12x)</td>
+            <td class="py-3 px-4">95%</td>
+            <td class="py-3 px-4">60</td>
+            <td class="py-3 px-4">
+              <span class="px-2 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-800">Baixo</span>
+            </td>
+            <td class="py-3 px-4 space-x-2">
+              <button onclick="abrirDetalhes()" class="text-blue-500 hover:text-blue-700" title="Ver Detalhes"><i class="fas fa-eye"></i></button>
+              <button onclick="showCalendarCheckins('Beatriz Santos', 12)" class="text-purple-500 hover:text-purple-700" title="Ver Check-ins"><i class="fas fa-calendar-alt"></i></button>
+              <button class="text-green-500 hover:text-green-600" title="Comunicar Aluno"><i class="fas fa-paper-plane"></i></button>
+            </td>
+          </tr>
+          <tr>
+            <td class="py-3 px-4 flex items-center space-x-2">
+              <img src="https://i.pravatar.cc/30?img=11" class="rounded-full w-8 h-8" />
+              <span>Tiago Costa</span>
+            </td>
+            <td class="py-3 px-4">tiago@email.com</td>
+            <td class="py-3 px-4">Inativo (0x)</td>
+            <td class="py-3 px-4">0%</td>
+            <td class="py-3 px-4">5</td>
+            <td class="py-3 px-4">
+              <span class="px-2 py-1 rounded-full text-xs font-semibold bg-red-100 text-red-800">Alto</span>
+            </td>
+            <td class="py-3 px-4 space-x-2">
+              <button onclick="abrirDetalhes()" class="text-blue-500 hover:text-blue-700" title="Ver Detalhes"><i class="fas fa-eye"></i></button>
+              <button onclick="showCalendarCheckins('Tiago Costa', 0)" class="text-purple-500 hover:text-purple-700" title="Ver Check-ins"><i class="fas fa-calendar-alt"></i></button>
+              <button class="text-green-500 hover:text-green-600" title="Comunicar Aluno"><i class="fas fa-paper-plane"></i></button>
+            </td>
+          </tr>
+          <tr>
+            <td class="py-3 px-4 flex items-center space-x-2">
+              <img src="https://i.pravatar.cc/30?img=12" class="rounded-full w-8 h-8" />
+              <span>Carolina Dias</span>
+            </td>
+            <td class="py-3 px-4">carolina@email.com</td>
+            <td class="py-3 px-4">Moderado (2x)</td>
+            <td class="py-3 px-4">30%</td>
+            <td class="py-3 px-4">15</td>
+            <td class="py-3 px-4">
+              <span class="px-2 py-1 rounded-full text-xs font-semibold bg-yellow-100 text-yellow-800">Médio</span>
+            </td>
+            <td class="py-3 px-4 space-x-2">
+              <button onclick="abrirDetalhes()" class="text-blue-500 hover:text-blue-700" title="Ver Detalhes"><i class="fas fa-eye"></i></button>
+              <button onclick="showCalendarCheckins('Carolina Dias', 2)" class="text-purple-500 hover:text-purple-700" title="Ver Check-ins"><i class="fas fa-calendar-alt"></i></button>
+              <button class="text-green-500 hover:text-green-600" title="Comunicar Aluno"><i class="fas fa-paper-plane"></i></button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </main>
+</div>
+
+<!-- PAINEL DETALHADO DO ALUNO (Mantido para reutilização) -->
+<div id="alunoDetalhes" class="fixed top-0 right-0 w-full md:w-[420px] h-full bg-white shadow-2xl z-50 transform translate-x-full transition-transform duration-300">
+  <div class="p-6 overflow-y-auto h-full">
+    <div class="flex items-center justify-between mb-6">
+      <h2 class="text-xl font-bold">Perfil Detalhado do Aluno</h2>
+      <button onclick="fecharDetalhes()" class="text-gray-400 hover:text-red-600 text-2xl">&times;</button>
+    </div>
+    <div class="flex items-center space-x-4 mb-4">
+      <img src="https://i.pravatar.cc/100?img=5" alt="Avatar" class="w-16 h-16 rounded-full" />
+      <div>
+        <h3 class="text-lg font-bold">Alexandre Mendes</h3>
+        <p class="text-sm text-gray-500">Inativo · <span class="text-red-500">Vencido</span></p>
+      </div>
+    </div>
+    <div class="mb-6">
+      <h4 class="font-semibold text-gray-700 mb-2 flex items-center"><i class="fas fa-user mr-2 text-green-600"></i> Informações Pessoais</h4>
+      <ul class="text-sm space-y-1">
+        <li><strong>Email:</strong> alexandre.mendes@example.com</li>
+        <li><strong>Telefone:</strong> (81) 97527-6874</li>
+        <li><strong>Gênero:</strong> Masculino</li>
+        <li><strong>CPF:</strong> 595.425.125-72</li>
+        <li><strong>Matrícula:</strong> 14/05/2024</li>
+        <li><strong>Última visita:</strong> 19/07/2024</li>
+        <li><strong>Endereço:</strong> Rua T 20, Bairro Exemplo, Cidade E</li>
+      </ul>
+    </div>
+    <div class="mb-6">
+      <h4 class="font-semibold text-gray-700 mb-2 flex items-center"><i class="fas fa-credit-card mr-2 text-green-600"></i> Plano e Assinatura</h4>
+      <ul class="text-sm space-y-1">
+        <li><strong>Plano atual:</strong> Nenhum plano atribuído</li>
+        <li><strong>Vencimento:</strong> 25/08/2025</li>
+        <li><strong>Situação do pagamento:</strong> <span class="text-red-500 font-semibold">Vencido</span></li>
+      </ul>
+    </div>
+    <div>
+      <h4 class="font-semibold text-gray-700 mb-2 flex items-center"><i class="fas fa-dumbbell mr-2 text-green-600"></i> Treinamento</h4>
+      <p class="text-sm text-gray-600">Nenhum plano de treino associado.</p>
+    </div>
+  </div>
+</div>
+
+<!-- SCRIPT -->
+<!-- Flatpickr JS -->
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script>
+  function openModal() {
+    document.getElementById('editModal').classList.remove('hidden');
+    document.getElementById('editModal').classList.add('flex');
+  }
+  function closeModal() {
+    document.getElementById('editModal').classList.add('hidden');
+    document.getElementById('editModal').classList.remove('flex');
+  }
+  function abrirDetalhes() {
+    document.getElementById("alunoDetalhes").classList.remove("translate-x-full");
+  }
+  function fecharDetalhes() {
+    document.getElementById("alunoDetalhes").classList.add("translate-x-full");
+  }
+
+  // Função para exibir o calendário de check-ins
+  function showCalendarCheckins(studentName, checkinCount) {
+    const calendarModal = document.getElementById('calendarModal');
+    const calendarModalTitle = document.getElementById('calendarModalTitle');
+    const calendarContainer = document.getElementById('calendarContainer');
+
+    calendarModalTitle.textContent = `Registos de Treino de ${studentName}`;
+    calendarModal.style.display = 'flex'; // Torna o modal visível
+
+    // Gerar datas de check-in simuladas
+    const today = new Date();
+    const checkinDates = [];
+    for (let i = 0; i < checkinCount; i++) {
+        // Gerar uma data aleatória nos últimos 28 dias
+        const randomDaysAgo = Math.floor(Math.random() * 28) + 1;
+        const checkinDate = new Date(today);
+        checkinDate.setDate(today.getDate() - randomDaysAgo);
+        checkinDates.push(checkinDate.toISOString().split('T')[0]); // Formato YYYY-MM-DD
+    }
+
+    // Inicializar Flatpickr
+    flatpickr(calendarContainer, {
+        inline: true, // Exibe o calendário diretamente no div
+        enable: checkinDates, // Destaca as datas de check-in
+        defaultDate: today, // Começa no mês atual
+        locale: "pt", // Define o idioma para português
+        dateFormat: "Y-m-d",
+        disableMobile: true, // Desabilita o seletor nativo em mobile para usar o Flatpickr completo
+    });
+  }
+
+  // Função para fechar o modal do calendário
+  function closeCalendarModal() {
+    document.getElementById('calendarModal').style.display = 'none';
+  }
+
+  // Função para alternar a visibilidade do submenu e girar o ícone
+  function toggleSubmenu(id) {
+      const submenu = document.getElementById(id);
+      const toggleIcon = document.getElementById(id.replace('Submenu', 'ToggleIcon'));
+      if (submenu.classList.contains('hidden')) {
+          submenu.classList.remove('hidden');
+          toggleIcon.classList.add('rotated');
+      } else {
+          submenu.classList.add('hidden');
+          toggleIcon.classList.remove('rotated');
+      }
+  }
+
+  // Define o estado inicial do submenu "Alunos" como aberto e o ícone rotacionado
+  document.addEventListener('DOMContentLoaded', (event) => {
+      const alunosSubmenu = document.getElementById('alunosSubmenu');
+      const alunosToggleIcon = document.getElementById('alunosToggleIcon');
+      if (alunosSubmenu && alunosToggleIcon) {
+          alunosSubmenu.classList.remove('hidden');
+          alunosToggleIcon.classList.add('rotated');
+      }
+  });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Planos | FitIA</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="icon" type="image/png" href="logo.png" />
+
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+    .submenu-toggle {
+        transition: transform 0.2s ease-in-out;
+    }
+    .submenu-toggle.rotated {
+        transform: rotate(180deg);
+    }
+    /* Estilos para os cartões de plano - agora mais claros */
+    .plan-card {
+        padding: 1.5rem;
+        border-radius: 0.75rem;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        min-height: 300px; /* Altura mínima para os cartões */
+    }
+    .plan-card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1rem;
+    }
+    .plan-card-header .icon-group i {
+        cursor: pointer;
+        margin-left: 0.75rem;
+        opacity: 0.7;
+    }
+    .plan-card-header .icon-group i:hover {
+        opacity: 1;
+    }
+    .plan-card-benefits ul {
+        list-style: none;
+        padding: 0;
+        margin-bottom: 1.5rem;
+    }
+    .plan-card-benefits li {
+        display: flex;
+        align-items: center;
+        margin-bottom: 0.5rem;
+    }
+    .plan-card-benefits i.fa-check {
+        color: #22c55e; /* green-500 */
+        margin-right: 0.5rem;
+    }
+    .plan-card-benefits i.fa-times {
+        color: #ef4444; /* red-500 */
+        margin-right: 0.5rem;
+    }
+    .add-plan-card {
+        border: 2px dashed #d1d5db; /* gray-300 */
+        color: #6b7280; /* gray-500 */
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 300px; /* Altura mínima igual aos outros cartões */
+        border-radius: 0.75rem;
+        cursor: pointer;
+        transition: border-color 0.2s, color 0.2s;
+    }
+    .add-plan-card:hover {
+        border-color: #22c55e; /* green-500 */
+        color: #22c55e;
+    }
+  </style>
+</head>
+<body class="bg-gray-100 text-gray-800">
+
+  <div class="flex min-h-screen">
+    <!-- Sidebar -->
+    <aside class="w-64 bg-white shadow-lg p-6 hidden md:block">
+      <h1 class="text-2xl font-bold mb-10 text-green-600 flex items-center">
+        <i class="fas fa-dumbbell mr-2"></i> FitIA
+      </h1>
+      <nav class="space-y-4 text-sm text-gray-700">
+        <a href="dashboard.html" class="flex items-center space-x-2 hover:text-green-600">
+          <i class="fas fa-home"></i><span>Dashboard</span>
+        </a>
+        
+        <!-- Submenu Alunos -->
+        <div>
+          <div class="flex items-center justify-between hover:text-green-600 cursor-pointer" onclick="toggleSubmenu('alunosSubmenu')">
+            <div class="flex items-center space-x-2">
+                <i class="fas fa-user-friends"></i><span>Alunos</span>
+            </div>
+            <i class="fas fa-chevron-down text-xs submenu-toggle" id="alunosToggleIcon"></i>
+          </div>
+          <div class="ml-6 space-y-2 text-sm mt-2 hidden" id="alunosSubmenu">
+            <a href="lista-alunos.html" class="flex items-center space-x-2 hover:text-green-600"><i class="fas fa-users w-4"></i><span>Lista de Alunos</span></a>
+            <a href="risco-evasao.html" class="flex items-center space-x-2 hover:text-green-600"><i class="fas fa-exclamation-triangle w-4"></i><span>Risco de Evasão</span></a>
+            <a href="comunicacoes.html" class="flex items-center space-x-2 hover:text-green-600"><i class="fas fa-comment-dots w-4"></i><span>Comunicações</span></a>
+          </div>
+        </div>
+
+        <!-- Submenu Financeiro - Ativo nesta página -->
+        <div>
+          <div class="flex items-center justify-between hover:text-green-600 cursor-pointer" onclick="toggleSubmenu('financeiroSubmenu')">
+            <div class="flex items-center space-x-2 text-green-600">
+                <i class="fas fa-wallet"></i><span>Financeiro</span>
+            </div>
+            <i class="fas fa-chevron-down text-xs submenu-toggle rotated" id="financeiroToggleIcon"></i>
+          </div>
+          <div class="ml-6 space-y-2 text-sm mt-2" id="financeiroSubmenu"> <!-- Removido 'hidden' para começar aberto -->
+            <a href="caixa.html" class="flex items-center space-x-2 hover:text-green-600"><i class="fas fa-cash-register w-4"></i><span>Caixa</span></a>
+            <a href="despesas.html" class="flex items-center space-x-2 hover:text-green-600"><i class="fas fa-file-invoice-dollar w-4"></i><span>Despesas</span></a>
+            <a href="pagamentos.html" class="flex items-center space-x-2 hover:text-green-600"><i class="fas fa-receipt w-4"></i><span>Pagamentos</span></a>
+            <a href="planos.html" class="flex items-center space-x-2 text-green-600"><i class="fas fa-clipboard-list w-4"></i><span>Planos</span></a>
+            <a href="descontos.html" class="flex items-center space-x-2 hover:text-green-600"><i class="fas fa-tags w-4"></i><span>Descontos</span></a>
+          </div>
+        </div>
+
+        <a href="relatorios.html" class="flex items-center space-x-2 hover:text-green-600">
+          <i class="fas fa-chart-line"></i><span>Relatórios</span>
+        </a>
+        
+        <!-- Item de menu para IA com o emoji de brilho -->
+        <a href="ia.html" class="flex items-center space-x-2 hover:text-green-600">
+          ✨<span>IA</span>
+        </a>
+
+        <a href="configuracoes.html" class="flex items-center space-x-2 hover:text-green-600">
+          <i class="fas fa-cog"></i><span>Configurações</span>
+        </a>
+        <a href="login.html" class="flex items-center space-x-2 hover:text-red-500 mt-10">
+          <i class="fas fa-sign-out-alt"></i><span>Sair</span>
+        </a>
+      </nav>
+    </aside>
+
+    <!-- Main -->
+    <main class="flex-1 p-6 md:p-10">
+      <!-- Topbar - Inclui perfil do utilizador e notificações -->
+      <div class="flex justify-between items-center mb-6">
+        <div>
+          <h2 class="text-2xl font-bold">Planos</h2>
+          <p class="text-sm text-gray-500">Gerencie os planos disponíveis para os seus clientes.</p>
+        </div>
+        
+        <!-- Botões de ação e Perfil do Utilizador -->
+        <div class="flex items-center space-x-4">
+          <button class="bg-gray-200 text-gray-700 px-4 py-2 rounded-lg shadow hover:bg-gray-300 transition">
+            <i class="fas fa-eye-slash mr-2"></i> Mostrar Inativos
+          </button>
+          <button class="bg-green-600 text-white px-4 py-2 rounded-lg shadow hover:bg-green-700 transition">
+            <i class="fas fa-plus mr-2"></i> Novo Plano
+          </button>
+
+          <!-- Ícone de Notificação -->
+          <div class="relative">
+            <i class="fas fa-bell text-gray-600 text-xl cursor-pointer hover:text-green-600"></i>
+            <span class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">3</span>
+          </div>
+
+          <!-- Perfil do Utilizador -->
+          <div class="flex items-center space-x-2 cursor-pointer hover:opacity-80 transition-opacity">
+            <img src="https://i.pravatar.cc/40?img=15" alt="Avatar Isabela" class="w-10 h-10 rounded-full border-2 border-green-500" />
+            <span class="font-medium text-gray-700 hidden sm:block">Isabela</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Cartões de Planos -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Cartão Plano Básico -->
+        <div class="plan-card bg-white text-gray-800 shadow-lg">
+          <div>
+            <div class="plan-card-header">
+              <h3 class="text-xl font-bold">Plano Básico</h3>
+              <div class="icon-group text-gray-500">
+                <i class="fas fa-copy hover:text-green-600"></i>
+                <i class="fas fa-trash-alt hover:text-red-600"></i>
+              </div>
+            </div>
+            <p class="text-sm text-gray-600 mb-2">Plano ideal para iniciantes</p>
+            <p class="text-2xl font-bold mb-4">R$ 89.90<span class="text-sm text-gray-500">/mês</span></p>
+            <div class="plan-card-benefits">
+              <ul>
+                <li><i class="fas fa-check"></i> Acesso à academia</li>
+                <li><i class="fas fa-check"></i> Aulas em grupo</li>
+                <li><i class="fas fa-check"></i> Avaliação física</li>
+                <li><i class="fas fa-times"></i> Personal trainer</li>
+              </ul>
+            </div>
+          </div>
+          <button class="bg-green-600 hover:bg-green-700 text-white py-2 rounded-lg font-semibold transition">Editar Plano</button>
+        </div>
+
+        <!-- Cartão Plano Trimestral -->
+        <div class="plan-card bg-white text-gray-800 shadow-lg">
+          <div>
+            <div class="plan-card-header">
+              <h3 class="text-xl font-bold">Plano Trimestral</h3>
+              <div class="icon-group text-gray-500">
+                <i class="fas fa-copy hover:text-green-600"></i>
+                <i class="fas fa-trash-alt hover:text-red-600"></i>
+              </div>
+            </div>
+            <p class="text-sm text-gray-600 mb-2">Ideal para compromisso de médio prazo</p>
+            <p class="text-2xl font-bold mb-4">R$ 240.00<span class="text-sm text-gray-500">/trimestre</span></p>
+            <div class="plan-card-benefits">
+              <ul>
+                <li><i class="fas fa-check"></i> Acesso à academia</li>
+                <li><i class="fas fa-check"></i> Aulas em grupo</li>
+                <li><i class="fas fa-check"></i> Avaliação física</li>
+                <li><i class="fas fa-times"></i> Personal trainer</li>
+                <li><i class="fas fa-check"></i> Acesso a todas unidades</li>
+                <li><i class="fas fa-plus"></i> +benefícios exclusivos</li>
+              </ul>
+            </div>
+          </div>
+          <button class="bg-green-600 hover:bg-green-700 text-white py-2 rounded-lg font-semibold transition">Editar Plano</button>
+        </div>
+
+        <!-- Cartão Adicionar Plano -->
+        <div class="add-plan-card bg-white shadow-lg">
+          <i class="fas fa-plus-circle text-5xl mb-4"></i>
+          <p class="text-lg font-semibold">Adicionar Plano</p>
+        </div>
+      </div>
+
+
+    </main>
+  </div>
+
+<!-- SCRIPT -->
+<script>
+  // Função para alternar a visibilidade do submenu e girar o ícone
+  function toggleSubmenu(id) {
+      const submenu = document.getElementById(id);
+      const toggleIcon = document.getElementById(id.replace('Submenu', 'ToggleIcon'));
+      if (submenu.classList.contains('hidden')) {
+          submenu.classList.remove('hidden');
+          toggleIcon.classList.add('rotated');
+      } else {
+          submenu.classList.add('hidden');
+          toggleIcon.classList.remove('rotated');
+      }
+  }
+
+  // Define o estado inicial do submenu "Financeiro" como aberto e o ícone rotacionado
+  document.addEventListener('DOMContentLoaded', (event) => {
+      const financeiroSubmenu = document.getElementById('financeiroSubmenu');
+      const financeiroToggleIcon = document.getElementById('financeiroToggleIcon');
+      if (financeiroSubmenu && financeiroToggleIcon) {
+          financeiroSubmenu.classList.remove('hidden');
+          financeiroToggleIcon.classList.add('rotated');
+      }
+      // Garante que o item "Planos" na sidebar está ativo
+      const planosLink = document.querySelector('a[href="planos.html"]');
+      if (planosLink) {
+          planosLink.classList.add('text-green-600');
+          planosLink.classList.remove('hover:text-green-600');
+      }
+  });
+</script>
+
+</body>
+</html>
