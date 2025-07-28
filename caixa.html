@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Caixa | FitIA</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="icon" type="image/png" href="logo.png" />
+
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+    .submenu-toggle {
+        transition: transform 0.2s ease-in-out;
+    }
+    .submenu-toggle.rotated {
+        transform: rotate(180deg);
+    }
+    /* As classes Tailwind foram aplicadas diretamente no HTML para evitar @apply */
+    /* Removido o ruleset .card-metric vazio */
+
+    .text-green-arrow {
+        color: #22c55e; /* Tailwind green-500 */
+    }
+    .text-red-arrow {
+        color: #ef4444; /* Tailwind red-500 */
+    }
+    .text-blue-value {
+        color: #3b82f6; /* Tailwind blue-500 */
+    }
+    .text-purple-value {
+        color: #9333ea; /* Tailwind purple-600 */
+    }
+  </style>
+</head>
+<body class="bg-gray-100 text-gray-800">
+
+  <div class="flex min-h-screen">
+    <!-- Sidebar -->
+    <aside class="w-64 bg-white shadow-lg p-6 hidden md:block">
+      <h1 class="text-2xl font-bold mb-10 text-green-600 flex items-center">
+        <i class="fas fa-dumbbell mr-2"></i> FitIA
+      </h1>
+      <nav class="space-y-4 text-sm text-gray-700">
+        <a href="dashboard.html" class="flex items-center space-x-2 hover:text-green-600">
+          <i class="fas fa-home"></i><span>Dashboard</span>
+        </a>
+        
+        <!-- Submenu Alunos -->
+        <div>
+          <div class="flex items-center justify-between hover:text-green-600 cursor-pointer" onclick="toggleSubmenu('alunosSubmenu')">
+            <div class="flex items-center space-x-2">
+                <i class="fas fa-user-friends"></i><span>Alunos</span>
+            </div>
+            <i class="fas fa-chevron-down text-xs submenu-toggle" id="alunosToggleIcon"></i>
+          </div>
+          <div class="ml-6 space-y-2 text-sm mt-2 hidden" id="alunosSubmenu">
+            <a href="lista-alunos.html" class="flex items-center space-x-2 hover:text-green-600"><i class="fas fa-users w-4"></i><span>Lista de Alunos</span></a>
+            <a href="risco-evasao.html" class="flex items-center space-x-2 hover:text-green-600"><i class="fas fa-exclamation-triangle w-4"></i><span>Risco de Evasão</span></a>
+            <a href="comunicacoes.html" class="flex items-center space-x-2 hover:text-green-600"><i class="fas fa-comment-dots w-4"></i><span>Comunicações</span></a>
+          </div>
+        </div>
+
+        <!-- Submenu Financeiro - Ativo nesta página -->
+        <div>
+          <div class="flex items-center justify-between hover:text-green-600 cursor-pointer" onclick="toggleSubmenu('financeiroSubmenu')">
+            <div class="flex items-center space-x-2 text-green-600">
+                <i class="fas fa-wallet"></i><span>Financeiro</span>
+            </div>
+            <i class="fas fa-chevron-down text-xs submenu-toggle rotated" id="financeiroToggleIcon"></i>
+          </div>
+          <div class="ml-6 space-y-2 text-sm mt-2" id="financeiroSubmenu"> <!-- Removido 'hidden' para começar aberto -->
+            <a href="caixa.html" class="flex items-center space-x-2 text-green-600"><i class="fas fa-cash-register w-4"></i><span>Caixa</span></a>
+            <a href="despesas.html" class="flex items-center space-x-2 hover:text-green-600"><i class="fas fa-file-invoice-dollar w-4"></i><span>Despesas</span></a>
+            <a href="pagamentos.html" class="flex items-center space-x-2 hover:text-green-600"><i class="fas fa-receipt w-4"></i><span>Pagamentos</span></a>
+            <a href="planos.html" class="flex items-center space-x-2 hover:text-green-600"><i class="fas fa-clipboard-list w-4"></i><span>Planos</span></a>
+            <a href="descontos.html" class="flex items-center space-x-2 hover:text-green-600"><i class="fas fa-tags w-4"></i><span>Descontos</span></a>
+          </div>
+        </div>
+
+        <a href="relatorios.html" class="flex items-center space-x-2 hover:text-green-600">
+          <i class="fas fa-chart-line"></i><span>Relatórios</span>
+        </a>
+        
+        <!-- Item de menu para IA com o emoji de brilho -->
+        <a href="ia.html" class="flex items-center space-x-2 hover:text-green-600">
+          ✨<span>IA</span>
+        </a>
+
+        <a href="configuracoes.html" class="flex items-center space-x-2 hover:text-green-600">
+          <i class="fas fa-cog"></i><span>Configurações</span>
+        </a>
+        <a href="login.html" class="flex items-center space-x-2 hover:text-red-500 mt-10">
+          <i class="fas fa-sign-out-alt"></i><span>Sair</span>
+        </a>
+      </nav>
+    </aside>
+
+    <!-- Main -->
+    <main class="flex-1 p-6 md:p-10">
+      <!-- Topbar - Inclui perfil do utilizador e notificações -->
+      <div class="flex justify-between items-center mb-6">
+        <div>
+          <h2 class="text-2xl font-bold">Caixa</h2>
+          <p class="text-sm text-gray-500">Controlo financeiro das suas transações.</p>
+        </div>
+        
+        <!-- Botão Nova Transação e Perfil do Utilizador -->
+        <div class="flex items-center space-x-4">
+          <button class="bg-green-600 text-white px-4 py-2 rounded-lg shadow hover:bg-purple-700 transition">
+            <i class="fas fa-circle-plus mr-2"></i> Nova Transação
+          </button>
+
+          <!-- Ícone de Notificação -->
+          <div class="relative">
+            <i class="fas fa-bell text-gray-600 text-xl cursor-pointer hover:text-green-600"></i>
+            <span class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">3</span>
+          </div>
+
+          <!-- Perfil do Utilizador -->
+          <div class="flex items-center space-x-2 cursor-pointer hover:opacity-80 transition-opacity">
+            <img src="https://i.pravatar.cc/40?img=15" alt="Avatar Isabela" class="w-10 h-10 rounded-full border-2 border-green-500" />
+            <span class="font-medium text-gray-700 hidden sm:block">Isabela</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Métricas Financeiras -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <div class="bg-white p-6 rounded-lg shadow flex items-center justify-between">
+          <div>
+            <p class="label">Saldo Atual</p>
+            <h3 class="value">R$ 2.000,00</h3>
+          </div>
+          <i class="fas fa-wallet icon text-purple-value"></i>
+        </div>
+        <div class="bg-white p-6 rounded-lg shadow flex items-center justify-between">
+          <div>
+            <p class="label">Total de Depósitos</p>
+            <h3 class="value text-green-arrow">R$ 5.000,00</h3>
+          </div>
+          <i class="fas fa-money-bill-transfer icon text-green-arrow"></i>
+        </div>
+        <div class="bg-white p-6 rounded-lg shadow flex items-center justify-between">
+          <div>
+            <p class="label">Total de Retiradas</p>
+            <h3 class="value text-red-arrow">R$ 2.300,00</h3>
+          </div>
+          <i class="fas fa-money-bill-transfer icon text-red-arrow fa-flip-horizontal"></i>
+        </div>
+        <div class="bg-white p-6 rounded-lg shadow flex items-center justify-between">
+          <div>
+            <p class="label">Valores Recebidos</p>
+            <h3 class="value text-blue-value">R$ 4.300,00</h3>
+          </div>
+          <i class="fas fa-hand-holding-dollar icon text-blue-value"></i>
+        </div>
+      </div>
+
+      <!-- Valores Recebidos e Total de Despesas (Linha separada) -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-8">
+        <div class="bg-white p-6 rounded-lg shadow flex items-center justify-between">
+          <div>
+            <p class="label">Valores Recebidos</p>
+            <h3 class="value text-blue-value">R$ 4.300,00</h3>
+          </div>
+          <i class="fas fa-hand-holding-dollar icon text-blue-value"></i>
+        </div>
+        <div class="bg-white p-6 rounded-lg shadow flex items-center justify-between">
+          <div>
+            <p class="label">Total de Despesas</p>
+            <h3 class="value text-red-arrow">R$ 2.300,00</h3>
+          </div>
+          <i class="fas fa-receipt icon text-red-arrow"></i>
+        </div>
+      </div>
+
+      <!-- Histórico de Transações -->
+      <div class="bg-white p-6 rounded-lg shadow">
+        <h4 class="text-lg font-semibold mb-4">Histórico de Transações</h4>
+        <div class="divide-y divide-gray-200">
+          <!-- Exemplo de Transação - Pagamento Aluguel -->
+          <div class="flex items-center justify-between py-3">
+            <div class="flex items-center space-x-3">
+              <i class="fas fa-arrow-down text-red-arrow"></i>
+              <div>
+                <p class="font-medium">Pagamento Aluguel</p>
+                <p class="text-xs text-gray-500">10/03/2024 · Despesa Fixa</p>
+              </div>
+            </div>
+            <div class="text-right">
+              <p class="font-medium text-red-arrow">-R$ 1.500,00</p>
+              <p class="text-xs text-gray-500">Retirada</p>
+            </div>
+          </div>
+          <!-- Exemplo de Transação - Compra de Equipamentos -->
+          <div class="flex items-center justify-between py-3">
+            <div class="flex items-center space-x-3">
+              <i class="fas fa-arrow-down text-red-arrow"></i>
+              <div>
+                <p class="font-medium">Compra de Equipamentos</p>
+                <p class="text-xs text-gray-500">01/03/2024 · Investimento</p>
+              </div>
+            </div>
+            <div class="text-right">
+              <p class="font-medium text-red-arrow">-R$ 800,00</p>
+              <p class="text-xs text-gray-500">Retirada</p>
+            </div>
+          </div>
+          <!-- Exemplo de Transação - Investimento Inicial -->
+          <div class="flex items-center justify-between py-3">
+            <div class="flex items-center space-x-3">
+              <i class="fas fa-arrow-up text-green-arrow"></i>
+              <div>
+                <p class="font-medium">Investimento Inicial</p>
+                <p class="text-xs text-gray-500">01/03/2024 · Depósito</p>
+              </div>
+            </div>
+            <div class="text-right">
+              <p class="font-medium text-green-arrow">+R$ 5.000,00</p>
+              <p class="text-xs text-gray-500">Depósito</p>
+            </div>
+          </div>
+          <!-- Adicione mais transações aqui conforme necessário -->
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+<!-- SCRIPT -->
+<script>
+  // Função para alternar a visibilidade do submenu e girar o ícone
+  function toggleSubmenu(id) {
+      const submenu = document.getElementById(id);
+      const toggleIcon = document.getElementById(id.replace('Submenu', 'ToggleIcon'));
+      if (submenu.classList.contains('hidden')) {
+          submenu.classList.remove('hidden');
+          toggleIcon.classList.add('rotated');
+      } else {
+          submenu.classList.add('hidden');
+          toggleIcon.classList.remove('rotated');
+      }
+  }
+
+  // Define o estado inicial do submenu "Financeiro" como aberto e o ícone rotacionado
+  document.addEventListener('DOMContentLoaded', (event) => {
+      const financeiroSubmenu = document.getElementById('financeiroSubmenu');
+      const financeiroToggleIcon = document.getElementById('financeiroToggleIcon');
+      if (financeiroSubmenu && financeiroToggleIcon) {
+          financeiroSubmenu.classList.remove('hidden');
+          financeiroToggleIcon.classList.add('rotated');
+      }
+      // Garante que o item "Caixa" na sidebar está ativo
+      const caixaLink = document.querySelector('a[href="caixa.html"]');
+      if (caixaLink) {
+          caixaLink.classList.add('text-green-600');
+          caixaLink.classList.remove('hover:text-green-600');
+      }
+  });
+</script>
+
+</body>
+</html>
