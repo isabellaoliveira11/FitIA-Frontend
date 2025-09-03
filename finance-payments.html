@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <title>FitIA - Financeiro - Pagamentos</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- CSS CONSISTENTE COM O RESTANTE DO SISTEMA (TEMA CLARO) -->
+    <style>
+        .sidebar-collapsed { transform: translateX(-100%); }
+        .sidebar-expanded { transform: translateX(0); }
+        
+        .active-menu-item {
+            background-color: #eef2ff; /* Fundo índigo bem claro */
+            color: #4f46e5; /* Texto na cor índigo */
+            font-weight: 600; /* Deixa o texto em negrito */
+        }
+        
+        @media (min-width: 768px) { .sidebar-collapsed { transform: translateX(0); } }
+
+        .modal-backdrop { background: rgba(0,0,0,.5); transition: opacity .3s ease; }
+        .modal-content { transition: transform .3s ease, opacity .3s ease; }
+    </style>
+
+    <script src="app.js"></script>
+</head>
+<body class="bg-gray-50 font-sans">
+    <div class="flex h-screen overflow-hidden">
+
+        <!-- SIDEBAR ATUALIZADA COM LOGO, ÍCONES E LINK CORRETO -->
+        <aside class="fixed md:relative z-50 w-64 h-screen bg-white text-gray-600 border-r border-gray-200 shadow-sm transition-transform duration-300 sidebar-collapsed md:sidebar-expanded">
+            <div class="flex flex-col h-full">
+                <div class="flex items-center justify-center p-6 border-b border-gray-200">
+                    <div class="w-12 h-12 rounded-lg bg-gradient-to-r from-indigo-500 to-purple-500 flex items-center justify-center text-white font-bold text-lg">FitIA</div>
+                    <div class="ml-4">
+                        <h1 class="text-xl font-bold text-gray-800">FitIA</h1>
+                        <p class="text-xs text-gray-500">Gestão Inteligente</p>
+                    </div>
+                </div>
+                <nav class="flex-1 overflow-y-auto py-4 px-2">
+                    <ul>
+                        <li><a href="index.html" data-nav="dashboard" class="flex items-center px-4 py-3 rounded-lg hover:bg-gray-100 hover:text-indigo-600"><i data-lucide="home" class="w-5 h-5"></i><span class="ml-3">Dashboard</span></a></li>
+                        <li>
+                            <button type="button" class="flex items-center w-full px-4 py-3 rounded-lg hover:bg-gray-100 hover:text-indigo-600 transition-colors group" aria-expanded="false" data-section="students">
+                                <i data-lucide="users" class="w-5 h-5"></i><span class="ml-3 flex-1 text-left">Alunos</span><i data-lucide="chevron-down" class="w-4 h-4 transition-transform"></i>
+                            </button>
+                            <ul class="py-2 pl-8 hidden" aria-label="submenu" data-submenu="students">
+                                <li><a href="students.html" data-nav="students-list" class="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-gray-100 hover:text-indigo-600 text-sm"><i data-lucide="list" class="w-4 h-4"></i><span>Lista de Alunos</span></a></li>
+                                <li><a href="students-risk.html" data-nav="students-risk" class="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-gray-100 hover:text-indigo-600 text-sm"><i data-lucide="user-x" class="w-4 h-4"></i><span>Risco de Evasão</span></a></li>
+                                <li><a href="students-comms.html" data-nav="students-comms" class="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-gray-100 hover:text-indigo-600 text-sm"><i data-lucide="send" class="w-4 h-4"></i><span>Comunicações</span></a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <button type="button" class="flex items-center w-full px-4 py-3 rounded-lg hover:bg-gray-100 hover:text-indigo-600 transition-colors group" aria-expanded="false" data-section="finance">
+                                <i data-lucide="dollar-sign" class="w-5 h-5"></i><span class="ml-3 flex-1 text-left">Financeiro</span><i data-lucide="chevron-down" class="w-4 h-4 transition-transform"></i>
+                            </button>
+                            <ul class="py-2 pl-8 hidden" aria-label="submenu" data-submenu="finance">
+                                <li><a href="finance-cash.html" data-nav="finance-cash" class="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-gray-100 hover:text-indigo-600 text-sm"><i data-lucide="wallet" class="w-4 h-4"></i><span>Caixa</span></a></li>
+                                <li><a href="finance-expenses.html" data-nav="finance-expenses" class="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-gray-100 hover:text-indigo-600 text-sm"><i data-lucide="receipt" class="w-4 h-4"></i><span>Despesas</span></a></li>
+                                <li><a href="finance-payments.html" data-nav="finance-payments" class="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-gray-100 hover:text-indigo-600 text-sm"><i data-lucide="credit-card" class="w-4 h-4"></i><span>Pagamentos</span></a></li>
+                                <li><a href="finance-plans.html" data-nav="finance-plans" class="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-gray-100 hover:text-indigo-600 text-sm"><i data-lucide="layers" class="w-4 h-4"></i><span>Planos</span></a></li>
+                                <li><a href="finance-discounts.html" data-nav="finance-discounts" class="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-gray-100 hover:text-indigo-600 text-sm"><i data-lucide="percent" class="w-4 h-4"></i><span>Descontos</span></a></li>
+                            </ul>
+                        </li>
+                        <li><a href="trainings.html" data-nav="trainings" class="flex items-center px-4 py-3 rounded-lg hover:bg-gray-100 hover:text-indigo-600"><i data-lucide="dumbbell" class="w-5 h-5"></i><span class="ml-3">Treinamento</span></a></li>
+                        <li><a href="reports.html" data-nav="reports" class="flex items-center px-4 py-3 rounded-lg hover:bg-gray-100 hover:text-indigo-600"><i data-lucide="file-text" class="w-5 h-5"></i><span class="ml-3">Relatórios</span></a></li>
+                        <li><a href="settings.html" data-nav="settings" class="flex items-center px-4 py-3 rounded-lg hover:bg-gray-100 hover:text-indigo-600"><i data-lucide="settings" class="w-5 h-5"></i><span class="ml-3">Configurações</span></a></li>
+                        <li><a href="assistant.html" data-nav="assistant" class="flex items-center px-4 py-3 rounded-lg hover:bg-gray-100 hover:text-indigo-600"><i data-lucide="message-square" class="w-5 h-5"></i><span class="ml-3">Assistente</span></a></li>
+                        <li class="mt-auto"><a href="landing.html" target="_blank" class="flex items-center px-4 py-3 rounded-lg hover:bg-gray-100 hover:text-indigo-600"><i data-lucide="external-link" class="w-5 h-5"></i><span class="ml-3">Ir para o site</span></a></li>
+                    </ul>
+                </nav>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <div class="flex-1 flex flex-col overflow-hidden">
+            <!-- TOPBAR ATUALIZADO -->
+            <header class="bg-white shadow-sm z-40">
+                <div class="flex items-center justify-between px-6 py-4">
+                    <button id="sidebar-toggle" class="md:hidden text-gray-500 focus:outline-none" aria-label="Toggle sidebar"><i data-lucide="menu" class="w-6 h-6"></i></button>
+                    <div class="relative max-w-md w-full mx-4">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"><i data-lucide="search" class="h-5 w-5 text-gray-400"></i></div>
+                        <input id="search-input" class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="Buscar por aluno, plano ou referência..." type="search">
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <button class="p-1 rounded-full text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500" aria-label="Notifications"><i data-lucide="bell" class="h-6 w-6"></i></button>
+                        <div class="relative">
+                            <button class="flex items-center space-x-2 focus:outline-none" aria-label="User menu" aria-expanded="false">
+                                <div class="w-8 h-8 rounded-full bg-gradient-to-r from-indigo-500 to-purple-500 flex items-center justify-center text-white font-bold">JD</div>
+                                <span class="hidden md:block text-sm font-medium text-gray-700">John Doe</span>
+                                <i data-lucide="chevron-down" class="hidden md:block w-4 h-4 text-gray-500"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Conteúdo -->
+            <main class="flex-1 overflow-y-auto p-8 bg-gray-50">
+                <!-- Header -->
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
+                    <div>
+                        <h1 class="text-3xl font-bold text-gray-900">Pagamentos</h1>
+                        <p class="mt-1 text-gray-500">Acompanhe cobranças, status e recebimentos por ciclo.</p>
+                    </div>
+                    <div class="flex gap-2 mt-4 md:mt-0">
+                        <button id="btn-export" class="inline-flex items-center rounded-lg bg-white border px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50">
+                            <i data-lucide="download" class="w-4 h-4 mr-2"></i>Exportar CSV
+                        </button>
+                        <button id="new-payment-btn" class="inline-flex items-center justify-center bg-indigo-600 text-white font-semibold px-4 py-2 rounded-lg hover:bg-indigo-700 transition-colors">
+                            <i data-lucide="plus" class="w-5 h-5 mr-2"></i>Registrar Pagamento
+                        </button>
+                    </div>
+                </div>
+
+                <!-- KPIs -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                    <div class="bg-white p-5 rounded-lg shadow-sm"><div class="flex items-center justify-between"><span class="text-sm font-medium text-gray-500">Recebido (mês)</span><i data-lucide="dollar-sign" class="h-5 w-5 text-green-500"></i></div><div><h2 id="kpi-received" class="text-3xl font-bold text-gray-800">R$ 0,00</h2></div></div>
+                    <div class="bg-white p-5 rounded-lg shadow-sm"><div class="flex items-center justify-between"><span class="text-sm font-medium text-gray-500">Pendente</span><i data-lucide="clock" class="h-5 w-5 text-yellow-500"></i></div><div><h2 id="kpi-pending" class="text-3xl font-bold text-gray-800">R$ 0,00</h2></div></div>
+                    <div class="bg-white p-5 rounded-lg shadow-sm"><div class="flex items-center justify-between"><span class="text-sm font-medium text-gray-500">Atrasado</span><i data-lucide="alert-circle" class="h-5 w-5 text-red-500"></i></div><div><h2 id="kpi-overdue" class="text-3xl font-bold text-gray-800">R$ 0,00</h2></div></div>
+                    <div class="bg-white p-5 rounded-lg shadow-sm"><div class="flex items-center justify-between"><span class="text-sm font-medium text-gray-500">Total de Cobranças</span><i data-lucide="hash" class="h-5 w-5 text-indigo-500"></i></div><div><h2 id="kpi-count" class="text-3xl font-bold text-gray-800">0</h2></div></div>
+                </div>
+
+                <!-- Filtros + Tabela -->
+                <div class="bg-white rounded-xl shadow-sm">
+                    <div class="p-6 border-b flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                        <div class="flex flex-wrap items-center gap-3">
+                            <select id="filter-status" class="px-3 py-2 text-sm border border-gray-200 rounded-lg bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500"><option value="">Todos status</option><option value="Pago">Pago</option><option value="Pendente">Pendente</option><option value="Atrasado">Atrasado</option></select>
+                            <select id="filter-cycle" class="px-3 py-2 text-sm border border-gray-200 rounded-lg bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500"><option value="">Todos ciclos</option><option>Mensal</option><option>Trimestral</option><option>Semestral</option><option>Anual</option></select>
+                            <select id="filter-method" class="px-3 py-2 text-sm border border-gray-200 rounded-lg bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500"><option value="">Todos métodos</option><option>Pix</option><option>Cartão</option><option>Boleto</option><option>Dinheiro</option></select>
+                        </div>
+                        <div class="text-sm text-gray-500"><span id="table-count"></span></div>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm text-left text-gray-600">
+                            <thead class="text-xs text-gray-700 uppercase bg-gray-50">
+                                <tr>
+                                    <th class="px-6 py-3">Ref.</th><th class="px-6 py-3">Aluno</th><th class="px-6 py-3">Plano</th><th class="px-6 py-3">Ciclo</th><th class="px-6 py-3">Vencimento</th><th class="px-6 py-3 text-right">Valor</th><th class="px-6 py-3">Método</th><th class="px-6 py-3">Status</th><th class="px-6 py-3 text-center">Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody id="payments-table-body"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Modal Detalhes do Pagamento -->
+    <div id="payment-modal" class="fixed inset-0 z-50 hidden items-center justify-center">
+        <div id="payment-modal-backdrop" class="absolute inset-0 modal-backdrop opacity-0"></div>
+        <div class="relative modal-content bg-white w-full max-w-xl mx-4 rounded-xl shadow-lg transform scale-95 opacity-0">
+            <div class="flex items-center justify-between p-5 border-b">
+                <h3 class="text-lg font-semibold text-gray-900">Detalhes do Pagamento</h3>
+                <button id="payment-modal-close" class="p-1 rounded-full text-gray-400 hover:bg-gray-200">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+            <div class="p-6 space-y-4">
+                <div class="flex items-center gap-3">
+                    <div class="w-12 h-12 rounded-full bg-gray-100 grid place-items-center"><i data-lucide="user" class="w-6 h-6 text-gray-500"></i></div>
+                    <div>
+                        <p id="m-student" class="font-semibold text-gray-900"></p>
+                        <p id="m-plan" class="text-sm text-gray-500"></p>
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-4 text-sm pt-2">
+                    <div><span class="text-gray-500">Referência:</span><div id="m-ref" class="font-medium text-gray-800"></div></div>
+                    <div><span class="text-gray-500">Ciclo:</span><div id="m-cycle" class="font-medium text-gray-800"></div></div>
+                    <div><span class="text-gray-500">Vencimento:</span><div id="m-due" class="font-medium text-gray-800"></div></div>
+                    <div><span class="text-gray-500">Método:</span><div id="m-method" class="font-medium text-gray-800"></div></div>
+                    <div><span class="text-gray-500">Valor:</span><div id="m-amount" class="font-medium text-gray-800"></div></div>
+                    <div><span class="text-gray-500">Status:</span><div id="m-status" class="font-medium text-gray-800"></div></div>
+                </div>
+                <div class="pt-4 flex justify-end gap-3">
+                    <button id="m-remind" class="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200">Enviar Lembrete</button>
+                    <button id="m-mark-paid" class="px-4 py-2 text-sm font-semibold text-white bg-green-600 rounded-lg hover:bg-green-700 flex items-center"><i data-lucide="check" class="w-4 h-4 mr-2"></i>Marcar como Pago</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Registrar Novo Pagamento -->
+    <div id="new-payment-modal" class="fixed inset-0 z-50 hidden items-center justify-center">
+        <div id="new-payment-backdrop" class="absolute inset-0 modal-backdrop opacity-0"></div>
+        <div class="relative modal-content bg-white w-full max-w-lg mx-4 rounded-xl shadow-lg transform scale-95 opacity-0">
+            <div class="flex items-center justify-between p-5 border-b">
+                <h3 class="text-lg font-semibold text-gray-900">Registrar Novo Pagamento</h3>
+                <button id="new-payment-close" class="p-1 rounded-full text-gray-400 hover:bg-gray-200"><i data-lucide="x" class="w-5 h-5"></i></button>
+            </div>
+            <form id="new-payment-form" class="p-6 space-y-4">
+                <div>
+                    <label for="form-student-name" class="block text-sm font-medium text-gray-700 mb-1">Selecione o Aluno</label>
+                    <select id="form-student-name" required class="w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                        <!-- Options will be populated by JS -->
+                    </select>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label for="form-plan-name" class="block text-sm font-medium text-gray-700 mb-1">Plano</label>
+                        <input id="form-plan-name" type="text" required placeholder="Ex: Musculação" class="w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                    </div>
+                    <div>
+                        <label for="form-amount" class="block text-sm font-medium text-gray-700 mb-1">Valor (R$)</label>
+                        <input id="form-amount" type="number" step="0.01" required placeholder="129.90" class="w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                     <div>
+                        <label for="form-method" class="block text-sm font-medium text-gray-700 mb-1">Método</label>
+                        <select id="form-method" required class="w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                            <option>Pix</option><option>Cartão</option><option>Dinheiro</option><option>Boleto</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="form-due-date" class="block text-sm font-medium text-gray-700 mb-1">Data de Vencimento</label>
+                        <input id="form-due-date" type="date" required class="w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                    </div>
+                </div>
+                <div class="pt-4 flex justify-end gap-3">
+                    <button type="button" id="new-payment-cancel" class="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200">Cancelar</button>
+                    <button type="submit" class="px-4 py-2 text-sm font-semibold text-white bg-indigo-600 rounded-lg hover:bg-indigo-700">Salvar Pagamento</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+    // --- MOCK E FUNÇÕES GLOBAIS ---
+    let PAYMENTS = [
+        { id:1, ref:'INV-240901', student:'Ana Souza',   plan:'Musculação', cycle:'Mensal',    due:'2025-09-10', amount:129.90, method:'Pix',      status:'Pago' },
+        { id:2, ref:'INV-240902', student:'Bruno Lima',  plan:'Cross',      cycle:'Trimestral',due:'2025-09-05', amount:349.90, method:'Cartão',   status:'Pendente' },
+        { id:3, ref:'INV-240903', student:'Carla Ferr.', plan:'Premium',    cycle:'Anual',     due:'2025-08-25', amount:999.90, method:'Boleto',   status:'Atrasado' },
+    ];
+    const STUDENTS_LIST = [
+        { id: 1, name: 'Ana Souza' }, { id: 2, name: 'Bruno Lima' }, { id: 3, name: 'Carla Ferr.' }, { id: 4, name: 'Diego Alves' }, { id: 5, name: 'Edu Silva' }, { id: 6, name: 'Fernanda S.' }
+    ];
+    const brl = v => v.toLocaleString('pt-BR',{style:'currency',currency:'BRL'});
+    const fmtDate = s => new Date(s+'T00:00:00').toLocaleDateString('pt-BR');
+    const today = () => new Date().toISOString().slice(0,10);
+
+    function normalizedStatus(p){
+        if (p.status === 'Pago') return 'Pago';
+        if (p.due < today()) return 'Atrasado';
+        return 'Pendente';
+    }
+
+    document.addEventListener('DOMContentLoaded', ()=>{
+        applyFilters();
+        updateKPIs();
+        lucide.createIcons();
+
+        // --- Event Listeners ---
+        document.getElementById('search-input').addEventListener('input', applyFilters);
+        document.getElementById('filter-status').addEventListener('change', applyFilters);
+        document.getElementById('filter-cycle').addEventListener('change', applyFilters);
+        document.getElementById('filter-method').addEventListener('change', applyFilters);
+        document.getElementById('btn-export').addEventListener('click', exportCSV);
+
+        document.getElementById('payments-table-body').addEventListener('click', (ev)=>{
+            const btn = ev.target.closest('button'); if (!btn) return;
+            const id = Number(btn.dataset.id);
+            const item = PAYMENTS.find(x=>x.id===id); if (!item) return;
+            if (btn.matches('.btn-paid')) { item.status = 'Pago'; applyFilters(); updateKPIs(); }
+            else if (btn.matches('.btn-remind')) { alert(`Lembrete enviado para ${item.student} (ref ${item.ref}) por WhatsApp 📲`); }
+            else if (btn.matches('.btn-view')) { openPaymentModal(item); }
+        });
+
+        // Modal de Detalhes
+        const paymentModal = document.getElementById('payment-modal');
+        if (paymentModal) {
+            document.getElementById('payment-modal-close').addEventListener('click', closePaymentModal);
+            document.getElementById('payment-modal-backdrop').addEventListener('click', closePaymentModal);
+            document.getElementById('m-mark-paid').addEventListener('click', ()=>{
+                const id = Number(document.getElementById('m-mark-paid').dataset.id);
+                const item = PAYMENTS.find(p=>p.id===id);
+                if (item){ item.status='Pago'; closePaymentModal(); applyFilters(); updateKPIs(); }
+            });
+            document.getElementById('m-remind').addEventListener('click', ()=>{
+                const ref = document.getElementById('m-ref').textContent;
+                alert(`Lembrete enviado (ref ${ref}) ✅`);
+            });
+        }
+        
+        // Modal de Registro de Pagamento
+        document.getElementById('new-payment-btn').addEventListener('click', openNewPaymentModal);
+        document.getElementById('new-payment-close').addEventListener('click', closeNewPaymentModal);
+        document.getElementById('new-payment-cancel').addEventListener('click', closeNewPaymentModal);
+        document.getElementById('new-payment-backdrop').addEventListener('click', closeNewPaymentModal);
+        document.getElementById('new-payment-form').addEventListener('submit', handleNewPaymentSubmit);
+    });
+
+    function getFiltered(){
+        const q = (document.getElementById('search-input').value||'').toLowerCase();
+        const status = document.getElementById('filter-status').value;
+        const cycle  = document.getElementById('filter-cycle').value;
+        const method = document.getElementById('filter-method').value;
+        return PAYMENTS.filter(p=>{
+            const s = normalizedStatus(p);
+            const mQ = !q || p.student.toLowerCase().includes(q) || p.plan.toLowerCase().includes(q) || p.ref.toLowerCase().includes(q);
+            const mS = !status || s === status;
+            const mC = !cycle  || p.cycle === cycle;
+            const mM = !method || p.method === method;
+            return mQ && mS && mC && mM;
+        }).map(p => ({...p, status: normalizedStatus(p)}));
+    }
+
+    function applyFilters(){
+        const rows = getFiltered().sort((a,b)=> a.ref.localeCompare(b.ref));
+        renderTable(rows);
+        document.getElementById('table-count').textContent = `${rows.length} cobrança(s) exibida(s)`;
+    }
+
+    function renderTable(rows){
+        const tbody = document.getElementById('payments-table-body');
+        const statusColors = { 'Pago': 'bg-green-100 text-green-700', 'Atrasado': 'bg-red-100 text-red-700', 'Pendente': 'bg-yellow-100 text-yellow-700' };
+        tbody.innerHTML = rows.map(p=>`
+            <tr class="bg-white border-b hover:bg-gray-50">
+                <td class="px-6 py-3 font-mono text-xs">${p.ref}</td>
+                <td class="px-6 py-3 font-medium text-gray-900">${p.student}</td>
+                <td class="px-6 py-3">${p.plan}</td>
+                <td class="px-6 py-3">${p.cycle}</td>
+                <td class="px-6 py-3">${fmtDate(p.due)}</td>
+                <td class="px-6 py-3 text-right font-medium">${brl(p.amount)}</td>
+                <td class="px-6 py-3">${p.method}</td>
+                <td class="px-6 py-3"><span class="px-2.5 py-1 text-xs font-semibold rounded-full ${statusColors[p.status]}">${p.status}</span></td>
+                <td class="px-6 py-3 text-center space-x-1">
+                    <button class="btn-view p-2 text-gray-500 hover:text-indigo-600 rounded-md" data-id="${p.id}" title="Ver detalhes"><i data-lucide="eye" class="w-5 h-5"></i></button>
+                    <button class="btn-paid p-2 text-gray-500 hover:text-green-600 rounded-md" data-id="${p.id}" title="Marcar como Pago"><i data-lucide="check-circle" class="w-5 h-5"></i></button>
+                    <button class="btn-remind p-2 text-gray-500 hover:text-orange-600 rounded-md" data-id="${p.id}" title="Enviar Lembrete"><i data-lucide="send" class="w-5 h-5"></i></button>
+                </td>
+            </tr>
+        `).join('');
+        lucide.createIcons();
+    }
+
+    function updateKPIs(){
+        const month = new Date().toISOString().slice(0,7);
+        let received=0, pending=0, overdue=0;
+        PAYMENTS.forEach(p=>{
+            const s = normalizedStatus(p);
+            if (s==='Pago' && p.due.startsWith(month)) received+=p.amount;
+            if (s==='Pendente') pending+=p.amount;
+            if (s==='Atrasado') overdue+=p.amount;
+        });
+        document.getElementById('kpi-received').textContent = brl(received);
+        document.getElementById('kpi-pending').textContent  = brl(pending);
+        document.getElementById('kpi-overdue').textContent  = brl(overdue);
+        document.getElementById('kpi-count').textContent    = PAYMENTS.length;
+    }
+
+    function openPaymentModal(p){
+        document.getElementById('m-student').textContent = p.student;
+        document.getElementById('m-plan').textContent = p.plan;
+        document.getElementById('m-ref').textContent = p.ref;
+        document.getElementById('m-cycle').textContent = p.cycle;
+        document.getElementById('m-due').textContent = fmtDate(p.due);
+        document.getElementById('m-method').textContent = p.method;
+        document.getElementById('m-amount').textContent = brl(p.amount);
+        document.getElementById('m-status').innerHTML = `<span class="px-2.5 py-1 text-xs font-semibold rounded-full ${ { 'Pago': 'bg-green-100 text-green-700', 'Atrasado': 'bg-red-100 text-red-700', 'Pendente': 'bg-yellow-100 text-yellow-700' }[p.status]}">${p.status}</span>`;
+        document.getElementById('m-mark-paid').dataset.id = p.id;
+        const modal = document.getElementById('payment-modal');
+        const backdrop = document.getElementById('payment-modal-backdrop');
+        const content = modal.querySelector('.modal-content');
+        modal.classList.remove('hidden'); modal.classList.add('flex');
+        setTimeout(()=>{ backdrop.classList.remove('opacity-0'); content.classList.remove('scale-95','opacity-0'); content.classList.add('scale-100','opacity-100'); },10);
+    }
+
+    function closePaymentModal(){
+        const modal = document.getElementById('payment-modal');
+        const backdrop = document.getElementById('payment-modal-backdrop');
+        const content = modal.querySelector('.modal-content');
+        content.classList.remove('scale-100','opacity-100'); content.classList.add('scale-95','opacity-0');
+        backdrop.classList.add('opacity-0');
+        setTimeout(()=>{ modal.classList.add('hidden'); modal.classList.remove('flex'); },300);
+    }
+    
+    function openNewPaymentModal() {
+        document.getElementById('new-payment-form').reset();
+        document.getElementById('form-due-date').value = today();
+        
+        const studentSelect = document.getElementById('form-student-name');
+        studentSelect.innerHTML = '<option value="" disabled selected>Selecione um aluno...</option>';
+        STUDENTS_LIST.forEach(student => {
+            const option = document.createElement('option');
+            option.value = student.name;
+            option.textContent = student.name;
+            studentSelect.appendChild(option);
+        });
+
+        const modal = document.getElementById('new-payment-modal');
+        modal.classList.remove('hidden'); modal.classList.add('flex');
+        setTimeout(() => {
+            modal.querySelector('.modal-backdrop').classList.remove('opacity-0');
+            modal.querySelector('.modal-content').classList.remove('scale-95', 'opacity-0');
+            modal.querySelector('.modal-content').classList.add('scale-100', 'opacity-100');
+        }, 10);
+    }
+    
+    function closeNewPaymentModal() {
+        const modal = document.getElementById('new-payment-modal');
+        const content = modal.querySelector('.modal-content');
+        content.classList.remove('scale-100', 'opacity-100');
+        content.classList.add('scale-95', 'opacity-0');
+        modal.querySelector('.modal-backdrop').classList.add('opacity-0');
+        setTimeout(() => { modal.classList.add('hidden'); modal.classList.remove('flex'); }, 300);
+    }
+
+    function handleNewPaymentSubmit(event) {
+        event.preventDefault();
+        const newPayment = {
+            id: PAYMENTS.length > 0 ? Math.max(...PAYMENTS.map(p => p.id)) + 1 : 1,
+            ref: `INV-24${String(new Date().getMonth()+1).padStart(2,'0')}${PAYMENTS.length + 1}`,
+            student: document.getElementById('form-student-name').value,
+            plan: document.getElementById('form-plan-name').value,
+            cycle: 'Mensal',
+            due: document.getElementById('form-due-date').value,
+            amount: parseFloat(document.getElementById('form-amount').value),
+            method: document.getElementById('form-method').value,
+            status: 'Pago'
+        };
+        PAYMENTS.unshift(newPayment);
+        applyFilters();
+        updateKPIs();
+        closeNewPaymentModal();
+    }
+
+    function exportCSV(){
+        const rows = getFiltered();
+        let csv = "Ref,Aluno,Plano,Ciclo,Vencimento,Valor,Método,Status\n";
+        rows.forEach(p=>{
+            csv += `${p.ref},"${p.student}",${p.plan},${p.cycle},${fmtDate(p.due)},${p.amount.toFixed(2)},${p.method},${p.status}\n`;
+        });
+        const blob = new Blob([csv],{type:"text/csv;charset=utf-8;"});
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href=url; a.download="pagamentos.csv"; a.click();
+        URL.revokeObjectURL(url);
+    }
+    </script>
+</body>
+</html>
+

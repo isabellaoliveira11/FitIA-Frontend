@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <title>FitIA - Treinamento</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- CSS CONSISTENTE COM O RESTANTE DO SISTEMA (TEMA CLARO) -->
+    <style>
+        .sidebar-collapsed { transform: translateX(-100%); }
+        .sidebar-expanded { transform: translateX(0); }
+        
+        .active-menu-item {
+            background-color: #eef2ff; /* Fundo índigo bem claro */
+            color: #4f46e5; /* Texto na cor índigo */
+            font-weight: 600; /* Deixa o texto em negrito */
+        }
+        
+        @media (min-width: 768px) { .sidebar-collapsed { transform: translateX(0); } }
+        .modal-backdrop { background-color: rgba(0,0,0,.5); transition: opacity .3s ease; }
+        .modal-content { transition: transform .3s ease, opacity .3s ease; }
+    </style>
+
+    <!-- Script de interatividade do menu -->
+    <script src="app.js"></script>
+</head>
+<body class="bg-gray-50 font-sans">
+    <div class="flex h-screen overflow-hidden">
+
+        <!-- SIDEBAR ATUALIZADA COM LOGO, ÍCONES E LINK CORRETO -->
+        <aside class="fixed md:relative z-50 w-64 h-screen bg-white text-gray-600 border-r border-gray-200 shadow-sm transition-transform duration-300 sidebar-collapsed md:sidebar-expanded">
+            <div class="flex flex-col h-full">
+                <div class="flex items-center justify-center p-6 border-b border-gray-200">
+                    <div class="w-12 h-12 rounded-lg bg-gradient-to-r from-indigo-500 to-purple-500 flex items-center justify-center text-white font-bold text-lg">FitIA</div>
+                    <div class="ml-4">
+                        <h1 class="text-xl font-bold text-gray-800">FitIA</h1>
+                        <p class="text-xs text-gray-500">Gestão Inteligente</p>
+                    </div>
+                </div>
+                <nav class="flex-1 overflow-y-auto py-4 px-2">
+                    <ul>
+                        <li><a href="index.html" data-nav="dashboard" class="flex items-center px-4 py-3 rounded-lg hover:bg-gray-100 hover:text-indigo-600"><i data-lucide="home" class="w-5 h-5"></i><span class="ml-3">Dashboard</span></a></li>
+                        <li>
+                            <button type="button" class="flex items-center w-full px-4 py-3 rounded-lg hover:bg-gray-100 hover:text-indigo-600 transition-colors group" aria-expanded="false" data-section="students">
+                                <i data-lucide="users" class="w-5 h-5"></i><span class="ml-3 flex-1 text-left">Alunos</span><i data-lucide="chevron-down" class="w-4 h-4 transition-transform"></i>
+                            </button>
+                            <ul class="py-2 pl-8 hidden" aria-label="submenu" data-submenu="students">
+                                <li><a href="students.html" data-nav="students-list" class="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-gray-100 hover:text-indigo-600 text-sm"><i data-lucide="list" class="w-4 h-4"></i><span>Lista de Alunos</span></a></li>
+                                <li><a href="students-risk.html" data-nav="students-risk" class="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-gray-100 hover:text-indigo-600 text-sm"><i data-lucide="user-x" class="w-4 h-4"></i><span>Risco de Evasão</span></a></li>
+                                <li><a href="students-comms.html" data-nav="students-comms" class="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-gray-100 hover:text-indigo-600 text-sm"><i data-lucide="send" class="w-4 h-4"></i><span>Comunicações</span></a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <button type="button" class="flex items-center w-full px-4 py-3 rounded-lg hover:bg-gray-100 hover:text-indigo-600 transition-colors group" aria-expanded="false" data-section="finance">
+                                <i data-lucide="dollar-sign" class="w-5 h-5"></i><span class="ml-3 flex-1 text-left">Financeiro</span><i data-lucide="chevron-down" class="w-4 h-4 transition-transform"></i>
+                            </button>
+                            <ul class="py-2 pl-8 hidden" aria-label="submenu" data-submenu="finance">
+                                <li><a href="finance-cash.html" data-nav="finance-cash" class="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-gray-100 hover:text-indigo-600 text-sm"><i data-lucide="wallet" class="w-4 h-4"></i><span>Caixa</span></a></li>
+                                <li><a href="finance-expenses.html" data-nav="finance-expenses" class="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-gray-100 hover:text-indigo-600 text-sm"><i data-lucide="receipt" class="w-4 h-4"></i><span>Despesas</span></a></li>
+                                <li><a href="finance-payments.html" data-nav="finance-payments" class="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-gray-100 hover:text-indigo-600 text-sm"><i data-lucide="credit-card" class="w-4 h-4"></i><span>Pagamentos</span></a></li>
+                                <li><a href="finance-plans.html" data-nav="finance-plans" class="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-gray-100 hover:text-indigo-600 text-sm"><i data-lucide="layers" class="w-4 h-4"></i><span>Planos</span></a></li>
+                                <li><a href="finance-discounts.html" data-nav="finance-discounts" class="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-gray-100 hover:text-indigo-600 text-sm"><i data-lucide="percent" class="w-4 h-4"></i><span>Descontos</span></a></li>
+                            </ul>
+                        </li>
+                        <li><a href="trainings.html" data-nav="trainings" class="flex items-center px-4 py-3 rounded-lg hover:bg-gray-100 hover:text-indigo-600"><i data-lucide="dumbbell" class="w-5 h-5"></i><span class="ml-3">Treinamento</span></a></li>
+                        <li><a href="reports.html" data-nav="reports" class="flex items-center px-4 py-3 rounded-lg hover:bg-gray-100 hover:text-indigo-600"><i data-lucide="file-text" class="w-5 h-5"></i><span class="ml-3">Relatórios</span></a></li>
+                        <li><a href="settings.html" data-nav="settings" class="flex items-center px-4 py-3 rounded-lg hover:bg-gray-100 hover:text-indigo-600"><i data-lucide="settings" class="w-5 h-5"></i><span class="ml-3">Configurações</span></a></li>
+                        <li><a href="assistant.html" data-nav="assistant" class="flex items-center px-4 py-3 rounded-lg hover:bg-gray-100 hover:text-indigo-600"><i data-lucide="message-square" class="w-5 h-5"></i><span class="ml-3">Assistente</span></a></li>
+                        <li class="mt-auto"><a href="landing.html" target="_blank" class="flex items-center px-4 py-3 rounded-lg hover:bg-gray-100 hover:text-indigo-600"><i data-lucide="external-link" class="w-5 h-5"></i><span class="ml-3">Ir para o site</span></a></li>
+                    </ul>
+                </nav>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <div class="flex-1 flex flex-col overflow-hidden">
+            <!-- TOPBAR ATUALIZADO -->
+            <header class="bg-white shadow-sm z-40">
+                <div class="flex items-center justify-between px-6 py-4">
+                    <button id="sidebar-toggle" class="md:hidden text-gray-500 focus:outline-none" aria-label="Toggle sidebar"><i data-lucide="menu" class="w-6 h-6"></i></button>
+                    <div class="relative max-w-md w-full mx-4">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"><i data-lucide="search" class="h-5 w-5 text-gray-400"></i></div>
+                        <input class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="Buscar modelo de treino..." type="search">
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <button class="p-1 rounded-full text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500" aria-label="Notifications"><i data-lucide="bell" class="h-6 w-6"></i></button>
+                        <div class="relative">
+                            <button class="flex items-center space-x-2 focus:outline-none" aria-label="User menu" aria-expanded="false">
+                                <div class="w-8 h-8 rounded-full bg-gradient-to-r from-indigo-500 to-purple-500 flex items-center justify-center text-white font-bold">JD</div>
+                                <span class="hidden md:block text-sm font-medium text-gray-700">John Doe</span>
+                                <i data-lucide="chevron-down" class="hidden md:block w-4 h-4 text-gray-500"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Conteúdo -->
+            <main class="flex-1 overflow-y-auto p-8 bg-gray-50">
+                <!-- Header + CTA -->
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
+                    <div>
+                        <h1 class="text-3xl font-bold text-gray-900">Modelos de Treino</h1>
+                        <p class="mt-1 text-gray-500">Crie, edite e envie as fichas de treino para o app dos alunos.</p>
+                    </div>
+                    <button id="new-template-btn" class="mt-4 md:mt-0 inline-flex items-center justify-center bg-indigo-600 text-white font-semibold px-4 py-2.5 rounded-lg hover:bg-indigo-700 transition-colors">
+                        <i data-lucide="plus-circle" class="w-5 h-5 mr-2"></i>Criar Novo Modelo
+                    </button>
+                </div>
+
+                <!-- Lista de Cards de Treino -->
+                <div id="templates-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Cards de treino serão injetados aqui -->
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Modal: Novo/Editar Modelo de Treino -->
+    <div id="template-modal" class="fixed inset-0 z-50 hidden items-center justify-center">
+        <div id="template-modal-backdrop" class="absolute inset-0 modal-backdrop opacity-0"></div>
+        <div class="relative modal-content bg-white w-full max-w-3xl mx-4 rounded-xl shadow-lg transform scale-95 opacity-0">
+            <div class="flex items-center justify-between p-5 border-b">
+                <h3 id="template-modal-title" class="text-lg font-semibold text-gray-900">Novo Modelo de Treino</h3>
+                <button id="template-modal-close" class="p-1 rounded-full text-gray-400 hover:bg-gray-200"><i data-lucide="x" class="w-5 h-5"></i></button>
+            </div>
+            <form id="template-form" class="p-6 space-y-4 max-h-[80vh] overflow-y-auto">
+                <input type="hidden" id="template-id" />
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Nome do Modelo</label>
+                        <input id="form-name" required class="w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" placeholder="Ex: Treino A - Peito e Tríceps" />
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Foco / Objetivo</label>
+                        <select id="form-focus" required class="w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                            <option>Hipertrofia</option>
+                            <option>Resistência</option>
+                            <option>Emagrecimento</option>
+                            <option>Força</option>
+                            <option>Iniciante</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="pt-4">
+                    <h4 class="text-md font-semibold text-gray-800 border-b pb-2 mb-4">Exercícios</h4>
+                    <div id="exercises-list" class="space-y-3">
+                        <!-- Exercícios adicionados dinamicamente aqui -->
+                    </div>
+                    <button type="button" id="add-exercise-btn" class="mt-4 text-sm font-semibold text-indigo-600 hover:text-indigo-800 flex items-center gap-2">
+                        <i data-lucide="plus" class="w-4 h-4"></i>Adicionar Exercício
+                    </button>
+                </div>
+
+                <div class="flex justify-end gap-2 pt-4 border-t">
+                    <button type="button" id="template-cancel" class="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200">Cancelar</button>
+                    <button type="submit" class="px-4 py-2 text-sm font-semibold text-white bg-indigo-600 rounded-lg hover:bg-indigo-700">Salvar Modelo</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal de Enviar Treino para o App -->
+    <div id="assign-modal" class="fixed inset-0 z-50 hidden items-center justify-center">
+        <div id="assign-modal-backdrop" class="absolute inset-0 modal-backdrop opacity-0"></div>
+        <div class="relative modal-content bg-white w-full max-w-md mx-4 rounded-xl shadow-lg transform scale-95 opacity-0">
+            <div class="flex items-center justify-between p-5 border-b">
+                <h3 id="assign-modal-title" class="text-lg font-semibold text-gray-900">Enviar Treino para App</h3>
+                <button id="assign-modal-close" class="p-1 rounded-full text-gray-400 hover:bg-gray-200"><i data-lucide="x" class="w-5 h-5"></i></button>
+            </div>
+            <form id="assign-form" class="p-6 space-y-4">
+                <input type="hidden" id="assign-template-id" />
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Selecione o Aluno</label>
+                    <select id="form-student-select" required class="w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                        <!-- Alunos serão populados via JS -->
+                    </select>
+                </div>
+                <div class="pt-2 flex justify-end gap-2">
+                    <button type="button" id="assign-cancel" class="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200">Cancelar</button>
+                    <button type="submit" class="px-4 py-2 text-sm font-semibold text-white bg-green-600 rounded-lg hover:bg-green-700 flex items-center">
+                        <i data-lucide="send" class="w-4 h-4 mr-2"></i>Enviar para o App
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+    // --- MOCK DATA ---
+    let TEMPLATES = [
+        { id: 1, name: 'Full Body Iniciante', focus: 'Iniciante', exercises: [ { name: 'Agachamento livre', series: '3', reps: '12', rest: '60s' }, { name: 'Supino reto com barra', series: '3', reps: '12', rest: '60s' } ] },
+        { id: 2, name: 'Hipertrofia Avançado - Peito/Tríceps', focus: 'Hipertrofia', exercises: [ { name: 'Supino Inclinado', series: '4', reps: '8-10', rest: '90s' } ] },
+        { id: 3, name: 'Corrida 5K sub-30', focus: 'Resistência', exercises: [ { name: 'Tiro 400m', series: '5', reps: 'N/A', rest: '120s' } ] },
+    ];
+    const STUDENTS_LIST = [
+        { id: 1, name: 'Beatriz Costa' }, { id: 2, name: 'Carlos Almeida' }, { id: 3, name: 'Mariana Lima' }, { id: 4, name: 'Lucas Pereira' }
+    ];
+
+    document.addEventListener('DOMContentLoaded', () => {
+        renderTemplates();
+        lucide.createIcons();
+
+        // --- Event Listeners ---
+        const templateModal = document.getElementById('template-modal');
+        const assignModal = document.getElementById('assign-modal');
+
+        const openTemplateModal = (template = null) => {
+            document.getElementById('template-form').reset();
+            document.getElementById('exercises-list').innerHTML = '';
+            document.getElementById('template-id').value = template ? template.id : '';
+            document.getElementById('template-modal-title').textContent = template ? 'Editar Modelo de Treino' : 'Novo Modelo de Treino';
+            if (template) {
+                document.getElementById('form-name').value = template.name;
+                document.getElementById('form-focus').value = template.focus;
+                template.exercises.forEach(ex => addExerciseRow(ex));
+            } else { addExerciseRow(); }
+            openModal(templateModal);
+        };
+        const openAssignModal = (template) => {
+            document.getElementById('assign-template-id').value = template.id;
+            document.getElementById('assign-modal-title').textContent = `Enviar "${template.name}" para o App`;
+            const studentSelect = document.getElementById('form-student-select');
+            studentSelect.innerHTML = '<option value="" disabled selected>Selecione um aluno...</option>';
+            STUDENTS_LIST.forEach(student => {
+                const option = document.createElement('option');
+                option.value = student.name;
+                option.textContent = student.name;
+                studentSelect.appendChild(option);
+            });
+            openModal(assignModal);
+        };
+        
+        const openModal = (modalEl) => {
+            modalEl.classList.remove('hidden'); modalEl.classList.add('flex');
+            setTimeout(() => {
+                modalEl.querySelector('.modal-backdrop').classList.remove('opacity-0');
+                modalEl.querySelector('.modal-content').classList.remove('scale-95','opacity-0');
+                modalEl.querySelector('.modal-content').classList.add('scale-100','opacity-100');
+            }, 10);
+        };
+        const closeModal = (modalEl) => {
+            const content = modalEl.querySelector('.modal-content');
+            content.classList.remove('scale-100','opacity-100');
+            content.classList.add('scale-95','opacity-0');
+            modalEl.querySelector('.modal-backdrop').classList.add('opacity-0');
+            setTimeout(() => { modalEl.classList.add('hidden'); modalEl.classList.remove('flex'); }, 300);
+        };
+
+        document.getElementById('new-template-btn').addEventListener('click', () => openTemplateModal());
+        document.getElementById('template-modal-close').addEventListener('click', () => closeModal(templateModal));
+        document.getElementById('template-cancel').addEventListener('click', () => closeModal(templateModal));
+        templateModal.querySelector('#template-modal-backdrop').addEventListener('click', () => closeModal(templateModal));
+        document.getElementById('add-exercise-btn').addEventListener('click', () => addExerciseRow());
+        
+        document.getElementById('assign-modal-close').addEventListener('click', () => closeModal(assignModal));
+        document.getElementById('assign-cancel').addEventListener('click', () => closeModal(assignModal));
+        assignModal.querySelector('#assign-modal-backdrop').addEventListener('click', () => closeModal(assignModal));
+
+        document.getElementById('template-form').addEventListener('submit', (e) => { e.preventDefault(); closeModal(templateModal); alert('Modelo de treino salvo com sucesso!'); });
+        document.getElementById('assign-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const templateId = document.getElementById('assign-template-id').value;
+            const template = TEMPLATES.find(t => t.id == templateId);
+            const studentName = document.getElementById('form-student-select').value;
+            if (!studentName) {
+                alert('Por favor, selecione um aluno.');
+                return;
+            }
+            closeModal(assignModal);
+            alert(`Treino "${template.name}" enviado para o app de ${studentName} com sucesso!`);
+        });
+
+        document.getElementById('templates-grid').addEventListener('click', (e) => {
+             const editButton = e.target.closest('.edit-btn');
+             const assignButton = e.target.closest('.assign-btn');
+             if (editButton) {
+                 const id = Number(editButton.dataset.id);
+                 const template = TEMPLATES.find(t => t.id === id);
+                 openTemplateModal(template);
+             }
+             if (assignButton) {
+                 const id = Number(assignButton.dataset.id);
+                 const template = TEMPLATES.find(t => t.id === id);
+                 openAssignModal(template);
+             }
+        });
+    });
+
+    function renderTemplates() {
+        const grid = document.getElementById('templates-grid');
+        grid.innerHTML = TEMPLATES.map(template => `
+            <div class="bg-white rounded-xl shadow-sm p-6 flex flex-col">
+                <div class="flex-1">
+                    <div class="flex justify-between items-start">
+                        <h3 class="text-lg font-semibold text-gray-900">${template.name}</h3>
+                        <span class="px-2.5 py-1 text-xs font-semibold rounded-full bg-indigo-100 text-indigo-700">${template.focus}</span>
+                    </div>
+                    <p class="text-sm text-gray-500 mt-2">${template.exercises.length} exercícios</p>
+                </div>
+                <div class="mt-6 pt-4 border-t flex justify-between items-center">
+                     <div>
+                        <button data-id="${template.id}" class="edit-btn p-2 text-gray-400 hover:text-indigo-600 rounded-md" title="Editar"><i data-lucide="edit" class="w-5 h-5"></i></button>
+                        <button data-id="${template.id}" class="delete-btn p-2 text-gray-400 hover:text-red-600 rounded-md" title="Excluir"><i data-lucide="trash-2" class="w-5 h-5"></i></button>
+                     </div>
+                     <button data-id="${template.id}" class="assign-btn inline-flex items-center justify-center bg-indigo-600 text-white font-semibold px-3 py-2 text-sm rounded-lg hover:bg-indigo-700 transition-colors">
+                        <i data-lucide="send" class="w-4 h-4 mr-2"></i>Enviar para App
+                     </button>
+                </div>
+            </div>
+        `).join('');
+        lucide.createIcons();
+    }
+
+    function addExerciseRow(exercise = {}) {
+        const list = document.getElementById('exercises-list');
+        const newRow = document.createElement('div');
+        newRow.className = 'grid grid-cols-12 gap-3 items-center';
+        newRow.innerHTML = `
+            <div class="col-span-5"><input type="text" value="${exercise.name || ''}" class="w-full text-sm rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" placeholder="Nome do Exercício"></div>
+            <div class="col-span-2"><input type="text" value="${exercise.series || ''}" class="w-full text-sm rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" placeholder="Séries"></div>
+            <div class="col-span-2"><input type="text" value="${exercise.reps || ''}" class="w-full text-sm rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" placeholder="Reps"></div>
+            <div class="col-span-2"><input type="text" value="${exercise.rest || ''}" class="w-full text-sm rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" placeholder="Descanso"></div>
+            <div class="col-span-1 text-right">
+                <button type="button" onclick="this.parentElement.parentElement.remove()" class="p-1 text-gray-400 hover:text-red-600 rounded-full hover:bg-gray-100">
+                    <i data-lucide="x" class="w-4 h-4"></i>
+                </button>
+            </div>
+        `;
+        list.appendChild(newRow);
+        lucide.createIcons();
+    }
+    </script>
+</body>
+</html>
+

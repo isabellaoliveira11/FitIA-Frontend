@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <title>FitIA - Risco de Evasão</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Tailwind + Lucide -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- CSS CONSISTENTE COM O RESTANTE DO SISTEMA (TEMA CLARO) -->
+    <style>
+        .sidebar-collapsed { transform: translateX(-100%); }
+        .sidebar-expanded { transform: translateX(0); }
+        
+        .active-menu-item {
+            background-color: #eef2ff; /* Fundo índigo bem claro */
+            color: #4f46e5; /* Texto na cor índigo */
+            font-weight: 600; /* Deixa o texto em negrito */
+        }
+        
+        @media (min-width: 768px) { .sidebar-collapsed { transform: translateX(0); } }
+
+        /* Estilos do Painel Lateral (Slide-Over) */
+        .panel-backdrop { background-color: rgba(0, 0, 0, 0.5); transition: opacity 0.3s ease; }
+        .panel-content { transition: transform 0.3s ease; transform: translateX(100%); }
+        .panel-content.is-open { transform: translateX(0); }
+    </style>
+
+    <!-- Script de interatividade do menu -->
+    <script src="app.js"></script>
+</head>
+<body class="bg-gray-50 font-sans">
+    <div class="flex h-screen overflow-hidden">
+
+        <!-- SIDEBAR ATUALIZADA COM LOGO, ÍCONES E LINK CORRETO -->
+        <aside class="fixed md:relative z-50 w-64 h-screen bg-white text-gray-600 border-r border-gray-200 shadow-sm transition-transform duration-300 sidebar-collapsed md:sidebar-expanded">
+            <div class="flex flex-col h-full">
+                <div class="flex items-center justify-center p-6 border-b border-gray-200">
+                    <div class="w-12 h-12 rounded-lg bg-gradient-to-r from-indigo-500 to-purple-500 flex items-center justify-center text-white font-bold text-lg">FitIA</div>
+                    <div class="ml-4">
+                        <h1 class="text-xl font-bold text-gray-800">FitIA</h1>
+                        <p class="text-xs text-gray-500">Gestão Inteligente</p>
+                    </div>
+                </div>
+                <nav class="flex-1 overflow-y-auto py-4 px-2">
+                    <ul>
+                        <li><a href="index.html" data-nav="dashboard" class="flex items-center px-4 py-3 rounded-lg hover:bg-gray-100 hover:text-indigo-600"><i data-lucide="home" class="w-5 h-5"></i><span class="ml-3">Dashboard</span></a></li>
+                        <li>
+                            <button type="button" class="flex items-center w-full px-4 py-3 rounded-lg hover:bg-gray-100 hover:text-indigo-600 transition-colors group" aria-expanded="false" data-section="students">
+                                <i data-lucide="users" class="w-5 h-5"></i><span class="ml-3 flex-1 text-left">Alunos</span><i data-lucide="chevron-down" class="w-4 h-4 transition-transform"></i>
+                            </button>
+                            <ul class="py-2 pl-8 hidden" aria-label="submenu" data-submenu="students">
+                                <li><a href="students.html" data-nav="students-list" class="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-gray-100 hover:text-indigo-600 text-sm"><i data-lucide="list" class="w-4 h-4"></i><span>Lista de Alunos</span></a></li>
+                                <li><a href="students-risk.html" data-nav="students-risk" class="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-gray-100 hover:text-indigo-600 text-sm"><i data-lucide="user-x" class="w-4 h-4"></i><span>Risco de Evasão</span></a></li>
+                                <li><a href="students-comms.html" data-nav="students-comms" class="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-gray-100 hover:text-indigo-600 text-sm"><i data-lucide="send" class="w-4 h-4"></i><span>Comunicações</span></a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <button type="button" class="flex items-center w-full px-4 py-3 rounded-lg hover:bg-gray-100 hover:text-indigo-600 transition-colors group" aria-expanded="false" data-section="finance">
+                                <i data-lucide="dollar-sign" class="w-5 h-5"></i><span class="ml-3 flex-1 text-left">Financeiro</span><i data-lucide="chevron-down" class="w-4 h-4 transition-transform"></i>
+                            </button>
+                            <ul class="py-2 pl-8 hidden" aria-label="submenu" data-submenu="finance">
+                                <li><a href="finance-cash.html" data-nav="finance-cash" class="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-gray-100 hover:text-indigo-600 text-sm"><i data-lucide="wallet" class="w-4 h-4"></i><span>Caixa</span></a></li>
+                                <li><a href="finance-expenses.html" data-nav="finance-expenses" class="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-gray-100 hover:text-indigo-600 text-sm"><i data-lucide="receipt" class="w-4 h-4"></i><span>Despesas</span></a></li>
+                                <li><a href="finance-payments.html" data-nav="finance-payments" class="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-gray-100 hover:text-indigo-600 text-sm"><i data-lucide="credit-card" class="w-4 h-4"></i><span>Pagamentos</span></a></li>
+                                <li><a href="finance-plans.html" data-nav="finance-plans" class="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-gray-100 hover:text-indigo-600 text-sm"><i data-lucide="layers" class="w-4 h-4"></i><span>Planos</span></a></li>
+                                <li><a href="finance-discounts.html" data-nav="finance-discounts" class="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-gray-100 hover:text-indigo-600 text-sm"><i data-lucide="percent" class="w-4 h-4"></i><span>Descontos</span></a></li>
+                            </ul>
+                        </li>
+                        <li><a href="trainings.html" data-nav="trainings" class="flex items-center px-4 py-3 rounded-lg hover:bg-gray-100 hover:text-indigo-600"><i data-lucide="dumbbell" class="w-5 h-5"></i><span class="ml-3">Treinamento</span></a></li>
+                        <li><a href="reports.html" data-nav="reports" class="flex items-center px-4 py-3 rounded-lg hover:bg-gray-100 hover:text-indigo-600"><i data-lucide="file-text" class="w-5 h-5"></i><span class="ml-3">Relatórios</span></a></li>
+                        <li><a href="settings.html" data-nav="settings" class="flex items-center px-4 py-3 rounded-lg hover:bg-gray-100 hover:text-indigo-600"><i data-lucide="settings" class="w-5 h-5"></i><span class="ml-3">Configurações</span></a></li>
+                        <li><a href="assistant.html" data-nav="assistant" class="flex items-center px-4 py-3 rounded-lg hover:bg-gray-100 hover:text-indigo-600"><i data-lucide="message-square" class="w-5 h-5"></i><span class="ml-3">Assistente</span></a></li>
+                        <li class="mt-auto"><a href="landing.html" target="_blank" class="flex items-center px-4 py-3 rounded-lg hover:bg-gray-100 hover:text-indigo-600"><i data-lucide="external-link" class="w-5 h-5"></i><span class="ml-3">Ir para o site</span></a></li>
+                    </ul>
+                </nav>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <div class="flex-1 flex flex-col overflow-hidden">
+            <!-- TOPBAR ATUALIZADO -->
+            <header class="bg-white shadow-sm z-40">
+                <div class="flex items-center justify-between px-6 py-4">
+                    <button id="sidebar-toggle" class="md:hidden text-gray-500 focus:outline-none" aria-label="Toggle sidebar"><i data-lucide="menu" class="w-6 h-6"></i></button>
+                    <div class="relative max-w-md w-full mx-4">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"><i data-lucide="search" class="h-5 w-5 text-gray-400"></i></div>
+                        <input class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="Buscar..." type="search">
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <button class="p-1 rounded-full text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500" aria-label="Notifications"><i data-lucide="bell" class="h-6 w-6"></i></button>
+                        <div class="relative">
+                            <button class="flex items-center space-x-2 focus:outline-none" aria-label="User menu" aria-expanded="false">
+                                <div class="w-8 h-8 rounded-full bg-gradient-to-r from-indigo-500 to-purple-500 flex items-center justify-center text-white font-bold">JD</div>
+                                <span class="hidden md:block text-sm font-medium text-gray-700">John Doe</span>
+                                <i data-lucide="chevron-down" class="hidden md:block w-4 h-4 text-gray-500"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <main class="flex-1 overflow-y-auto p-8 bg-gray-50">
+                <!-- Header -->
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
+                    <div>
+                        <h1 class="text-3xl font-bold text-gray-900">Risco de Evasão</h1>
+                        <p class="mt-1 text-gray-500">Identifique e atue sobre alunos com probabilidade de cancelar.</p>
+                    </div>
+                    <button class="mt-4 md:mt-0 flex items-center justify-center bg-red-600 text-white font-semibold px-4 py-2.5 rounded-lg hover:bg-red-700 transition-colors">
+                        <i data-lucide="message-circle" class="w-5 h-5 mr-2"></i>
+                        Contactar Alunos de Alto Risco
+                    </button>
+                </div>
+
+                <!-- Stats & Chart -->
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+                    <!-- Donut Chart Card -->
+                    <div class="lg:col-span-1 bg-white p-6 rounded-xl shadow-sm flex flex-col items-center justify-center">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-4">Distribuição de Risco</h3>
+                        <div class="relative w-48 h-48">
+                            <svg class="w-full h-full" viewBox="0 0 36 36" style="transform: rotate(-90deg);">
+                                <path d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="#dcfce7" stroke-width="3.5"></path>
+                                <path id="risk-medium-path" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="#fef9c3" stroke-width="3.5" stroke-dasharray="0, 100"></path>
+                                <path id="risk-high-path" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="#fee2e2" stroke-width="3.5" stroke-dasharray="0, 100"></path>
+                            </svg>
+                            <div class="absolute inset-0 flex flex-col items-center justify-center">
+                                <span id="total-students-chart" class="text-3xl font-bold text-gray-800"></span>
+                                <span class="text-sm text-gray-500">Alunos</span>
+                            </div>
+                        </div>
+                        <ul class="mt-4 w-full space-y-2 text-sm">
+                            <li class="flex items-center justify-between"><div class="flex items-center"><span class="w-2.5 h-2.5 rounded-full bg-green-500 mr-2"></span>Baixo</div> <span id="low-risk-count" class="font-medium"></span></li>
+                            <li class="flex items-center justify-between"><div class="flex items-center"><span class="w-2.5 h-2.5 rounded-full bg-yellow-400 mr-2"></span>Médio</div> <span id="medium-risk-count" class="font-medium"></span></li>
+                            <li class="flex items-center justify-between"><div class="flex items-center"><span class="w-2.5 h-2.5 rounded-full bg-red-500 mr-2"></span>Alto</div> <span id="high-risk-count" class="font-medium"></span></li>
+                        </ul>
+                    </div>
+
+                    <!-- Stats Cards -->
+                    <div class="lg:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-6">
+                        <div class="bg-white p-6 rounded-xl shadow-sm">
+                            <div class="flex items-center justify-between">
+                                <h4 class="text-gray-500">Alunos em Risco Alto</h4>
+                                <span class="bg-red-100 p-2 rounded-lg"><i data-lucide="trending-down" class="w-5 h-5 text-red-600"></i></span>
+                            </div>
+                            <p id="high-risk-stat" class="text-3xl font-bold mt-2"></p>
+                            <p class="text-sm text-gray-500 mt-1">+3 da semana passada</p>
+                        </div>
+                        <div class="bg-white p-6 rounded-xl shadow-sm">
+                            <div class="flex items-center justify-between">
+                                <h4 class="text-gray-500">Média de Ausência (Alto Risco)</h4>
+                                <span class="bg-yellow-100 p-2 rounded-lg"><i data-lucide="calendar-off" class="w-5 h-5 text-yellow-600"></i></span>
+                            </div>
+                            <p id="absence-stat" class="text-3xl font-bold mt-2"></p>
+                            <p class="text-sm text-gray-500 mt-1">Desde a última visita</p>
+                        </div>
+                        <div class="bg-white p-6 rounded-xl shadow-sm sm:col-span-2">
+                            <div class="flex items-center justify-between">
+                                <h4 class="text-gray-500">Taxa de Abertura (Comunicações)</h4>
+                                <span class="bg-blue-100 p-2 rounded-lg"><i data-lucide="mail-open" class="w-5 h-5 text-blue-600"></i></span>
+                            </div>
+                            <p class="text-3xl font-bold mt-2">42%</p>
+                            <p class="text-sm text-gray-500 mt-1">Média para alunos em risco</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Students Table Card -->
+                <div class="bg-white rounded-xl shadow-sm">
+                    <div class="p-6 border-b flex flex-col sm:flex-row justify-between items-start sm:items-center">
+                        <div>
+                            <h3 class="text-lg font-semibold">Lista de Alunos em Risco</h3>
+                            <p class="text-sm text-gray-500">Priorizado por nível de risco mais alto.</p>
+                        </div>
+                        <div class="mt-4 sm:mt-0 flex space-x-2" id="risk-filters">
+                            <button data-filter="all" class="px-3 py-1.5 text-sm font-semibold text-white bg-indigo-600 rounded-lg hover:bg-indigo-700">Todos</button>
+                            <button data-filter="Alto" class="px-3 py-1.5 text-sm font-medium text-gray-600 bg-gray-100 rounded-lg hover:bg-gray-200">Alto</button>
+                            <button data-filter="Médio" class="px-3 py-1.5 text-sm font-medium text-gray-600 bg-gray-100 rounded-lg hover:bg-gray-200">Médio</button>
+                            <button data-filter="Baixo" class="px-3 py-1.5 text-sm font-medium text-gray-600 bg-gray-100 rounded-lg hover:bg-gray-200">Baixo</button>
+                        </div>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm text-left text-gray-500">
+                            <thead class="text-xs text-gray-700 uppercase bg-gray-50">
+                                <tr>
+                                    <th scope="col" class="px-6 py-3">Aluno</th>
+                                    <th scope="col" class="px-6 py-3">Nível de Risco</th>
+                                    <th scope="col" class="px-6 py-3">Última Visita</th>
+                                    <th scope="col" class="px-6 py-3">Plano</th>
+                                    <th scope="col" class="px-6 py-3 text-center">Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody id="risk-table-body"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+    
+    <!-- Painel de Detalhes do Aluno (SIMPLIFICADO) -->
+    <div id="student-details-panel" class="fixed inset-0 z-50 overflow-hidden hidden">
+        <div id="details-panel-backdrop" class="absolute inset-0 panel-backdrop opacity-0"></div>
+        <div class="absolute inset-y-0 right-0 w-full max-w-lg bg-white panel-content shadow-xl flex flex-col">
+            <!-- Header do Painel -->
+            <div class="p-6 border-b flex items-center justify-between">
+                <h2 class="text-xl font-semibold text-gray-900">Perfil do Aluno em Risco</h2>
+                <button id="details-panel-close-btn" class="p-1 rounded-full text-gray-400 hover:bg-gray-200"><i data-lucide="x" class="w-6 h-6"></i></button>
+            </div>
+            
+            <!-- Conteúdo Rolável -->
+            <div class="flex-1 overflow-y-auto p-6 space-y-8">
+                <!-- Informações do Aluno -->
+                <div class="flex items-center space-x-4">
+                    <img id="details-photo" class="h-20 w-20 rounded-full object-cover" src="" alt="Foto do Aluno">
+                    <div>
+                        <h3 id="details-name" class="text-2xl font-bold text-gray-900"></h3>
+                        <p id="details-email" class="text-gray-500"></p>
+                    </div>
+                </div>
+
+                <!-- Detalhes em Grid -->
+                <div class="grid grid-cols-2 gap-x-4 gap-y-5 text-sm">
+                    <div><p class="text-gray-500">Status</p><p id="details-status" class="font-semibold"></p></div>
+                    <div><p class="text-gray-500">Situação Financeira</p><p id="details-payment" class="font-semibold"></p></div>
+                    <div><p class="text-gray-500">Telefone</p><p id="details-phone" class="font-semibold"></p></div>
+                    <div><p class="text-gray-500">Plano</p><p id="details-plan" class="font-semibold"></p></div>
+                </div>
+
+                <!-- Calendário de Frequência -->
+                <div>
+                    <h4 class="text-lg font-semibold text-gray-800 mb-2">Histórico de Presença</h4>
+                    <div id="attendance-calendar" class="bg-gray-50 p-4 rounded-lg"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script da página -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const studentsData = [
+                { id: 1, name: 'Beatriz Costa', email: 'beatriz.c@example.com', photo: 'https://placehold.co/100x100/EED7C1/554236?text=BC', risk: 'Alto', lastVisit: 25, plan: 'Plano Anual', phone: '(81) 98765-4321', status: 'Ativo', payment: 'Atrasado', attendance: [] },
+                { id: 2, name: 'Carlos Almeida', email: 'carlos.a@example.com', photo: 'https://placehold.co/100x100/D4E2D4/466060?text=CA', risk: 'Alto', lastVisit: 19, plan: 'Plano Mensal', phone: '(81) 91234-5678', status: 'Ativo', payment: 'Em dia', attendance: [`${new Date().getFullYear()}-${String(new Date().getMonth() + 1).padStart(2, '0')}-01`] },
+                { id: 3, name: 'Mariana Lima', email: 'mariana.l@example.com', photo: 'https://placehold.co/100x100/F2D2BD/7A3E3E?text=ML', risk: 'Médio', lastVisit: 11, plan: 'Plano Semestral', phone: '(81) 95555-4444', status: 'Ativo', payment: 'Em dia', attendance: [`${new Date().getFullYear()}-${String(new Date().getMonth() + 1).padStart(2, '0')}-05`, `${new Date().getFullYear()}-${String(new Date().getMonth() + 1).padStart(2, '0')}-07`] },
+                { id: 4, name: 'Lucas Pereira', email: 'lucas.p@example.com', photo: 'https://placehold.co/100x100/C1D5E0/4C4C6D?text=LP', risk: 'Médio', lastVisit: 9, plan: 'Plano Anual', phone: '(81) 97777-8888', status: 'Ativo', payment: 'Em dia', attendance: [`${new Date().getFullYear()}-${String(new Date().getMonth() + 1).padStart(2, '0')}-06`, `${new Date().getFullYear()}-${String(new Date().getMonth() + 1).padStart(2, '0')}-08`, `${new Date().getFullYear()}-${String(new Date().getMonth() + 1).padStart(2, '0')}-10`] },
+                { id: 5, name: 'Fernanda Souza', email: 'fernanda.s@example.com', photo: 'https://placehold.co/100x100/A2B29F/5E6F54?text=FS', risk: 'Baixo', lastVisit: 2, plan: 'Plano Mensal', phone: '(81) 98888-7777', status: 'Ativo', payment: 'Em dia', attendance: [`${new Date().getFullYear()}-${String(new Date().getMonth() + 1).padStart(2, '0')}-10`, `${new Date().getFullYear()}-${String(new Date().getMonth() + 1).padStart(2, '0')}-11`, `${new Date().getFullYear()}-${String(new Date().getMonth() + 1).padStart(2, '0')}-12`] },
+                { id: 6, name: 'Alexandre Mendes', email: 'alexandre.m@example.com', photo: 'https://placehold.co/100x100/B2B2B2/4C4C4C?text=AM', risk: 'Alto', lastVisit: 35, plan: 'Nenhum', phone: '(81) 97527-6874', status: 'Inativo', payment: 'Vencido', attendance: [] },
+            ];
+
+            const riskFilters = document.getElementById('risk-filters');
+            let currentFilter = 'all';
+
+            // --- FUNÇÕES DE RENDERIZAÇÃO ---
+            function updateDashboard() {
+                const totalStudents = studentsData.length;
+                const highRisk = studentsData.filter(s => s.risk === 'Alto');
+                const mediumRisk = studentsData.filter(s => s.risk === 'Médio');
+                const lowRisk = studentsData.filter(s => s.risk === 'Baixo');
+                const highRiskPercent = (highRisk.length / totalStudents) * 100;
+                const mediumRiskPercent = (mediumRisk.length / totalStudents) * 100;
+                document.getElementById('total-students-chart').textContent = totalStudents;
+                document.getElementById('low-risk-count').textContent = lowRisk.length;
+                document.getElementById('medium-risk-count').textContent = mediumRisk.length;
+                document.getElementById('high-risk-count').textContent = highRisk.length;
+                document.getElementById('risk-high-path').style.strokeDasharray = `${highRiskPercent}, 100`;
+                document.getElementById('risk-medium-path').style.strokeDasharray = `${highRiskPercent + mediumRiskPercent}, 100`;
+                document.getElementById('high-risk-stat').textContent = highRisk.length;
+                const avgAbsence = highRisk.length ? (highRisk.reduce((acc, s) => acc + s.lastVisit, 0) / highRisk.length).toFixed(0) : 0;
+                document.getElementById('absence-stat').textContent = `${avgAbsence} dias`;
+            }
+
+            function renderTable(filter) {
+                const tableBody = document.getElementById('risk-table-body');
+                const riskColors = { 'Alto': 'bg-red-100 text-red-700', 'Médio': 'bg-yellow-100 text-yellow-700', 'Baixo': 'bg-green-100 text-green-700' };
+                const filteredStudents = studentsData.filter(s => filter === 'all' || s.risk === filter).sort((a, b) => b.lastVisit - a.lastVisit); 
+                tableBody.innerHTML = filteredStudents.map(student => `
+                    <tr class="bg-white border-b hover:bg-gray-50">
+                        <td class="px-6 py-4"><div class="flex items-center space-x-3"><img class="h-10 w-10 rounded-full object-cover" src="${student.photo}" alt=""><div><div class="font-medium text-gray-900">${student.name}</div><div class="text-xs text-gray-500">${student.email}</div></div></div></td>
+                        <td class="px-6 py-4"><span class="px-2.5 py-1 text-xs font-semibold rounded-full ${riskColors[student.risk]}">${student.risk}</span></td>
+                        <td class="px-6 py-4">${student.lastVisit} dias atrás</td>
+                        <td class="px-6 py-4">${student.plan}</td>
+                        <td class="px-6 py-4 text-center">
+                            <button data-id="${student.id}" class="view-student-btn p-2 text-gray-500 hover:text-indigo-600 rounded-md"><i data-lucide="eye" class="w-5 h-5"></i></button>
+                            <button class="p-2 text-gray-500 hover:text-green-600 rounded-md"><i data-lucide="message-circle" class="w-5 h-5"></i></button>
+                        </td>
+                    </tr>`).join('');
+                lucide.createIcons();
+            }
+
+            // --- LÓGICA DO PAINEL DE DETALHES ---
+            function openDetailsPanel(studentId) {
+                const student = studentsData.find(s => s.id === studentId);
+                if (!student) return;
+                
+                const paymentColors = { 'Em dia': 'text-green-600', 'Atrasado': 'text-red-600', 'Vencido': 'text-red-600' };
+                const statusColors = { 'Ativo': 'text-green-600', 'Inativo': 'text-gray-500' };
+
+                document.getElementById('details-photo').src = student.photo;
+                document.getElementById('details-name').textContent = student.name;
+                document.getElementById('details-email').textContent = student.email;
+                document.getElementById('details-phone').textContent = student.phone;
+                document.getElementById('details-plan').textContent = student.plan;
+                
+                const statusEl = document.getElementById('details-status');
+                statusEl.textContent = student.status;
+                statusEl.className = `font-semibold ${statusColors[student.status] || 'text-gray-700'}`;
+
+                const paymentEl = document.getElementById('details-payment');
+                paymentEl.textContent = student.payment;
+                paymentEl.className = `font-semibold ${paymentColors[student.payment] || 'text-gray-700'}`;
+
+                renderAttendanceCalendar(student.attendance);
+                
+                const panel = document.getElementById('student-details-panel');
+                panel.classList.remove('hidden');
+                setTimeout(() => {
+                    panel.querySelector('.panel-backdrop').classList.add('opacity-100');
+                    panel.querySelector('.panel-content').classList.add('is-open');
+                }, 10);
+            }
+
+            function closeDetailsPanel() {
+                const panel = document.getElementById('student-details-panel');
+                panel.querySelector('.panel-content').classList.remove('is-open');
+                panel.querySelector('.panel-backdrop').classList.remove('opacity-100');
+                setTimeout(() => panel.classList.add('hidden'), 300);
+            }
+
+            function renderAttendanceCalendar(attendanceDates = []) {
+                const calendarEl = document.getElementById('attendance-calendar');
+                const today = new Date();
+                const month = today.getMonth();
+                const year = today.getFullYear();
+                const monthName = today.toLocaleDateString('pt-BR', { month: 'long' });
+                const firstDayOfMonth = new Date(year, month, 1).getDay();
+                const daysInMonth = new Date(year, month + 1, 0).getDate();
+                const daysOfWeek = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
+                let calendarHTML = `<div class="flex justify-between items-center mb-4"><h5 class="font-semibold text-lg capitalize">${monthName} ${year}</h5></div><div class="grid grid-cols-7 gap-2 text-center text-sm text-gray-500">${daysOfWeek.map(day => `<div>${day}</div>`).join('')}</div><div class="grid grid-cols-7 gap-2 mt-2">`;
+                for (let i = 0; i < firstDayOfMonth; i++) calendarHTML += `<div></div>`;
+                for (let day = 1; day <= daysInMonth; day++) {
+                    const fullDate = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+                    const hasAttended = attendanceDates.includes(fullDate);
+                    const isToday = day === today.getDate() && month === today.getMonth() && year === today.getFullYear();
+                    let dayClasses = 'h-9 w-9 flex items-center justify-center rounded-full';
+                    if (hasAttended) dayClasses += ' bg-green-200 text-green-800 font-bold';
+                    else if (isToday) dayClasses += ' bg-indigo-100 text-indigo-600';
+                    calendarHTML += `<div class="${dayClasses}">${day}</div>`;
+                }
+                calendarHTML += '</div>';
+                calendarEl.innerHTML = calendarHTML;
+            }
+
+            // --- EVENT LISTENERS ---
+            riskFilters.addEventListener('click', (e) => {
+                if (e.target.tagName === 'BUTTON') {
+                    currentFilter = e.target.dataset.filter;
+                    riskFilters.querySelectorAll('button').forEach(btn => {
+                        btn.classList.remove('bg-indigo-600', 'text-white', 'font-semibold');
+                        btn.classList.add('bg-gray-100', 'text-gray-600', 'font-medium');
+                    });
+                    e.target.classList.add('bg-indigo-600', 'text-white', 'font-semibold');
+                    e.target.classList.remove('bg-gray-100', 'text-gray-600', 'font-medium');
+                    renderTable(currentFilter);
+                }
+            });
+
+            document.getElementById('risk-table-body').addEventListener('click', (e) => {
+                const btn = e.target.closest('.view-student-btn');
+                if (btn) {
+                    openDetailsPanel(parseInt(btn.dataset.id, 10));
+                }
+            });
+
+            const detailsPanel = document.getElementById('student-details-panel');
+            detailsPanel.querySelector('#details-panel-close-btn').addEventListener('click', closeDetailsPanel);
+            detailsPanel.querySelector('#details-panel-backdrop').addEventListener('click', closeDetailsPanel);
+
+            // --- INICIALIZAÇÃO ---
+            updateDashboard();
+            renderTable(currentFilter);
+            lucide.createIcons();
+        });
+    </script>
+</body>
+</html>
+

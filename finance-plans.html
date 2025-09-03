@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <title>FitIA - Financeiro - Planos</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Tailwind + Lucide -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- CSS CONSISTENTE COM O RESTANTE DO SISTEMA (TEMA CLARO) -->
+    <style>
+        .sidebar-collapsed { transform: translateX(-100%); }
+        .sidebar-expanded { transform: translateX(0); }
+        
+        .active-menu-item {
+            background-color: #eef2ff; /* Fundo índigo bem claro */
+            color: #4f46e5; /* Texto na cor índigo */
+            font-weight: 600; /* Deixa o texto em negrito */
+        }
+        
+        @media (min-width: 768px) { .sidebar-collapsed { transform: translateX(0); } }
+        .modal-backdrop { background-color: rgba(0,0,0,.5); transition: opacity .3s ease; }
+        .modal-content { transition: transform .3s ease, opacity .3s ease; }
+    </style>
+
+    <!-- Script de interatividade do menu -->
+    <script src="app.js"></script>
+</head>
+<body class="bg-gray-50 font-sans">
+    <div class="flex h-screen overflow-hidden">
+
+        <!-- SIDEBAR ATUALIZADA COM LOGO, ÍCONES E LINK CORRETO -->
+        <aside class="fixed md:relative z-50 w-64 h-screen bg-white text-gray-600 border-r border-gray-200 shadow-sm transition-transform duration-300 sidebar-collapsed md:sidebar-expanded">
+            <div class="flex flex-col h-full">
+                <div class="flex items-center justify-center p-6 border-b border-gray-200">
+                    <div class="w-12 h-12 rounded-lg bg-gradient-to-r from-indigo-500 to-purple-500 flex items-center justify-center text-white font-bold text-lg">FitIA</div>
+                    <div class="ml-4">
+                        <h1 class="text-xl font-bold text-gray-800">FitIA</h1>
+                        <p class="text-xs text-gray-500">Gestão Inteligente</p>
+                    </div>
+                </div>
+                <nav class="flex-1 overflow-y-auto py-4 px-2">
+                    <ul>
+                        <li><a href="index.html" data-nav="dashboard" class="flex items-center px-4 py-3 rounded-lg hover:bg-gray-100 hover:text-indigo-600"><i data-lucide="home" class="w-5 h-5"></i><span class="ml-3">Dashboard</span></a></li>
+                        <li>
+                            <button type="button" class="flex items-center w-full px-4 py-3 rounded-lg hover:bg-gray-100 hover:text-indigo-600 transition-colors group" aria-expanded="false" data-section="students">
+                                <i data-lucide="users" class="w-5 h-5"></i><span class="ml-3 flex-1 text-left">Alunos</span><i data-lucide="chevron-down" class="w-4 h-4 transition-transform"></i>
+                            </button>
+                            <ul class="py-2 pl-8 hidden" aria-label="submenu" data-submenu="students">
+                                <li><a href="students.html" data-nav="students-list" class="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-gray-100 hover:text-indigo-600 text-sm"><i data-lucide="list" class="w-4 h-4"></i><span>Lista de Alunos</span></a></li>
+                                <li><a href="students-risk.html" data-nav="students-risk" class="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-gray-100 hover:text-indigo-600 text-sm"><i data-lucide="user-x" class="w-4 h-4"></i><span>Risco de Evasão</span></a></li>
+                                <li><a href="students-comms.html" data-nav="students-comms" class="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-gray-100 hover:text-indigo-600 text-sm"><i data-lucide="send" class="w-4 h-4"></i><span>Comunicações</span></a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <button type="button" class="flex items-center w-full px-4 py-3 rounded-lg hover:bg-gray-100 hover:text-indigo-600 transition-colors group" aria-expanded="false" data-section="finance">
+                                <i data-lucide="dollar-sign" class="w-5 h-5"></i><span class="ml-3 flex-1 text-left">Financeiro</span><i data-lucide="chevron-down" class="w-4 h-4 transition-transform"></i>
+                            </button>
+                            <ul class="py-2 pl-8 hidden" aria-label="submenu" data-submenu="finance">
+                                <li><a href="finance-cash.html" data-nav="finance-cash" class="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-gray-100 hover:text-indigo-600 text-sm"><i data-lucide="wallet" class="w-4 h-4"></i><span>Caixa</span></a></li>
+                                <li><a href="finance-expenses.html" data-nav="finance-expenses" class="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-gray-100 hover:text-indigo-600 text-sm"><i data-lucide="receipt" class="w-4 h-4"></i><span>Despesas</span></a></li>
+                                <li><a href="finance-payments.html" data-nav="finance-payments" class="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-gray-100 hover:text-indigo-600 text-sm"><i data-lucide="credit-card" class="w-4 h-4"></i><span>Pagamentos</span></a></li>
+                                <li><a href="finance-plans.html" data-nav="finance-plans" class="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-gray-100 hover:text-indigo-600 text-sm"><i data-lucide="layers" class="w-4 h-4"></i><span>Planos</span></a></li>
+                                <li><a href="finance-discounts.html" data-nav="finance-discounts" class="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-gray-100 hover:text-indigo-600 text-sm"><i data-lucide="percent" class="w-4 h-4"></i><span>Descontos</span></a></li>
+                            </ul>
+                        </li>
+                        <li><a href="trainings.html" data-nav="trainings" class="flex items-center px-4 py-3 rounded-lg hover:bg-gray-100 hover:text-indigo-600"><i data-lucide="dumbbell" class="w-5 h-5"></i><span class="ml-3">Treinamento</span></a></li>
+                        <li><a href="reports.html" data-nav="reports" class="flex items-center px-4 py-3 rounded-lg hover:bg-gray-100 hover:text-indigo-600"><i data-lucide="file-text" class="w-5 h-5"></i><span class="ml-3">Relatórios</span></a></li>
+                        <li><a href="settings.html" data-nav="settings" class="flex items-center px-4 py-3 rounded-lg hover:bg-gray-100 hover:text-indigo-600"><i data-lucide="settings" class="w-5 h-5"></i><span class="ml-3">Configurações</span></a></li>
+                        <li><a href="assistant.html" data-nav="assistant" class="flex items-center px-4 py-3 rounded-lg hover:bg-gray-100 hover:text-indigo-600"><i data-lucide="message-square" class="w-5 h-5"></i><span class="ml-3">Assistente</span></a></li>
+                        <li class="mt-auto"><a href="landing.html" target="_blank" class="flex items-center px-4 py-3 rounded-lg hover:bg-gray-100 hover:text-indigo-600"><i data-lucide="external-link" class="w-5 h-5"></i><span class="ml-3">Ir para o site</span></a></li>
+                    </ul>
+                </nav>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <div class="flex-1 flex flex-col overflow-hidden">
+            <!-- TOPBAR ATUALIZADO -->
+            <header class="bg-white shadow-sm z-40">
+                <div class="flex items-center justify-between px-6 py-4">
+                    <button id="sidebar-toggle" class="md:hidden text-gray-500 focus:outline-none" aria-label="Toggle sidebar"><i data-lucide="menu" class="w-6 h-6"></i></button>
+                    <div class="relative max-w-md w-full mx-4">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"><i data-lucide="search" class="h-5 w-5 text-gray-400"></i></div>
+                        <input id="search-input" class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="Buscar por nome de plano..." type="search">
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <button class="p-1 rounded-full text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500" aria-label="Notifications"><i data-lucide="bell" class="h-6 w-6"></i></button>
+                        <div class="relative">
+                            <button class="flex items-center space-x-2 focus:outline-none" aria-label="User menu" aria-expanded="false">
+                                <div class="w-8 h-8 rounded-full bg-gradient-to-r from-indigo-500 to-purple-500 flex items-center justify-center text-white font-bold">JD</div>
+                                <span class="hidden md:block text-sm font-medium text-gray-700">John Doe</span>
+                                <i data-lucide="chevron-down" class="hidden md:block w-4 h-4 text-gray-500"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Conteúdo -->
+            <main class="flex-1 overflow-y-auto p-8 bg-gray-50">
+                <!-- Header + CTA -->
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
+                    <div>
+                        <h1 class="text-3xl font-bold text-gray-900">Planos</h1>
+                        <p class="mt-1 text-gray-500">Gerencie preços, periodicidade, benefícios e descontos.</p>
+                    </div>
+                    <button id="new-plan-btn" class="mt-4 md:mt-0 inline-flex items-center justify-center bg-indigo-600 text-white font-semibold px-4 py-2.5 rounded-lg hover:bg-indigo-700 transition-colors">
+                        <i data-lucide="plus-circle" class="w-5 h-5 mr-2"></i>Novo Plano
+                    </button>
+                </div>
+
+                <!-- KPIs (MELHORADOS) -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                    <div class="bg-white p-5 rounded-lg shadow-sm">
+                        <div class="flex items-center justify-between"><span class="text-sm font-medium text-gray-500">Planos ativos</span><i data-lucide="layers" class="h-5 w-5 text-indigo-500"></i></div>
+                        <div><h2 id="kpi-count" class="text-3xl font-bold text-gray-800">0</h2></div>
+                    </div>
+                    <div class="bg-white p-5 rounded-lg shadow-sm">
+                        <div class="flex items-center justify-between"><span class="text-sm font-medium text-gray-500">Ticket médio</span><i data-lucide="banknote" class="h-5 w-5 text-green-500"></i></div>
+                        <div><h2 id="kpi-avg" class="text-3xl font-bold text-gray-800">R$ 0,00</h2></div>
+                    </div>
+                    <div class="bg-white p-5 rounded-lg shadow-sm">
+                        <div class="flex items-center justify-between"><span class="text-sm font-medium text-gray-500">Maior desconto</span><i data-lucide="percent" class="h-5 w-5 text-yellow-500"></i></div>
+                        <div><h2 id="kpi-discount" class="text-3xl font-bold text-gray-800">0%</h2></div>
+                    </div>
+                </div>
+
+                <!-- Cards de Planos -->
+                <h3 class="text-xl font-semibold text-gray-800 mb-4">Planos em Destaque</h3>
+                <section class="grid md:grid-cols-3 gap-6 mb-8" id="plans-cards">
+                    <!-- Injetado via JS -->
+                </section>
+
+                <!-- Lista de todos os planos -->
+                <h3 class="text-xl font-semibold text-gray-800 mb-4">Todos os Planos</h3>
+                <div class="bg-white rounded-xl shadow-sm">
+                    <div class="p-6 border-b flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                        <div class="flex flex-wrap items-center gap-3">
+                            <select id="filter-cycle" class="px-3 py-2 text-sm border border-gray-200 rounded-lg bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                                <option value="">Todos os ciclos</option><option value="Mensal">Mensal</option><option value="Trimestral">Trimestral</option><option value="Semestral">Semestral</option><option value="Anual">Anual</option>
+                            </select>
+                            <select id="filter-status" class="px-3 py-2 text-sm border border-gray-200 rounded-lg bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                                <option value="">Todos os status</option><option value="Ativo">Ativo</option><option value="Inativo">Inativo</option>
+                            </select>
+                        </div>
+                        <div class="text-sm text-gray-500"><span id="table-count"></span></div>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm text-left text-gray-600">
+                            <thead class="text-xs text-gray-700 uppercase bg-gray-50">
+                                <tr>
+                                    <th class="px-6 py-3">Plano</th><th class="px-6 py-3">Ciclo</th><th class="px-6 py-3 text-right">Preço</th><th class="px-6 py-3 text-right">Equiv. /mês</th><th class="px-6 py-3">Status</th><th class="px-6 py-3 text-center">Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody id="plans-table-body"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Modal: Novo/Editar Plano -->
+    <div id="plan-modal" class="fixed inset-0 z-50 hidden items-center justify-center">
+        <div id="plan-modal-backdrop" class="absolute inset-0 modal-backdrop opacity-0"></div>
+        <div class="relative modal-content bg-white w-full max-w-2xl mx-4 rounded-xl shadow-lg transform scale-95 opacity-0">
+            <div class="flex items-center justify-between p-5 border-b">
+                <h3 id="plan-modal-title" class="text-lg font-semibold text-gray-900">Novo Plano</h3>
+                <button id="plan-modal-close" class="p-1 rounded-full text-gray-400 hover:bg-gray-200"><i data-lucide="x" class="w-5 h-5"></i></button>
+            </div>
+            <form id="plan-form" class="p-6 space-y-4 max-h-[80vh] overflow-y-auto">
+                <input type="hidden" id="plan-id" />
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div><label class="block text-sm font-medium text-gray-700 mb-1">Nome do plano</label><input id="form-name" required class="w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" placeholder="Ex.: Mensal, Anual Plus" /></div>
+                    <div><label class="block text-sm font-medium text-gray-700 mb-1">Ciclo</label><select id="form-cycle" required class="w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"><option>Mensal</option><option>Trimestral</option><option>Semestral</option><option>Anual</option></select></div>
+                    <div><label class="block text-sm font-medium text-gray-700 mb-1">Preço total (R$)</label><input id="form-price" type="number" step="0.01" min="0" required class="w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" placeholder="Ex.: 129.90" /></div>
+                    <div><label class="block text-sm font-medium text-gray-700 mb-1">Desconto (%)</label><input id="form-discount" type="number" step="1" min="0" max="100" class="w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" placeholder="Ex.: 10" /></div>
+                </div>
+                <div><label class="block text-sm font-medium text-gray-700 mb-1">Benefícios (um por linha)</label><textarea id="form-benefits" rows="3" class="w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" placeholder="Acesso total à academia..."></textarea></div>
+                <div class="flex items-center justify-between pt-2">
+                    <label class="inline-flex items-center gap-2 text-sm"><input id="form-active" type="checkbox" class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600" checked />Ativo para venda</label>
+                    <div class="flex gap-2"><button type="button" id="plan-cancel" class="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200">Cancelar</button><button type="submit" class="px-4 py-2 text-sm font-semibold text-white bg-indigo-600 rounded-lg hover:bg-indigo-700">Salvar</button></div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+    // --- MOCK E FUNÇÕES ---
+    let PLANS = [
+        { id:1, name:'Mensal', cycle:'Mensal', price:129.90, discount:0, active:true, benefits:['Acesso total à academia','1 avaliação física'] },
+        { id:2, name:'Trimestral', cycle:'Trimestral', price:349.90, discount:10, active:true, benefits:['Acesso total à academia','2 avaliações físicas'] },
+        { id:3, name:'Anual', cycle:'Anual', price:999.90, discount:15, active:true, benefits:['Acesso total à academia','4 avaliações físicas','Acesso a aulas coletivas'] },
+        { id:4, name:'Semestral', cycle:'Semestral', price:599.90, discount:8, active:false, benefits:['Acesso total à academia','3 avaliações físicas'] },
+    ];
+
+    const cycleMonths = { 'Mensal':1, 'Trimestral':3, 'Semestral':6, 'Anual':12 };
+    const brl = v => v.toLocaleString('pt-BR',{style:'currency',currency:'BRL'});
+    const perMonth = (price, cycle) => price / (cycleMonths[cycle]||1);
+
+    document.addEventListener('DOMContentLoaded', () => {
+        applyFilters();
+        updateKPIs();
+        lucide.createIcons();
+        
+        // Listeners
+        document.getElementById('search-input').addEventListener('input', applyFilters);
+        document.getElementById('filter-cycle').addEventListener('change', applyFilters);
+        document.getElementById('filter-status').addEventListener('change', applyFilters);
+
+        const modal = document.getElementById('plan-modal');
+        const openModal = (plan=null) => {
+            document.getElementById('plan-form').reset();
+            document.getElementById('plan-id').value = plan ? plan.id : '';
+            document.getElementById('form-name').value = plan ? plan.name : '';
+            document.getElementById('form-cycle').value = plan ? plan.cycle : 'Mensal';
+            document.getElementById('form-price').value = plan ? plan.price : '';
+            document.getElementById('form-discount').value = plan ? plan.discount : '';
+            document.getElementById('form-benefits').value = plan ? plan.benefits.join('\n') : '';
+            document.getElementById('form-active').checked = plan ? !!plan.active : true;
+            document.getElementById('plan-modal-title').textContent = plan ? 'Editar Plano' : 'Novo Plano';
+            modal.classList.remove('hidden'); modal.classList.add('flex');
+            setTimeout(()=>{ modal.querySelector('.modal-backdrop').classList.remove('opacity-0'); modal.querySelector('.modal-content').classList.remove('scale-95','opacity-0'); modal.querySelector('.modal-content').classList.add('scale-100','opacity-100'); },10);
+        };
+        const closeModal = () => {
+            const content = modal.querySelector('.modal-content');
+            content.classList.remove('scale-100','opacity-100');
+            content.classList.add('scale-95','opacity-0');
+            modal.querySelector('.modal-backdrop').classList.add('opacity-0');
+            setTimeout(()=>{ modal.classList.add('hidden'); modal.classList.remove('flex'); },300);
+        };
+        document.getElementById('new-plan-btn').addEventListener('click', ()=>openModal());
+        document.getElementById('plan-modal-close').addEventListener('click', closeModal);
+        document.getElementById('plan-cancel').addEventListener('click', closeModal);
+        modal.querySelector('#plan-modal-backdrop').addEventListener('click', closeModal);
+
+        document.getElementById('plan-form').addEventListener('submit', (e)=>{
+            e.preventDefault();
+            const id = document.getElementById('plan-id').value;
+            const plan = {
+                id: id ? Number(id) : (PLANS.length ? Math.max(...PLANS.map(p=>p.id))+1 : 1),
+                name: document.getElementById('form-name').value.trim(),
+                cycle: document.getElementById('form-cycle').value,
+                price: parseFloat(document.getElementById('form-price').value),
+                discount: parseInt(document.getElementById('form-discount').value||'0',10),
+                active: document.getElementById('form-active').checked,
+                benefits: document.getElementById('form-benefits').value.split('\n').map(s=>s.trim()).filter(Boolean),
+            };
+            if (id) {
+                const idx = PLANS.findIndex(p=>p.id==id); PLANS[idx] = plan;
+            } else { PLANS.push(plan); }
+            closeModal(); applyFilters(); updateKPIs();
+        });
+
+        document.getElementById('plans-table-body').addEventListener('click', (ev)=>{
+            const btn = ev.target.closest('button'); if(!btn) return;
+            const id = Number(btn.dataset.id);
+            const plan = PLANS.find(p=>p.id===id);
+            if (btn.matches('.btn-edit')) openModal(plan);
+            if (btn.matches('.btn-del')) {
+                if (confirm(`Excluir plano "${plan.name}"?`)) {
+                    PLANS = PLANS.filter(p=>p.id!==id);
+                    applyFilters(); updateKPIs();
+                }
+            }
+            if (btn.matches('.btn-toggle')) {
+                plan.active = !plan.active;
+                applyFilters(); updateKPIs();
+            }
+        });
+
+        document.getElementById('plans-cards').addEventListener('click', (ev)=>{
+            const edit = ev.target.closest('.card-edit');
+            if (edit) { openModal(PLANS.find(p=>p.id===Number(edit.dataset.id))); }
+        });
+    });
+
+    function getFiltered(){
+        const q = (document.getElementById('search-input').value || '').toLowerCase();
+        const cycle = document.getElementById('filter-cycle').value;
+        const status = document.getElementById('filter-status').value;
+        return PLANS.filter(p=>{
+            const mQ = !q || p.name.toLowerCase().includes(q);
+            const mC = !cycle || p.cycle === cycle;
+            const mS = !status || (status==='Ativo' ? p.active : !p.active);
+            return mQ && mC && mS;
+        });
+    }
+    function applyFilters(){
+        const rows = getFiltered().sort((a,b)=> a.price - b.price);
+        renderTable(rows);
+        renderCards(rows);
+        document.getElementById('table-count').textContent = `${rows.length} plano(s) exibido(s)`;
+    }
+
+    function renderTable(rows){
+        const tbody = document.getElementById('plans-table-body');
+        tbody.innerHTML = rows.map(p=>{
+            const pm = perMonth(p.price, p.cycle);
+            const status = p.active ? '<span class="px-2.5 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-700">Ativo</span>' : '<span class="px-2.5 py-1 text-xs font-semibold rounded-full bg-gray-100 text-gray-700">Inativo</span>';
+            return `
+                <tr class="bg-white border-b hover:bg-gray-50">
+                    <td class="px-6 py-3 font-medium text-gray-900">${p.name}${p.discount?` <span class="ml-2 px-2 py-0.5 text-xs font-semibold rounded-full bg-indigo-100 text-indigo-700">-${p.discount}%</span>`:''}</td>
+                    <td class="px-6 py-3">${p.cycle}</td>
+                    <td class="px-6 py-3 text-right font-medium">${brl(p.price)}</td>
+                    <td class="px-6 py-3 text-right text-gray-500">${brl(pm)}</td>
+                    <td class="px-6 py-3">${status}</td>
+                    <td class="px-6 py-3 text-center">
+                        <button class="btn-toggle p-2 text-gray-500 hover:text-indigo-600 rounded-md" data-id="${p.id}" title="Ativar/Inativar"><i data-lucide="power" class="w-5 h-5"></i></button>
+                        <button class="btn-edit p-2 text-gray-500 hover:text-blue-600 rounded-md" data-id="${p.id}" title="Editar"><i data-lucide="edit-2" class="w-5 h-5"></i></button>
+                        <button class="btn-del p-2 text-gray-500 hover:text-red-600 rounded-md" data-id="${p.id}" title="Excluir"><i data-lucide="trash-2" class="w-5 h-5"></i></button>
+                    </td>
+                </tr>
+            `;
+        }).join('');
+        lucide.createIcons();
+    }
+
+    function renderCards(rows){
+        const wrap = document.getElementById('plans-cards');
+        wrap.innerHTML = rows.filter(p => p.active).slice(0,3).map(p=>{
+            const pm = perMonth(p.price, p.cycle);
+            return `
+                <article class="bg-white p-6 rounded-lg shadow-sm border flex flex-col">
+                    <div class="flex items-start justify-between">
+                        <h4 class="font-semibold text-lg text-gray-900">${p.name}</h4>
+                        ${p.discount ? `<span class="px-2 py-0.5 text-xs font-semibold rounded-full bg-indigo-100 text-indigo-700">-${p.discount}% OFF</span>` : ''}
+                    </div>
+                    <p class="text-3xl font-bold mt-2">${brl(perMonth(p.price * (1 - (p.discount/100)), p.cycle))}<span class="text-sm font-medium text-gray-500">/mês</span></p>
+                    <p class="text-xs text-gray-500">Total: ${brl(p.price)}</p>
+                    <ul class="mt-4 text-sm text-gray-600 space-y-2 flex-1">
+                        ${p.benefits.map(b=>`<li class="flex items-center"><i data-lucide='check' class='w-4 h-4 mr-2 text-green-600'></i>${b}</li>`).join('')}
+                    </ul>
+                    <div class="mt-5 pt-4 border-t">
+                        <button class="card-edit w-full text-center font-semibold text-indigo-600 hover:text-indigo-800" data-id="${p.id}">Editar Plano</button>
+                    </div>
+                </article>
+            `;
+        }).join('');
+        lucide.createIcons();
+    }
+
+    function updateKPIs(){
+        const active = PLANS.filter(p=>p.active);
+        const avg = active.length ? active.reduce((a,p)=> a + perMonth(p.price,p.cycle),0)/active.length : 0;
+        const bestDiscount = PLANS.reduce((m,p)=> Math.max(m, p.discount||0), 0);
+        document.getElementById('kpi-count').textContent = active.length;
+        document.getElementById('kpi-avg').textContent = brl(avg);
+        document.getElementById('kpi-discount').textContent = `${bestDiscount}%`;
+    }
+    </script>
+</body>
+</html>
+

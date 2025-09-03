@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <title>FitIA - O Sistema de Gestão Inteligente para sua Academia</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="FitIA é o sistema completo para academias que centraliza a gestão de alunos, finanças, treinos e comunicação. Peça uma demonstração!">
+    
+    <!-- Tailwind + Lucide -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        html { scroll-behavior: smooth; }
+    </style>
+</head>
+<body class="bg-white font-sans text-gray-800 antialiased">
+
+    <!-- Header -->
+    <header id="header" class="bg-white shadow-sm sticky top-0 z-50">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-lg bg-gradient-to-r from-indigo-500 to-purple-500 flex items-center justify-center text-white font-bold text-xl">FIA</div>
+                <span class="text-xl font-bold text-gray-800">FitIA</span>
+            </div>
+            
+            <!-- Menu Desktop -->
+            <div class="hidden md:flex items-center space-x-6">
+                <a href="#inicio" class="text-gray-600 hover:text-indigo-600 font-medium">Início</a>
+                <a href="#recursos" class="text-gray-600 hover:text-indigo-600 font-medium">Diferenciais</a>
+                <a href="#planos" class="text-gray-600 hover:text-indigo-600 font-medium">Planos</a>
+                <a href="#contato" class="text-gray-600 hover:text-indigo-600 font-medium">Contato</a>
+            </div>
+
+            <div class="hidden md:flex items-center gap-4">
+                <a href="login.html" class="font-semibold text-indigo-600 hover:text-indigo-800 transition-colors">Acessar Sistema</a>
+                <a href="#contato" class="bg-indigo-600 text-white font-semibold px-5 py-2.5 rounded-lg hover:bg-indigo-700 transition-colors">Solicitar Demo</a>
+            </div>
+            
+            <!-- Botão Mobile -->
+            <button id="mobile-menu-btn" class="md:hidden p-2 rounded-md text-gray-600 hover:bg-gray-100">
+                <i data-lucide="menu" class="w-6 h-6"></i>
+            </button>
+        </nav>
+
+        <!-- Menu Mobile -->
+        <div id="mobile-menu" class="hidden md:hidden px-6 pb-4 space-y-2">
+            <a href="#inicio" class="block py-2 text-gray-600 hover:text-indigo-600 font-medium">Início</a>
+            <a href="#recursos" class="block py-2 text-gray-600 hover:text-indigo-600 font-medium">Diferenciais</a>
+            <a href="#planos" class="block py-2 text-gray-600 hover:text-indigo-600 font-medium">Planos</a>
+            <a href="#contato" class="block py-2 text-gray-600 hover:text-indigo-600 font-medium">Contato</a>
+            <a href="#contato" class="block mt-2 text-center bg-indigo-600 text-white font-semibold px-5 py-2.5 rounded-lg hover:bg-indigo-700 transition-colors">Solicitar Demo</a>
+            <a href="login.html" class="block mt-2 text-center text-indigo-600 font-semibold px-5 py-2.5 rounded-lg border border-indigo-600 hover:bg-indigo-50 transition-colors">Acessar Sistema</a>
+        </div>
+    </header>
+
+    <main>
+        <!-- Seção Hero -->
+        <section id="inicio" class="bg-gray-50 py-20 md:py-32">
+            <div class="container mx-auto px-6 text-center">
+                <h1 class="text-4xl md:text-6xl font-extrabold text-gray-900 leading-tight">
+                    A gestão da sua academia, <br class="hidden md:block" />
+                    <span class="text-indigo-600">e a experiência do seu aluno.</span>
+                </h1>
+                <p class="mt-6 max-w-2xl mx-auto text-lg text-gray-600">
+                    O FitIA é a única plataforma que integra um painel de gestão completo para você e um aplicativo moderno e motivador para o seu cliente.
+                </p>
+                <div class="mt-8">
+                    <a href="#contato" class="inline-block bg-indigo-600 text-white font-bold text-lg px-8 py-4 rounded-lg hover:bg-indigo-700 transition-transform hover:scale-105">
+                        Solicitar Demonstração Gratuita
+                    </a>
+                    <p class="mt-4 text-sm text-gray-500">
+                        Quer ver o sistema em ação? <a href="login.html" class="font-semibold text-indigo-600 hover:underline">Acesse nossa demo aqui</a>.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Seção Recursos -->
+        <section id="recursos" class="py-20">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl font-bold text-gray-900">O ecossistema perfeito para o seu negócio fitness</h2>
+                    <p class="mt-4 text-gray-600">Um sistema para o gestor. Um app para o aluno. Tudo conectado.</p>
+                </div>
+                <div class="grid md:grid-cols-3 gap-8">
+                    <div class="text-center p-6 bg-white rounded-lg">
+                        <div class="inline-block p-4 bg-indigo-100 rounded-full"><i data-lucide="layout-dashboard" class="w-8 h-8 text-indigo-600"></i></div>
+                        <h3 class="mt-4 text-xl font-semibold">Dashboard Completo para o Gestor</h3>
+                        <p class="mt-2 text-gray-600">Tenha uma visão 360º do seu negócio. Acompanhe finanças, matrículas e o desempenho dos alunos com relatórios inteligentes.</p>
+                    </div>
+                    <div class="text-center p-6 bg-white rounded-lg">
+                        <div class="inline-block p-4 bg-indigo-100 rounded-full"><i data-lucide="smartphone" class="w-8 h-8 text-indigo-600"></i></div>
+                        <h3 class="mt-4 text-xl font-semibold">Aplicativo Exclusivo para o Aluno</h3>
+                        <p class="mt-2 text-gray-600">Fidelize seus clientes com um app moderno onde eles podem ver treinos, acompanhar o progresso e interagir com a academia.</p>
+                    </div>
+                    <div class="text-center p-6 bg-white rounded-lg">
+                        <div class="inline-block p-4 bg-indigo-100 rounded-full"><i data-lucide="link" class="w-8 h-8 text-indigo-600"></i></div>
+                        <h3 class="mt-4 text-xl font-semibold">Ecossistema Conectado</h3>
+                        <p class="mt-2 text-gray-600">Ações no painel do gestor, como o envio de um novo treino, são atualizadas instantaneamente no aplicativo do aluno.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Seção Planos do Software -->
+        <section id="planos" class="bg-gray-50 py-20">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl font-bold text-gray-900">Um plano para cada tamanho de negócio</h2>
+                    <p class="mt-4 text-gray-600">Comece pequeno e cresça com a gente. Sem taxas escondidas.</p>
+                </div>
+                <div class="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+                    <!-- Plano Essencial -->
+                    <div class="bg-white p-8 rounded-xl shadow-sm border flex flex-col">
+                        <h3 class="text-xl font-semibold">Plano Essencial</h3>
+                        <p class="mt-4 text-4xl font-bold">R$ 99 <span class="text-lg font-medium text-gray-500">/mês</span></p>
+                        <ul class="mt-6 space-y-3 text-gray-600 flex-1">
+                            <li class="flex items-center"><i data-lucide="check" class="w-5 h-5 mr-2 text-green-500"></i>Até 100 alunos ativos</li>
+                            <li class="flex items-center"><i data-lucide="check" class="w-5 h-5 mr-2 text-green-500"></i>Gestão de Alunos</li>
+                            <li class="flex items-center"><i data-lucide="check" class="w-5 h-5 mr-2 text-green-500"></i>Controle Financeiro Básico</li>
+                        </ul>
+                        <a href="#contato" class="mt-8 block w-full text-center bg-indigo-100 text-indigo-700 font-semibold px-6 py-3 rounded-lg hover:bg-indigo-200">Começar Agora</a>
+                    </div>
+                    <!-- Plano Pro (Destaque) -->
+                    <div class="bg-indigo-600 text-white p-8 rounded-xl shadow-lg flex flex-col relative overflow-hidden">
+                        <span class="absolute top-0 right-0 bg-yellow-400 text-yellow-900 font-semibold px-3 py-1 text-sm -rotate-45 translate-x-8 translate-y-8">Popular</span>
+                        <h3 class="text-xl font-semibold">Plano Pro</h3>
+                        <p class="mt-4 text-4xl font-bold">R$ 199 <span class="text-lg font-medium text-indigo-200">/mês</span></p>
+                        <ul class="mt-6 space-y-3 text-indigo-200 flex-1">
+                            <li class="flex items-center"><i data-lucide="check" class="w-5 h-5 mr-2 text-white"></i>Alunos ilimitados</li>
+                            <li class="flex items-center"><i data-lucide="check" class="w-5 h-5 mr-2 text-white"></i>Todos os recursos do Essencial</li>
+                            <li class="flex items-center"><i data-lucide="check" class="w-5 h-5 mr-2 text-white"></i>Módulo de Treinos</li>
+                            <li class="flex items-center"><i data-lucide="check" class="w-5 h-5 mr-2 text-white"></i>Relatórios Avançados</li>
+                        </ul>
+                        <a href="#contato" class="mt-8 block w-full text-center bg-white text-indigo-700 font-semibold px-6 py-3 rounded-lg hover:bg-gray-100">Solicitar Demo</a>
+                    </div>
+                    <!-- Plano Enterprise -->
+                    <div class="bg-white p-8 rounded-xl shadow-sm border flex flex-col">
+                        <h3 class="text-xl font-semibold">Enterprise</h3>
+                        <p class="mt-4 text-3xl font-bold">Personalizado</p>
+                        <ul class="mt-6 space-y-3 text-gray-600 flex-1">
+                             <li class="flex items-center"><i data-lucide="check" class="w-5 h-5 mr-2 text-green-500"></i>Todos os recursos do Pro</li>
+                            <li class="flex items-center"><i data-lucide="check" class="w-5 h-5 mr-2 text-green-500"></i>App do Aluno White-Label</li>
+                            <li class="flex items-center"><i data-lucide="check" class="w-5 h-5 mr-2 text-green-500"></i>Integrações via API</li>
+                            <li class="flex items-center"><i data-lucide="check" class="w-5 h-5 mr-2 text-green-500"></i>Suporte Dedicado</li>
+                        </ul>
+                        <a href="#contato" class="mt-8 block w-full text-center bg-indigo-100 text-indigo-700 font-semibold px-6 py-3 rounded-lg hover:bg-indigo-200">Entre em Contato</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Seção de Depoimentos -->
+        <section id="depoimentos" class="py-20">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl font-bold text-gray-900">O que os gestores dizem sobre o FitIA</h2>
+                </div>
+                <div class="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                    <div class="bg-gray-50 p-8 rounded-lg">
+                        <p class="text-gray-700">"O FitIA transformou nossa gestão. O controle de pagamentos e a identificação de alunos em risco nos fizeram economizar tempo e aumentar a retenção em mais de 20%."</p>
+                        <div class="mt-4 flex items-center">
+                            <img class="w-12 h-12 rounded-full" src="https://placehold.co/100x100/EED7C1/554236?text=JS" alt="Foto de João Silva">
+                            <div class="ml-4">
+                                <p class="font-semibold">João Silva</p>
+                                <p class="text-sm text-gray-500">Dono, Academia Corpo em Ação</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-gray-50 p-8 rounded-lg">
+                        <p class="text-gray-700">"Finalmente um sistema que entende as nossas necessidades. O módulo de criação de treinos e o envio para o app dos alunos é simplesmente fantástico e um grande diferencial."</p>
+                        <div class="mt-4 flex items-center">
+                            <img class="w-12 h-12 rounded-full" src="https://placehold.co/100x100/D4E2D4/466060?text=MA" alt="Foto de Maria Andrade">
+                            <div class="ml-4">
+                                <p class="font-semibold">Maria Andrade</p>
+                                <p class="text-sm text-gray-500">Gerente, Studio Vibe Fitness</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Seção Contato -->
+        <section id="contato" class="py-20 bg-gray-50">
+             <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl font-bold text-gray-900">Pronto para revolucionar sua gestão?</h2>
+                    <p class="mt-4 text-gray-600">Preencha o formulário e nossa equipe entrará em contato para uma demonstração gratuita.</p>
+                </div>
+                <div class="max-w-xl mx-auto bg-white p-8 rounded-lg shadow-sm border">
+                    <form action="#" method="POST">
+                        <div class="grid grid-cols-1 gap-6">
+                            <div><label for="name" class="block text-sm font-medium text-gray-700">Seu Nome</label><input type="text" id="name" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"></div>
+                             <div><label for="gym-name" class="block text-sm font-medium text-gray-700">Nome da Academia/Estúdio</label><input type="text" id="gym-name" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"></div>
+                            <div><label for="email" class="block text-sm font-medium text-gray-700">Seu Email</label><input type="email" id="email" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"></div>
+                            <div><label for="message" class="block text-sm font-medium text-gray-700">Mensagem (opcional)</label><textarea id="message" rows="3" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"></textarea></div>
+                            <div><button type="submit" class="w-full bg-indigo-600 text-white font-semibold py-3 px-6 rounded-lg hover:bg-indigo-700 transition-colors">Solicitar Demo</button></div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-12">
+        <div class="container mx-auto px-6 text-center">
+            <p>&copy; 2025 FitIA by <a href="https://www.isabelaoliveiradev.com/" target="_blank" class="underline hover:text-indigo-400">Vitryx</a>. Todos os direitos reservados.</p>
+            <div class="mt-4 flex justify-center space-x-6">
+                <a href="#" class="text-gray-400 hover:text-white"><i data-lucide="instagram" class="w-6 h-6"></i></a>
+                <a href="#" class="text-gray-400 hover:text-white"><i data-lucide="facebook" class="w-6 h-6"></i></a>
+                <a href="#" class="text-gray-400 hover:text-white"><i data-lucide="youtube" class="w-6 h-6"></i></a>
+            </div>
+        </div>
+    </footer>
+
+
+    <script>
+        lucide.createIcons();
+
+        // Lógica para o menu mobile
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+    </script>
+</body>
+</html>
+
+

@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <title>FitIA - Relatórios</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- CSS CONSISTENTE COM O RESTANTE DO SISTEMA (TEMA CLARO) -->
+    <style>
+        .sidebar-collapsed { transform: translateX(-100%); }
+        .sidebar-expanded { transform: translateX(0); }
+        
+        .active-menu-item {
+            background-color: #eef2ff; /* Fundo índigo bem claro */
+            color: #4f46e5; /* Texto na cor índigo */
+            font-weight: 600; /* Deixa o texto em negrito */
+        }
+        
+        @media (min-width: 768px) { .sidebar-collapsed { transform: translateX(0); } }
+    </style>
+
+    <!-- Script de interatividade do menu -->
+    <script src="app.js"></script>
+</head>
+<body class="bg-gray-50 font-sans">
+    <div class="flex h-screen overflow-hidden">
+
+        <!-- SIDEBAR ATUALIZADA COM LOGO, ÍCONES E LINK CORRETO -->
+        <aside class="fixed md:relative z-50 w-64 h-screen bg-white text-gray-600 border-r border-gray-200 shadow-sm transition-transform duration-300 sidebar-collapsed md:sidebar-expanded">
+            <div class="flex flex-col h-full">
+                <div class="flex items-center justify-center p-6 border-b border-gray-200">
+                    <div class="w-12 h-12 rounded-lg bg-gradient-to-r from-indigo-500 to-purple-500 flex items-center justify-center text-white font-bold text-lg">FitIA</div>
+                    <div class="ml-4">
+                        <h1 class="text-xl font-bold text-gray-800">FitIA</h1>
+                        <p class="text-xs text-gray-500">Gestão Inteligente</p>
+                    </div>
+                </div>
+                <nav class="flex-1 overflow-y-auto py-4 px-2">
+                    <ul>
+                        <li><a href="index.html" data-nav="dashboard" class="flex items-center px-4 py-3 rounded-lg hover:bg-gray-100 hover:text-indigo-600"><i data-lucide="home" class="w-5 h-5"></i><span class="ml-3">Dashboard</span></a></li>
+                        <li>
+                            <button type="button" class="flex items-center w-full px-4 py-3 rounded-lg hover:bg-gray-100 hover:text-indigo-600 transition-colors group" aria-expanded="false" data-section="students">
+                                <i data-lucide="users" class="w-5 h-5"></i><span class="ml-3 flex-1 text-left">Alunos</span><i data-lucide="chevron-down" class="w-4 h-4 transition-transform"></i>
+                            </button>
+                            <ul class="py-2 pl-8 hidden" aria-label="submenu" data-submenu="students">
+                                <li><a href="students.html" data-nav="students-list" class="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-gray-100 hover:text-indigo-600 text-sm"><i data-lucide="list" class="w-4 h-4"></i><span>Lista de Alunos</span></a></li>
+                                <li><a href="students-risk.html" data-nav="students-risk" class="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-gray-100 hover:text-indigo-600 text-sm"><i data-lucide="user-x" class="w-4 h-4"></i><span>Risco de Evasão</span></a></li>
+                                <li><a href="students-comms.html" data-nav="students-comms" class="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-gray-100 hover:text-indigo-600 text-sm"><i data-lucide="send" class="w-4 h-4"></i><span>Comunicações</span></a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <button type="button" class="flex items-center w-full px-4 py-3 rounded-lg hover:bg-gray-100 hover:text-indigo-600 transition-colors group" aria-expanded="false" data-section="finance">
+                                <i data-lucide="dollar-sign" class="w-5 h-5"></i><span class="ml-3 flex-1 text-left">Financeiro</span><i data-lucide="chevron-down" class="w-4 h-4 transition-transform"></i>
+                            </button>
+                            <ul class="py-2 pl-8 hidden" aria-label="submenu" data-submenu="finance">
+                                <li><a href="finance-cash.html" data-nav="finance-cash" class="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-gray-100 hover:text-indigo-600 text-sm"><i data-lucide="wallet" class="w-4 h-4"></i><span>Caixa</span></a></li>
+                                <li><a href="finance-expenses.html" data-nav="finance-expenses" class="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-gray-100 hover:text-indigo-600 text-sm"><i data-lucide="receipt" class="w-4 h-4"></i><span>Despesas</span></a></li>
+                                <li><a href="finance-payments.html" data-nav="finance-payments" class="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-gray-100 hover:text-indigo-600 text-sm"><i data-lucide="credit-card" class="w-4 h-4"></i><span>Pagamentos</span></a></li>
+                                <li><a href="finance-plans.html" data-nav="finance-plans" class="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-gray-100 hover:text-indigo-600 text-sm"><i data-lucide="layers" class="w-4 h-4"></i><span>Planos</span></a></li>
+                                <li><a href="finance-discounts.html" data-nav="finance-discounts" class="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-gray-100 hover:text-indigo-600 text-sm"><i data-lucide="percent" class="w-4 h-4"></i><span>Descontos</span></a></li>
+                            </ul>
+                        </li>
+                        <li><a href="trainings.html" data-nav="trainings" class="flex items-center px-4 py-3 rounded-lg hover:bg-gray-100 hover:text-indigo-600"><i data-lucide="dumbbell" class="w-5 h-5"></i><span class="ml-3">Treinamento</span></a></li>
+                        <li><a href="reports.html" data-nav="reports" class="flex items-center px-4 py-3 rounded-lg hover:bg-gray-100 hover:text-indigo-600"><i data-lucide="file-text" class="w-5 h-5"></i><span class="ml-3">Relatórios</span></a></li>
+                        <li><a href="settings.html" data-nav="settings" class="flex items-center px-4 py-3 rounded-lg hover:bg-gray-100 hover:text-indigo-600"><i data-lucide="settings" class="w-5 h-5"></i><span class="ml-3">Configurações</span></a></li>
+                        <li><a href="assistant.html" data-nav="assistant" class="flex items-center px-4 py-3 rounded-lg hover:bg-gray-100 hover:text-indigo-600"><i data-lucide="message-square" class="w-5 h-5"></i><span class="ml-3">Assistente</span></a></li>
+                        <li class="mt-auto"><a href="landing.html" target="_blank" class="flex items-center px-4 py-3 rounded-lg hover:bg-gray-100 hover:text-indigo-600"><i data-lucide="external-link" class="w-5 h-5"></i><span class="ml-3">Ir para o site</span></a></li>
+                    </ul>
+                </nav>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <div class="flex-1 flex flex-col overflow-hidden">
+            <!-- TOPBAR ATUALIZADO -->
+            <header class="bg-white shadow-sm z-40">
+                <div class="flex items-center justify-between px-6 py-4">
+                    <button id="sidebar-toggle" class="md:hidden text-gray-500 focus:outline-none" aria-label="Toggle sidebar"><i data-lucide="menu" class="w-6 h-6"></i></button>
+                    <div class="relative max-w-md w-full mx-4">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"><i data-lucide="search" class="h-5 w-5 text-gray-400"></i></div>
+                        <input class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="Buscar..." type="search">
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <button class="p-1 rounded-full text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500" aria-label="Notifications"><i data-lucide="bell" class="h-6 w-6"></i></button>
+                        <div class="relative">
+                            <button class="flex items-center space-x-2 focus:outline-none" aria-label="User menu" aria-expanded="false">
+                                <div class="w-8 h-8 rounded-full bg-gradient-to-r from-indigo-500 to-purple-500 flex items-center justify-center text-white font-bold">JD</div>
+                                <span class="hidden md:block text-sm font-medium text-gray-700">John Doe</span>
+                                <i data-lucide="chevron-down" class="hidden md:block w-4 h-4 text-gray-500"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Conteúdo -->
+            <main class="flex-1 overflow-y-auto p-8 bg-gray-50">
+                <!-- Header -->
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
+                    <div>
+                        <h1 class="text-3xl font-bold text-gray-900">Relatórios</h1>
+                        <p class="mt-1 text-gray-500">Extraia dados e insights para tomar decisões estratégicas.</p>
+                    </div>
+                </div>
+
+                <!-- Filtro de Período -->
+                <div class="mb-8 p-4 bg-white rounded-lg shadow-sm border flex flex-wrap items-center gap-4">
+                    <label class="font-medium text-gray-700">Período:</label>
+                    <div class="flex items-center gap-2 text-sm">
+                        <button class="px-3 py-1 rounded-md hover:bg-gray-200">Últimos 7 dias</button>
+                        <button class="px-3 py-1 rounded-md bg-indigo-100 text-indigo-600 font-semibold">Este Mês</button>
+                        <button class="px-3 py-1 rounded-md hover:bg-gray-200">Mês Passado</button>
+                        <button class="px-3 py-1 rounded-md hover:bg-gray-200">Este Ano</button>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <input type="date" class="px-3 py-1.5 text-sm border border-gray-200 rounded-lg bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                        <span class="text-gray-500">até</span>
+                        <input type="date" class="px-3 py-1.5 text-sm border border-gray-200 rounded-lg bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                    </div>
+                </div>
+
+
+                <!-- Grid de Relatórios -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    
+                    <!-- Card de Relatórios Financeiros -->
+                    <div class="bg-white p-6 rounded-xl shadow-sm border">
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="bg-green-100 p-2 rounded-lg"><i data-lucide="dollar-sign" class="w-6 h-6 text-green-600"></i></div>
+                            <h3 class="text-lg font-semibold text-gray-800">Financeiro</h3>
+                        </div>
+                        <ul class="space-y-3">
+                            <li class="flex justify-between items-center"><p class="text-gray-600">Faturamento por Período</p><button class="text-sm font-semibold text-indigo-600 hover:underline">Gerar</button></li>
+                            <li class="flex justify-between items-center"><p class="text-gray-600">Pagamentos Recebidos</p><button class="text-sm font-semibold text-indigo-600 hover:underline">Gerar</button></li>
+                            <li class="flex justify-between items-center"><p class="text-gray-600">Despesas por Categoria</p><button class="text-sm font-semibold text-indigo-600 hover:underline">Gerar</button></li>
+                            <li class="flex justify-between items-center"><p class="text-gray-600">Inadimplência</p><button class="text-sm font-semibold text-indigo-600 hover:underline">Gerar</button></li>
+                        </ul>
+                    </div>
+
+                    <!-- Card de Relatórios de Alunos -->
+                    <div class="bg-white p-6 rounded-xl shadow-sm border">
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="bg-blue-100 p-2 rounded-lg"><i data-lucide="users" class="w-6 h-6 text-blue-600"></i></div>
+                            <h3 class="text-lg font-semibold text-gray-800">Alunos</h3>
+                        </div>
+                        <ul class="space-y-3">
+                            <li class="flex justify-between items-center"><p class="text-gray-600">Lista de Alunos Ativos</p><button class="text-sm font-semibold text-indigo-600 hover:underline">Gerar</button></li>
+                            <li class="flex justify-between items-center"><p class="text-gray-600">Frequência Média</p><button class="text-sm font-semibold text-indigo-600 hover:underline">Gerar</button></li>
+                            <li class="flex justify-between items-center"><p class="text-gray-600">Novas Matrículas</p><button class="text-sm font-semibold text-indigo-600 hover:underline">Gerar</button></li>
+                            <li class="flex justify-between items-center"><p class="text-gray-600">Cancelamentos</p><button class="text-sm font-semibold text-indigo-600 hover:underline">Gerar</button></li>
+                        </ul>
+                    </div>
+
+                    <!-- Card de Relatórios Operacionais -->
+                    <div class="bg-white p-6 rounded-xl shadow-sm border">
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="bg-yellow-100 p-2 rounded-lg"><i data-lucide="bar-chart-big" class="w-6 h-6 text-yellow-600"></i></div>
+                            <h3 class="text-lg font-semibold text-gray-800">Operacional</h3>
+                        </div>
+                         <ul class="space-y-3">
+                            <li class="flex justify-between items-center"><p class="text-gray-600">Planos mais vendidos</p><button class="text-sm font-semibold text-indigo-600 hover:underline">Gerar</button></li>
+                            <li class="flex justify-between items-center"><p class="text-gray-600">Horários de Pico</p><button class="text-sm font-semibold text-indigo-600 hover:underline">Gerar</button></li>
+                            <li class="flex justify-between items-center"><p class="text-gray-600">Desempenho de Campanhas</p><button class="text-sm font-semibold text-indigo-600 hover:underline">Gerar</button></li>
+                        </ul>
+                    </div>
+
+                </div>
+            </main>
+        </div>
+    </div>
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>
+

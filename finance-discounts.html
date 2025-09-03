@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <title>FitIA - Campanhas de Desconto</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Tailwind + Lucide -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- CSS CONSISTENTE COM O RESTANTE DO SISTEMA (TEMA CLARO) -->
+    <style>
+        .sidebar-collapsed { transform: translateX(-100%); }
+        .sidebar-expanded { transform: translateX(0); }
+        
+        .active-menu-item {
+            background-color: #eef2ff; /* Fundo índigo bem claro */
+            color: #4f46e5; /* Texto na cor índigo */
+            font-weight: 600; /* Deixa o texto em negrito */
+        }
+        
+        @media (min-width: 768px) { .sidebar-collapsed { transform: translateX(0); } }
+        .modal-backdrop { background: rgba(0,0,0,.5); transition: opacity .3s ease; }
+        .modal-content { transition: transform .3s ease, opacity .3s ease; }
+    </style>
+
+    <script src="app.js"></script>
+</head>
+<body class="bg-gray-50 font-sans">
+    <div class="flex h-screen overflow-hidden">
+
+        <!-- SIDEBAR ATUALIZADA COM LOGO, ÍCONES E LINK CORRETO -->
+        <aside class="fixed md:relative z-50 w-64 h-screen bg-white text-gray-600 border-r border-gray-200 shadow-sm transition-transform duration-300 sidebar-collapsed md:sidebar-expanded">
+            <div class="flex flex-col h-full">
+                <div class="flex items-center justify-center p-6 border-b border-gray-200">
+                    <div class="w-12 h-12 rounded-lg bg-gradient-to-r from-indigo-500 to-purple-500 flex items-center justify-center text-white font-bold text-lg">FitIA</div>
+                    <div class="ml-4">
+                        <h1 class="text-xl font-bold text-gray-800">FitIA</h1>
+                        <p class="text-xs text-gray-500">Gestão Inteligente</p>
+                    </div>
+                </div>
+                <nav class="flex-1 overflow-y-auto py-4 px-2">
+                    <ul>
+                        <li><a href="index.html" data-nav="dashboard" class="flex items-center px-4 py-3 rounded-lg hover:bg-gray-100 hover:text-indigo-600"><i data-lucide="home" class="w-5 h-5"></i><span class="ml-3">Dashboard</span></a></li>
+                        <li>
+                            <button type="button" class="flex items-center w-full px-4 py-3 rounded-lg hover:bg-gray-100 hover:text-indigo-600 transition-colors group" aria-expanded="false" data-section="students">
+                                <i data-lucide="users" class="w-5 h-5"></i><span class="ml-3 flex-1 text-left">Alunos</span><i data-lucide="chevron-down" class="w-4 h-4 transition-transform"></i>
+                            </button>
+                            <ul class="py-2 pl-8 hidden" aria-label="submenu" data-submenu="students">
+                                <li><a href="students.html" data-nav="students-list" class="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-gray-100 hover:text-indigo-600 text-sm"><i data-lucide="list" class="w-4 h-4"></i><span>Lista de Alunos</span></a></li>
+                                <li><a href="students-risk.html" data-nav="students-risk" class="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-gray-100 hover:text-indigo-600 text-sm"><i data-lucide="user-x" class="w-4 h-4"></i><span>Risco de Evasão</span></a></li>
+                                <li><a href="students-comms.html" data-nav="students-comms" class="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-gray-100 hover:text-indigo-600 text-sm"><i data-lucide="send" class="w-4 h-4"></i><span>Comunicações</span></a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <button type="button" class="flex items-center w-full px-4 py-3 rounded-lg hover:bg-gray-100 hover:text-indigo-600 transition-colors group" aria-expanded="false" data-section="finance">
+                                <i data-lucide="dollar-sign" class="w-5 h-5"></i><span class="ml-3 flex-1 text-left">Financeiro</span><i data-lucide="chevron-down" class="w-4 h-4 transition-transform"></i>
+                            </button>
+                            <ul class="py-2 pl-8 hidden" aria-label="submenu" data-submenu="finance">
+                                <li><a href="finance-cash.html" data-nav="finance-cash" class="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-gray-100 hover:text-indigo-600 text-sm"><i data-lucide="wallet" class="w-4 h-4"></i><span>Caixa</span></a></li>
+                                <li><a href="finance-expenses.html" data-nav="finance-expenses" class="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-gray-100 hover:text-indigo-600 text-sm"><i data-lucide="receipt" class="w-4 h-4"></i><span>Despesas</span></a></li>
+                                <li><a href="finance-payments.html" data-nav="finance-payments" class="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-gray-100 hover:text-indigo-600 text-sm"><i data-lucide="credit-card" class="w-4 h-4"></i><span>Pagamentos</span></a></li>
+                                <li><a href="finance-plans.html" data-nav="finance-plans" class="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-gray-100 hover:text-indigo-600 text-sm"><i data-lucide="layers" class="w-4 h-4"></i><span>Planos</span></a></li>
+                                <li><a href="finance-discounts.html" data-nav="finance-discounts" class="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-gray-100 hover:text-indigo-600 text-sm"><i data-lucide="percent" class="w-4 h-4"></i><span>Descontos</span></a></li>
+                            </ul>
+                        </li>
+                        <li><a href="trainings.html" data-nav="trainings" class="flex items-center px-4 py-3 rounded-lg hover:bg-gray-100 hover:text-indigo-600"><i data-lucide="dumbbell" class="w-5 h-5"></i><span class="ml-3">Treinamento</span></a></li>
+                        <li><a href="reports.html" data-nav="reports" class="flex items-center px-4 py-3 rounded-lg hover:bg-gray-100 hover:text-indigo-600"><i data-lucide="file-text" class="w-5 h-5"></i><span class="ml-3">Relatórios</span></a></li>
+                        <li><a href="settings.html" data-nav="settings" class="flex items-center px-4 py-3 rounded-lg hover:bg-gray-100 hover:text-indigo-600"><i data-lucide="settings" class="w-5 h-5"></i><span class="ml-3">Configurações</span></a></li>
+                        <li><a href="assistant.html" data-nav="assistant" class="flex items-center px-4 py-3 rounded-lg hover:bg-gray-100 hover:text-indigo-600"><i data-lucide="message-square" class="w-5 h-5"></i><span class="ml-3">Assistente</span></a></li>
+                        <li class="mt-auto"><a href="landing.html" target="_blank" class="flex items-center px-4 py-3 rounded-lg hover:bg-gray-100 hover:text-indigo-600"><i data-lucide="external-link" class="w-5 h-5"></i><span class="ml-3">Ir para o site</span></a></li>
+                    </ul>
+                </nav>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <div class="flex-1 flex flex-col overflow-hidden">
+            <!-- TOPBAR ATUALIZADO -->
+            <header class="bg-white shadow-sm z-40">
+                <div class="flex items-center justify-between px-6 py-4">
+                    <button id="sidebar-toggle" class="md:hidden text-gray-500 focus:outline-none" aria-label="Toggle sidebar"><i data-lucide="menu" class="w-6 h-6"></i></button>
+                    <div class="relative max-w-md w-full mx-4">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"><i data-lucide="search" class="h-5 w-5 text-gray-400"></i></div>
+                        <input id="search-input" class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="Buscar por nome da campanha..." type="search">
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <button class="p-1 rounded-full text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500" aria-label="Notifications"><i data-lucide="bell" class="h-6 w-6"></i></button>
+                        <div class="relative">
+                            <button class="flex items-center space-x-2 focus:outline-none" aria-label="User menu" aria-expanded="false">
+                                <div class="w-8 h-8 rounded-full bg-gradient-to-r from-indigo-500 to-purple-500 flex items-center justify-center text-white font-bold">JD</div>
+                                <span class="hidden md:block text-sm font-medium text-gray-700">John Doe</span>
+                                <i data-lucide="chevron-down" class="hidden md:block w-4 h-4 text-gray-500"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Conteúdo -->
+            <main class="flex-1 overflow-y-auto p-8 bg-gray-50">
+                <!-- Header + CTA -->
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
+                    <div>
+                        <h1 class="text-3xl font-bold text-gray-900">Campanhas de Desconto</h1>
+                        <p class="mt-1 text-gray-500">Crie, gerencie e dispare promoções para seus alunos.</p>
+                    </div>
+                    <button id="new-campaign-btn" class="mt-4 md:mt-0 inline-flex items-center justify-center bg-indigo-600 text-white font-semibold px-4 py-2.5 rounded-lg hover:bg-indigo-700 transition-colors">
+                        <i data-lucide="plus-circle" class="w-5 h-5 mr-2"></i>Criar e Disparar Campanha
+                    </button>
+                </div>
+
+                <!-- KPIs (MELHORADOS) -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                    <div class="bg-white p-5 rounded-lg shadow-sm">
+                        <div class="flex items-center justify-between"><span class="text-sm font-medium text-gray-500">Campanhas Ativas</span><i data-lucide="ticket" class="h-5 w-5 text-indigo-500"></i></div>
+                        <div><h2 id="kpi-active" class="text-3xl font-bold text-gray-800">0</h2></div>
+                    </div>
+                    <div class="bg-white p-5 rounded-lg shadow-sm">
+                        <div class="flex items-center justify-between"><span class="text-sm font-medium text-gray-500">Total de Envios (mês)</span><i data-lucide="send" class="h-5 w-5 text-green-500"></i></div>
+                        <div><h2 id="kpi-sends" class="text-3xl font-bold text-gray-800">0</h2></div>
+                    </div>
+                    <div class="bg-white p-5 rounded-lg shadow-sm">
+                        <div class="flex items-center justify-between"><span class="text-sm font-medium text-gray-500">Taxa de Adesão (mês)</span><i data-lucide="mouse-pointer-click" class="h-5 w-5 text-yellow-500"></i></div>
+                        <div><h2 id="kpi-conversion" class="text-3xl font-bold text-gray-800">0%</h2></div>
+                    </div>
+                </div>
+
+                <!-- Filtros + Tabela -->
+                <div class="bg-white rounded-xl shadow-sm">
+                    <div class="p-6 border-b flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                        <div class="flex flex-wrap items-center gap-3">
+                            <select id="filter-status" class="px-3 py-2 text-sm border border-gray-200 rounded-lg bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                                <option value="">Todos status</option><option value="Enviada">Enviada</option><option value="Agendada">Agendada</option><option value="Rascunho">Rascunho</option><option value="Finalizada">Finalizada</option>
+                            </select>
+                             <select id="filter-audience" class="px-3 py-2 text-sm border border-gray-200 rounded-lg bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                                <option value="">Todo o público</option><option value="Alunos Ativos">Alunos Ativos</option><option value="Alunos Inativos">Alunos Inativos</option><option value="Alunos em Risco">Alunos em Risco</option>
+                            </select>
+                        </div>
+                        <div class="text-sm text-gray-500"><span id="table-count"></span></div>
+                    </div>
+
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm text-left text-gray-600">
+                            <thead class="text-xs text-gray-700 uppercase bg-gray-50">
+                                <tr>
+                                    <th class="px-6 py-3">Campanha</th><th class="px-6 py-3">Desconto</th><th class="px-6 py-3">Público</th><th class="px-6 py-3">Canal</th><th class="px-6 py-3">Status</th><th class="px-6 py-3 text-right">Resultados (Envios/Adesões)</th><th class="px-6 py-3 text-center">Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody id="campaigns-table-body"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Modal: Nova/Editar Campanha -->
+    <div id="campaign-modal" class="fixed inset-0 z-50 hidden items-center justify-center">
+        <div id="campaign-modal-backdrop" class="absolute inset-0 modal-backdrop opacity-0"></div>
+        <div class="relative modal-content bg-white w-full max-w-2xl mx-4 rounded-xl shadow-lg transform scale-95 opacity-0">
+            <div class="flex items-center justify-between p-5 border-b">
+                <h3 id="campaign-modal-title" class="text-lg font-semibold text-gray-900">Nova Campanha</h3>
+                <button id="campaign-modal-close" class="p-1 rounded-full text-gray-400 hover:bg-gray-200"><i data-lucide="x" class="w-5 h-5"></i></button>
+            </div>
+            <form id="campaign-form" class="p-6 space-y-6 max-h-[80vh] overflow-y-auto">
+                <input type="hidden" id="campaign-id" />
+                
+                <div>
+                    <h4 class="font-semibold text-gray-800 border-b pb-2 mb-4">1. Detalhes da Campanha</h4>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div><label class="block text-sm font-medium text-gray-700 mb-1">Nome da Campanha</label><input id="form-name" required class="w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" placeholder="Ex: Reativação Setembro" /></div>
+                        <div><label class="block text-sm font-medium text-gray-700 mb-1">Público-Alvo</label><select id="form-audience" required class="w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"><option>Alunos Inativos</option><option>Alunos em Risco</option><option>Aniversariantes do Mês</option><option>Todos os Alunos</option></select></div>
+                    </div>
+                </div>
+                
+                <div>
+                    <h4 class="font-semibold text-gray-800 border-b pb-2 mb-4">2. Oferta e Desconto</h4>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div><label class="block text-sm font-medium text-gray-700 mb-1">Tipo de Desconto</label><select id="form-type" required class="w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"><option value="PERCENT">Percentual (%)</option><option value="AMOUNT">Fixo (R$)</option></select></div>
+                        <div><label class="block text-sm font-medium text-gray-700 mb-1">Valor do Desconto</label><input id="form-value" type="number" step="0.01" min="0" required class="w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" placeholder="15" /></div>
+                        <div><label class="block text-sm font-medium text-gray-700 mb-1">Código do Cupom (opcional)</label><input id="form-code" class="w-full uppercase rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" placeholder="VOLTA15" /></div>
+                        <div><label class="block text-sm font-medium text-gray-700 mb-1">Validade do Cupom</label><input id="form-end" type="date" required class="w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" /></div>
+                    </div>
+                </div>
+
+                <div>
+                     <h4 class="font-semibold text-gray-800 border-b pb-2 mb-4">3. Mensagem e Disparo</h4>
+                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div><label class="block text-sm font-medium text-gray-700 mb-1">Canal de Envio</label><select id="form-channel" required class="w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"><option>Email</option><option>WhatsApp</option></select></div>
+                     </div>
+                     <div class="mt-4"><label class="block text-sm font-medium text-gray-700 mb-1">Corpo da Mensagem</label><textarea id="form-message" rows="4" class="w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" placeholder="Olá {{nome_aluno}}, estamos com saudades! Use o cupom {{codigo_cupom}} para ganhar..."></textarea></div>
+                </div>
+                
+                <div class="pt-4 flex justify-end gap-3 border-t">
+                    <button type="button" id="campaign-cancel" class="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200">Cancelar</button>
+                    <button type="submit" class="px-4 py-2 text-sm font-semibold text-white bg-indigo-600 rounded-lg hover:bg-indigo-700">Salvar e Enviar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+    // --- MOCK E FUNÇÕES ---
+    let CAMPAIGNS = [
+        { id:1, name:'Reativação Setembro', code:'VOLTA15', type:'PERCENT', value:15, audience:'Alunos Inativos', channel:'WhatsApp', status:'Enviada', sends: 50, adherences: 4 },
+        { id:2, name:'Promo Verão', code:'VERAO20', type:'PERCENT', value:20, audience:'Todos os Alunos', channel:'Email', status:'Finalizada', sends: 238, adherences: 32 },
+        { id:3, name:'Aniversariantes do Mês', code:'', type:'AMOUNT', value:30, audience:'Aniversariantes do Mês', channel:'Email', status:'Agendada', sends: 12, adherences: 0 },
+    ];
+    const brl = v => v.toLocaleString('pt-BR',{ style:'currency', currency:'BRL' });
+    const todayStr = () => new Date().toISOString().slice(0,10);
+    const ruleText = c => c.type === 'PERCENT' ? `-${c.value}%` : `-${brl(c.value)}`;
+
+    document.addEventListener('DOMContentLoaded', ()=>{
+        applyFilters();
+        updateKPIs();
+        lucide.createIcons();
+        
+        // Listeners
+        document.getElementById('search-input').addEventListener('input', applyFilters);
+        document.getElementById('filter-status').addEventListener('change', applyFilters);
+        document.getElementById('filter-audience').addEventListener('change', applyFilters);
+
+        const modal = document.getElementById('campaign-modal');
+        const openModal = (item=null) => {
+            document.getElementById('campaign-form').reset();
+            document.getElementById('campaign-id').value = item ? item.id : '';
+            document.getElementById('campaign-modal-title').textContent = item ? 'Editar Campanha' : 'Nova Campanha';
+            if (item) {
+                // Populate form for editing
+            } else {
+                 document.getElementById('form-end').value = todayStr();
+            }
+            modal.classList.remove('hidden'); modal.classList.add('flex');
+            setTimeout(()=>{ modal.querySelector('.modal-backdrop').classList.remove('opacity-0'); modal.querySelector('.modal-content').classList.remove('scale-95','opacity-0'); modal.querySelector('.modal-content').classList.add('scale-100','opacity-100'); },10);
+        };
+        const closeModal = () => {
+            const content = modal.querySelector('.modal-content');
+            content.classList.remove('scale-100','opacity-100');
+            content.classList.add('scale-95','opacity-0');
+            modal.querySelector('.modal-backdrop').classList.add('opacity-0');
+            setTimeout(()=>{ modal.classList.add('hidden'); modal.classList.remove('flex'); },300);
+        };
+        document.getElementById('new-campaign-btn').addEventListener('click', ()=>openModal());
+        document.getElementById('campaign-modal-close').addEventListener('click', closeModal);
+        document.getElementById('campaign-cancel').addEventListener('click', closeModal);
+        modal.querySelector('#campaign-modal-backdrop').addEventListener('click', closeModal);
+
+        document.getElementById('campaign-form').addEventListener('submit', (e)=>{
+            e.preventDefault();
+            // Lógica para salvar nova campanha aqui
+            closeModal();
+            alert('Campanha salva e disparo iniciado!');
+        });
+    });
+
+    function getFiltered(){
+        const q = (document.getElementById('search-input').value||'').toLowerCase();
+        const status = document.getElementById('filter-status').value;
+        const audience = document.getElementById('filter-audience').value;
+        return CAMPAIGNS.filter(c=>{
+            const mQ = !q || c.name.toLowerCase().includes(q) || c.code.toLowerCase().includes(q);
+            const mS = !status || c.status === status;
+            const mA = !audience || c.audience === audience;
+            return mQ && mS && mA;
+        });
+    }
+
+    function applyFilters(){
+        const rows = getFiltered().sort((a,b)=> a.name.localeCompare(b.name));
+        renderTable(rows);
+        document.getElementById('table-count').textContent = `${rows.length} campanha(s) exibida(s)`;
+    }
+
+    function renderTable(rows){
+        const tbody = document.getElementById('campaigns-table-body');
+        const statusColors = {'Enviada': 'bg-blue-100 text-blue-700', 'Agendada': 'bg-yellow-100 text-yellow-700', 'Rascunho': 'bg-gray-100 text-gray-700', 'Finalizada': 'bg-green-100 text-green-700'};
+        tbody.innerHTML = rows.map(c=>{
+            const statusBadge = `<span class="px-2.5 py-1 text-xs font-semibold rounded-full ${statusColors[c.status]}">${c.status}</span>`;
+            return `
+                <tr class="bg-white border-b hover:bg-gray-50">
+                    <td class="px-6 py-4 font-medium text-gray-900">${c.name} ${c.code ? `<span class="font-mono text-xs text-indigo-600 bg-indigo-50 px-1.5 py-0.5 rounded">(${c.code})</span>` : ''}</td>
+                    <td class="px-6 py-3">${ruleText(c)}</td>
+                    <td class="px-6 py-3">${c.audience}</td>
+                    <td class="px-6 py-3">${c.channel}</td>
+                    <td class="px-6 py-3">${statusBadge}</td>
+                    <td class="px-6 py-3 text-right">${c.sends} / ${c.adherences}</td>
+                    <td class="px-6 py-3 text-center">
+                        <button class="p-2 text-gray-500 hover:text-indigo-600 rounded-md" data-id="${c.id}" title="Ver Relatório"><i data-lucide="bar-chart-2" class="w-5 h-5"></i></button>
+                        <button class="p-2 text-gray-500 hover:text-blue-600 rounded-md" data-id="${c.id}" title="Editar"><i data-lucide="edit-2" class="w-5 h-5"></i></button>
+                    </td>
+                </tr>
+            `;
+        }).join('');
+        lucide.createIcons();
+    }
+
+    function updateKPIs(){
+        const activeNow = CAMPAIGNS.filter(c => c.status === 'Enviada' || c.status === 'Agendada');
+        const thisMonthCampaigns = CAMPAIGNS.filter(c => c.status === 'Enviada' || c.status === 'Finalizada'); // Simplificação
+        
+        const totalSends = thisMonthCampaigns.reduce((a,c)=> a + c.sends, 0);
+        const totalAdherences = thisMonthCampaigns.reduce((a,c)=> a + c.adherences, 0);
+        const conversionRate = totalSends > 0 ? (totalAdherences / totalSends) * 100 : 0;
+        
+        document.getElementById('kpi-active').textContent = activeNow.length;
+        document.getElementById('kpi-sends').textContent = totalSends.toLocaleString('pt-BR');
+        document.getElementById('kpi-conversion').textContent = `${conversionRate.toFixed(1)}%`;
+    }
+    </script>
+</body>
+</html>
+

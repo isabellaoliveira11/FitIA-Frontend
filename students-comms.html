@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <title>FitIA - Alunos - Comunicações</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Tailwind + Lucide -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- CSS CONSISTENTE COM O RESTANTE DO SISTEMA (TEMA CLARO) -->
+    <style>
+        .sidebar-collapsed { transform: translateX(-100%); }
+        .sidebar-expanded { transform: translateX(0); }
+        
+        .active-menu-item {
+            background-color: #eef2ff; /* Fundo índigo bem claro */
+            color: #4f46e5; /* Texto na cor índigo */
+            font-weight: 600; /* Deixa o texto em negrito */
+        }
+        
+        @media (min-width: 768px) { .sidebar-collapsed { transform: translateX(0); } }
+
+        /* Estilos específicos da página */
+        .modal-backdrop { background-color: rgba(0, 0, 0, 0.5); transition: opacity .3s ease; }
+        .modal-content { transition: transform .3s ease, opacity .3s ease; }
+    </style>
+
+    <!-- Script de interatividade do menu -->
+    <script src="app.js"></script>
+</head>
+<body class="bg-gray-50 font-sans">
+    <div class="flex h-screen overflow-hidden">
+
+        <!-- SIDEBAR ATUALIZADA COM LOGO, ÍCONES E LINK CORRETO -->
+        <aside class="fixed md:relative z-50 w-64 h-screen bg-white text-gray-600 border-r border-gray-200 shadow-sm transition-transform duration-300 sidebar-collapsed md:sidebar-expanded">
+            <div class="flex flex-col h-full">
+                <div class="flex items-center justify-center p-6 border-b border-gray-200">
+                    <div class="w-12 h-12 rounded-lg bg-gradient-to-r from-indigo-500 to-purple-500 flex items-center justify-center text-white font-bold text-lg">FitIA</div>
+                    <div class="ml-4">
+                        <h1 class="text-xl font-bold text-gray-800">FitIA</h1>
+                        <p class="text-xs text-gray-500">Gestão Inteligente</p>
+                    </div>
+                </div>
+                <nav class="flex-1 overflow-y-auto py-4 px-2">
+                    <ul>
+                        <li><a href="index.html" data-nav="dashboard" class="flex items-center px-4 py-3 rounded-lg hover:bg-gray-100 hover:text-indigo-600"><i data-lucide="home" class="w-5 h-5"></i><span class="ml-3">Dashboard</span></a></li>
+                        <li>
+                            <button type="button" class="flex items-center w-full px-4 py-3 rounded-lg hover:bg-gray-100 hover:text-indigo-600 transition-colors group" aria-expanded="false" data-section="students">
+                                <i data-lucide="users" class="w-5 h-5"></i><span class="ml-3 flex-1 text-left">Alunos</span><i data-lucide="chevron-down" class="w-4 h-4 transition-transform"></i>
+                            </button>
+                            <ul class="py-2 pl-8 hidden" aria-label="submenu" data-submenu="students">
+                                <li><a href="students.html" data-nav="students-list" class="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-gray-100 hover:text-indigo-600 text-sm"><i data-lucide="list" class="w-4 h-4"></i><span>Lista de Alunos</span></a></li>
+                                <li><a href="students-risk.html" data-nav="students-risk" class="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-gray-100 hover:text-indigo-600 text-sm"><i data-lucide="user-x" class="w-4 h-4"></i><span>Risco de Evasão</span></a></li>
+                                <li><a href="students-comms.html" data-nav="students-comms" class="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-gray-100 hover:text-indigo-600 text-sm"><i data-lucide="send" class="w-4 h-4"></i><span>Comunicações</span></a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <button type="button" class="flex items-center w-full px-4 py-3 rounded-lg hover:bg-gray-100 hover:text-indigo-600 transition-colors group" aria-expanded="false" data-section="finance">
+                                <i data-lucide="dollar-sign" class="w-5 h-5"></i><span class="ml-3 flex-1 text-left">Financeiro</span><i data-lucide="chevron-down" class="w-4 h-4 transition-transform"></i>
+                            </button>
+                            <ul class="py-2 pl-8 hidden" aria-label="submenu" data-submenu="finance">
+                                <li><a href="finance-cash.html" data-nav="finance-cash" class="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-gray-100 hover:text-indigo-600 text-sm"><i data-lucide="wallet" class="w-4 h-4"></i><span>Caixa</span></a></li>
+                                <li><a href="finance-expenses.html" data-nav="finance-expenses" class="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-gray-100 hover:text-indigo-600 text-sm"><i data-lucide="receipt" class="w-4 h-4"></i><span>Despesas</span></a></li>
+                                <li><a href="finance-payments.html" data-nav="finance-payments" class="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-gray-100 hover:text-indigo-600 text-sm"><i data-lucide="credit-card" class="w-4 h-4"></i><span>Pagamentos</span></a></li>
+                                <li><a href="finance-plans.html" data-nav="finance-plans" class="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-gray-100 hover:text-indigo-600 text-sm"><i data-lucide="layers" class="w-4 h-4"></i><span>Planos</span></a></li>
+                                <li><a href="finance-discounts.html" data-nav="finance-discounts" class="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-gray-100 hover:text-indigo-600 text-sm"><i data-lucide="percent" class="w-4 h-4"></i><span>Descontos</span></a></li>
+                            </ul>
+                        </li>
+                        <li><a href="trainings.html" data-nav="trainings" class="flex items-center px-4 py-3 rounded-lg hover:bg-gray-100 hover:text-indigo-600"><i data-lucide="dumbbell" class="w-5 h-5"></i><span class="ml-3">Treinamento</span></a></li>
+                        <li><a href="reports.html" data-nav="reports" class="flex items-center px-4 py-3 rounded-lg hover:bg-gray-100 hover:text-indigo-600"><i data-lucide="file-text" class="w-5 h-5"></i><span class="ml-3">Relatórios</span></a></li>
+                        <li><a href="settings.html" data-nav="settings" class="flex items-center px-4 py-3 rounded-lg hover:bg-gray-100 hover:text-indigo-600"><i data-lucide="settings" class="w-5 h-5"></i><span class="ml-3">Configurações</span></a></li>
+                        <li><a href="assistant.html" data-nav="assistant" class="flex items-center px-4 py-3 rounded-lg hover:bg-gray-100 hover:text-indigo-600"><i data-lucide="message-square" class="w-5 h-5"></i><span class="ml-3">Assistente</span></a></li>
+                        <li class="mt-auto"><a href="landing.html" target="_blank" class="flex items-center px-4 py-3 rounded-lg hover:bg-gray-100 hover:text-indigo-600"><i data-lucide="external-link" class="w-5 h-5"></i><span class="ml-3">Ir para o site</span></a></li>
+                    </ul>
+                </nav>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <div class="flex-1 flex flex-col overflow-hidden">
+            <!-- TOPBAR ATUALIZADO -->
+            <header class="bg-white shadow-sm z-40">
+                <div class="flex items-center justify-between px-6 py-4">
+                    <button id="sidebar-toggle" class="md:hidden text-gray-500 focus:outline-none" aria-label="Toggle sidebar"><i data-lucide="menu" class="w-6 h-6"></i></button>
+                    <div class="relative max-w-md w-full mx-4">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"><i data-lucide="search" class="h-5 w-5 text-gray-400"></i></div>
+                        <input class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="Buscar..." type="search">
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <button class="p-1 rounded-full text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500" aria-label="Notifications"><i data-lucide="bell" class="h-6 w-6"></i></button>
+                        <div class="relative">
+                            <button class="flex items-center space-x-2 focus:outline-none" aria-label="User menu" aria-expanded="false">
+                                <div class="w-8 h-8 rounded-full bg-gradient-to-r from-indigo-500 to-purple-500 flex items-center justify-center text-white font-bold">JD</div>
+                                <span class="hidden md:block text-sm font-medium text-gray-700">John Doe</span>
+                                <i data-lucide="chevron-down" class="hidden md:block w-4 h-4 text-gray-500"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Conteúdo da Página -->
+            <main class="flex-1 overflow-y-auto p-8 bg-gray-50">
+                <!-- Header + CTA -->
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
+                    <div>
+                        <h1 class="text-3xl font-bold text-gray-900">Comunicações</h1>
+                        <p class="mt-1 text-gray-500">Acompanhe e envie mensagens para seus alunos.</p>
+                    </div>
+                    <button id="new-comm-btn" class="mt-4 md:mt-0 inline-flex items-center justify-center bg-indigo-600 text-white font-semibold px-4 py-2.5 rounded-lg hover:bg-indigo-700 transition-colors">
+                        <i data-lucide="plus-circle" class="w-5 h-5 mr-2"></i>Novo Disparo
+                    </button>
+                </div>
+
+                <!-- KPIs (MELHORADOS) -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+                    <div class="bg-white p-5 rounded-lg shadow-sm">
+                        <div class="flex items-center justify-between"><span class="text-sm font-medium text-gray-500">Mensagens (7 dias)</span><i data-lucide="send" class="h-5 w-5 text-indigo-500"></i></div>
+                        <div><h2 class="text-3xl font-bold text-gray-800">184</h2><p class="text-xs text-green-500 mt-1">+12% vs. período anterior</p></div>
+                    </div>
+                    <div class="bg-white p-5 rounded-lg shadow-sm">
+                        <div class="flex items-center justify-between"><span class="text-sm font-medium text-gray-500">Abertura de e-mails</span><i data-lucide="mail-open" class="h-5 w-5 text-indigo-500"></i></div>
+                        <div><h2 class="text-3xl font-bold text-gray-800">48%</h2><p class="text-xs text-gray-500 mt-1">Média dos últimos 30 dias</p></div>
+                    </div>
+                    <div class="bg-white p-5 rounded-lg shadow-sm">
+                        <div class="flex items-center justify-between"><span class="text-sm font-medium text-gray-500">Respostas</span><i data-lucide="reply" class="h-5 w-5 text-indigo-500"></i></div>
+                        <div><h2 class="text-3xl font-bold text-gray-800">57</h2><p class="text-xs text-green-500 mt-1">+9 nesta semana</p></div>
+                    </div>
+                    <div class="bg-white p-5 rounded-lg shadow-sm">
+                        <div class="flex items-center justify-between"><span class="text-sm font-medium text-gray-500">Falhas de envio</span><i data-lucide="alert-triangle" class="h-5 w-5 text-red-500"></i></div>
+                        <div><h2 class="text-3xl font-bold text-gray-800">6</h2><p class="text-xs text-red-500 mt-1">Precisa de revisão</p></div>
+                    </div>
+                </div>
+
+                <!-- Filtros + Histórico -->
+                <div class="bg-white rounded-xl shadow-sm">
+                    <div class="p-6 border-b flex flex-col lg:flex-row gap-4 lg:items-center lg:justify-between">
+                        <div class="flex flex-wrap items-center gap-3">
+                            <div class="relative">
+                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"><i data-lucide="search" class="h-5 w-5 text-gray-400"></i></div>
+                                <input id="search-input" class="block w-64 pl-10 pr-3 py-2 border border-gray-200 rounded-lg bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 sm:text-sm" placeholder="Buscar por aluno, assunto..." type="search">
+                            </div>
+                            <select id="filter-channel" class="px-3 py-2 text-sm border border-gray-200 rounded-lg bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                                <option value="">Todos os canais</option><option>Email</option><option>WhatsApp</option><option>SMS</option>
+                            </select>
+                            <select id="filter-status" class="px-3 py-2 text-sm border border-gray-200 rounded-lg bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                                <option value="">Todos os status</option><option>Enviado</option><option>Lido</option><option>Respondido</option><option>Falha</option>
+                            </select>
+                        </div>
+                        <div class="flex gap-2">
+                            <button id="only-risk" class="px-3 py-2 text-sm font-medium text-gray-600 bg-gray-100 rounded-lg hover:bg-gray-200 flex items-center">
+                                <i data-lucide="alert-octagon" class="w-4 h-4 mr-2"></i> Somente em risco
+                            </button>
+                            <button id="clear-filters" class="px-3 py-2 text-sm text-gray-600 bg-gray-100 rounded-lg hover:bg-gray-200">Limpar</button>
+                        </div>
+                    </div>
+
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm text-left text-gray-500">
+                            <thead class="text-xs text-gray-700 uppercase bg-gray-50">
+                                <tr>
+                                    <th class="px-6 py-3">Aluno</th>
+                                    <th class="px-6 py-3">Canal</th>
+                                    <th class="px-6 py-3">Assunto</th>
+                                    <th class="px-6 py-3">Status</th>
+                                    <th class="px-6 py-3">Data</th>
+                                    <th class="px-6 py-3 text-center">Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody id="comms-table-body"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Modal: Nova Comunicação -->
+    <div id="comm-modal" class="fixed inset-0 z-50 hidden items-center justify-center">
+        <div id="comm-modal-backdrop" class="absolute inset-0 modal-backdrop opacity-0"></div>
+        <div class="relative modal-content bg-white w-full max-w-lg mx-4 rounded-xl shadow-lg transform scale-95 opacity-0">
+            <div class="flex items-center justify-between p-5 border-b">
+                <h3 class="text-lg font-semibold text-gray-900">Nova Comunicação</h3>
+                <button id="comm-modal-close" class="p-1 rounded-full text-gray-400 hover:bg-gray-200"><i data-lucide="x" class="w-5 h-5"></i></button>
+            </div>
+            <form id="comm-form" class="p-6 space-y-4">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Canal</label>
+                        <select id="form-channel" required class="w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                            <option>Email</option><option>WhatsApp</option><option>SMS</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Destinatário</label>
+                        <input id="form-recipient" required placeholder="Ex.: Ana Souza" class="w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" />
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Assunto</label>
+                    <input id="form-subject" required class="w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" />
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Mensagem</label>
+                    <textarea id="form-message" rows="4" required class="w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" placeholder="Escreva a mensagem..."></textarea>
+                </div>
+                <div class="flex justify-end gap-2 pt-2">
+                    <button type="button" id="comm-cancel" class="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200">Cancelar</button>
+                    <button type="submit" class="px-4 py-2 text-sm font-semibold text-white bg-indigo-600 rounded-lg hover:bg-indigo-700">Enviar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+    lucide.createIcons();
+
+    // --- MOCK: Histórico de comunicações ---
+    let COMM_LIST = [
+        { id: 1, student: 'Ana Souza', channel: 'Email', subject: 'Renovação do plano', status: 'Lido', date: '2025-09-01 10:32', risk: 'Médio' },
+        { id: 2, student: 'Bruno Lima', channel: 'WhatsApp', subject: 'Lembrete de pagamento', status: 'Respondido', date: '2025-09-02 16:05', risk: 'Alto' },
+        { id: 3, student: 'Carla Ferreira', channel: 'SMS', subject: 'Boas-vindas', status: 'Enviado', date: '2025-09-02 08:15', risk: 'Baixo' },
+        { id: 4, student: 'Daniel Rocha', channel: 'Email', subject: 'Atualização de treino', status: 'Falha', date: '2025-08-31 19:44', risk: 'Médio' },
+        { id: 5, student: 'Eduarda Pires', channel: 'WhatsApp', subject: 'Parabéns pelo progresso!', status: 'Lido', date: '2025-09-03 09:12', risk: 'Baixo' },
+    ];
+
+    const statusStyles = {
+        'Enviado': 'bg-gray-100 text-gray-700',
+        'Lido': 'bg-blue-100 text-blue-700',
+        'Respondido': 'bg-green-100 text-green-700',
+        'Falha': 'bg-red-100 text-red-700',
+    };
+
+    document.addEventListener('DOMContentLoaded', () => {
+        renderTable(COMM_LIST);
+
+        // --- Filtros ---
+        document.getElementById('search-input').addEventListener('input', applyFilters);
+        document.getElementById('filter-channel').addEventListener('change', applyFilters);
+        document.getElementById('filter-status').addEventListener('change', applyFilters);
+
+        document.getElementById('only-risk').addEventListener('click', (e) => {
+            const btn = e.currentTarget;
+            const isActive = btn.dataset.active === 'true';
+            btn.dataset.active = !isActive;
+            btn.classList.toggle('bg-yellow-100', !isActive);
+            btn.classList.toggle('text-yellow-700', !isActive);
+            applyFilters();
+        });
+
+        document.getElementById('clear-filters').addEventListener('click', () => {
+            document.getElementById('search-input').value = '';
+            document.getElementById('filter-channel').value = '';
+            document.getElementById('filter-status').value = '';
+            const onlyRiskBtn = document.getElementById('only-risk');
+            onlyRiskBtn.dataset.active = 'false';
+            onlyRiskBtn.classList.remove('bg-yellow-100', 'text-yellow-700');
+            applyFilters();
+        });
+
+        // --- Modal Nova Comunicação ---
+        const modal = document.getElementById('comm-modal');
+        const backdrop = document.getElementById('comm-modal-backdrop');
+        const content = modal.querySelector('.modal-content');
+
+        const openModal = () => {
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            setTimeout(() => {
+                backdrop.classList.remove('opacity-0');
+                content.classList.remove('scale-95', 'opacity-0');
+                content.classList.add('scale-100', 'opacity-100');
+            }, 10);
+        };
+
+        const closeModal = () => {
+            content.classList.remove('scale-100', 'opacity-100');
+            content.classList.add('scale-95', 'opacity-0');
+            backdrop.classList.add('opacity-0');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+            }, 300);
+        };
+
+        document.getElementById('new-comm-btn').addEventListener('click', openModal);
+        document.getElementById('comm-modal-close').addEventListener('click', closeModal);
+        document.getElementById('comm-cancel').addEventListener('click', closeModal);
+        backdrop.addEventListener('click', closeModal);
+
+        // --- Form de envio ---
+        document.getElementById('comm-form').addEventListener('submit', e => {
+            e.preventDefault();
+            const newComm = {
+                id: COMM_LIST.length + 1,
+                student: document.getElementById('form-recipient').value,
+                channel: document.getElementById('form-channel').value,
+                subject: document.getElementById('form-subject').value,
+                status: 'Enviado',
+                date: new Date().toLocaleString('pt-BR', { dateStyle: 'short', timeStyle: 'short' }).replace(',', ''),
+                risk: 'Baixo'
+            };
+            COMM_LIST.unshift(newComm);
+            applyFilters();
+            closeModal();
+            e.target.reset();
+        });
+    });
+
+    // --- Render tabela ---
+    function renderTable(list) {
+        const tbody = document.getElementById('comms-table-body');
+        tbody.innerHTML = list.map(c => `
+            <tr class="bg-white border-b hover:bg-gray-50">
+                <td class="px-6 py-4 font-medium text-gray-900">${c.student}</td>
+                <td class="px-6 py-4">${c.channel}</td>
+                <td class="px-6 py-4">${c.subject}</td>
+                <td class="px-6 py-4">
+                    <span class="px-2.5 py-1 text-xs font-semibold rounded-full ${statusStyles[c.status] || ''}">${c.status}</span>
+                </td>
+                <td class="px-6 py-4">${c.date}</td>
+                <td class="px-6 py-4 text-center">
+                    <button class="p-2 text-gray-500 hover:text-indigo-600 rounded-md">
+                        <i data-lucide="eye" class="w-5 h-5"></i>
+                    </button>
+                </td>
+            </tr>
+        `).join('');
+        lucide.createIcons();
+    }
+
+    // --- Aplicar filtros ---
+    function applyFilters() {
+        const search = document.getElementById('search-input').value.toLowerCase();
+        const channel = document.getElementById('filter-channel').value;
+        const status = document.getElementById('filter-status').value;
+        const onlyRisk = document.getElementById('only-risk').dataset.active === 'true';
+
+        const filtered = COMM_LIST.filter(c => {
+            const matchSearch = c.student.toLowerCase().includes(search) || c.subject.toLowerCase().includes(search);
+            const matchChannel = !channel || c.channel === channel;
+            const matchStatus = !status || c.status === status;
+            const matchRisk = !onlyRisk || ['Alto', 'Médio'].includes(c.risk);
+            return matchSearch && matchChannel && matchStatus && matchRisk;
+        });
+
+        renderTable(filtered);
+    }
+    </script>
+</body>
+</html>
+

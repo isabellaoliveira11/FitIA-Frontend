@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>FitIA — Login</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            500: "#6366f1",
+                            600: "#4f46e5",
+                        },
+                    },
+                },
+            },
+        };
+    </script>
+</head>
+
+<body class="min-h-screen bg-gray-50 text-gray-800 antialiased">
+    <div class="min-h-screen flex">
+        <!-- Coluna da Esquerda (Branding) -->
+        <div class="hidden lg:flex w-1/2 items-center justify-center bg-gradient-to-tr from-indigo-800 to-purple-700 text-white p-12">
+            <div class="max-w-md text-center">
+                <div class="mx-auto w-24 h-24 rounded-full bg-white/20 flex items-center justify-center">
+                    <span class="text-4xl font-bold">FitIA</span>
+                </div>
+                <h1 class="mt-6 text-4xl font-bold leading-tight">
+                    Gestão Inteligente para Academias de Sucesso.
+                </h1>
+                <p class="mt-4 text-indigo-200">
+                    Tudo que você precisa para gerenciar alunos, finanças e treinos em um só lugar.
+                </p>
+            </div>
+        </div>
+
+        <!-- Coluna da Direita (Formulário) -->
+        <div class="w-full lg:w-1/2 flex items-center justify-center p-6">
+            <main class="w-full max-w-md">
+                <div class="bg-white p-8 rounded-2xl shadow-sm border">
+                    
+                    <div class="mb-8 text-center">
+                        <div class="flex items-center justify-center gap-3">
+                            <span class="grid h-12 w-12 place-items-center rounded-lg bg-brand-600 text-lg font-bold text-white">FitIA</span>
+                        </div>
+                    </div>
+
+                    <header class="mb-8 text-center">
+                        <h1 class="text-3xl font-bold tracking-tight text-gray-900">Acesse sua conta</h1>
+                        <p class="mt-2 text-sm text-gray-500">Bem-vindo de volta! Insira seus dados.</p>
+                    </header>
+
+                    <form id="loginForm" action="#" method="post" class="space-y-5">
+                        <div>
+                            <label for="email" class="mb-1.5 block text-sm font-medium text-gray-600">E-mail</label>
+                            <input id="email" name="email" type="email" required
+                                   class="w-full rounded-lg border border-gray-300 bg-white px-3.5 py-2.5 text-sm outline-none transition placeholder:text-gray-400 focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20"
+                                   placeholder="seunome@academia.com.br"
+                                   value="admin@fitia.com" />
+                        </div>
+
+                        <div>
+                            <label for="password" class="mb-1.5 block text-sm font-medium text-gray-600">Senha</label>
+                            <div class="relative">
+                                <input id="password" name="password" type="password" required
+                                       class="w-full rounded-lg border border-gray-300 bg-white px-3.5 py-2.5 pr-10 text-sm outline-none transition placeholder:text-gray-400 focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20"
+                                       placeholder="••••••••"
+                                       value="12345" />
+                                <button type="button" id="togglePassword"
+                                        class="absolute inset-y-0 right-0 flex items-center rounded-r-lg px-3 text-gray-500 hover:text-gray-800"
+                                        aria-label="Mostrar/ocultar senha">
+                                    <i data-lucide="eye" class="h-5 w-5"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center justify-between">
+                            <label class="inline-flex items-center gap-2 text-sm">
+                                <input type="checkbox" class="h-4 w-4 rounded border-gray-300 text-brand-600 focus:ring-brand-600" />
+                                Lembrar de mim
+                            </label>
+                            <a href="#" class="text-sm font-medium text-brand-600 hover:underline">Esqueci a senha</a>
+                        </div>
+
+                        <button type="submit"
+                                class="mt-2 inline-flex w-full items-center justify-center rounded-lg bg-brand-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-600/50 focus:ring-offset-2">
+                            Entrar
+                        </button>
+                    </form>
+
+                    <p class="mt-8 text-center text-xs text-gray-500">
+                       <a href="landing.html" class="font-semibold text-indigo-600 hover:underline">← Voltar para o site</a>
+                    </p>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        lucide.createIcons();
+
+        // Script de mostrar/ocultar senha
+        const togglePasswordBtn = document.getElementById('togglePassword');
+        const passwordInput = document.getElementById('password');
+
+        togglePasswordBtn?.addEventListener('click', () => {
+            const isPassword = passwordInput.type === 'password';
+            passwordInput.type = isPassword ? 'text' : 'password';
+            
+            const iconElement = togglePasswordBtn.querySelector('i');
+            iconElement.setAttribute('data-lucide', isPassword ? 'eye-off' : 'eye');
+            lucide.createIcons(); // Recria o ícone para refletir a mudança
+        });
+
+        // Script de redirecionamento
+        const loginForm = document.getElementById('loginForm');
+        loginForm?.addEventListener('submit', function(event) {
+            event.preventDefault(); 
+            
+            const submitButton = loginForm.querySelector('button[type="submit"]');
+            submitButton.innerHTML = `
+                <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                Entrando...
+            `;
+            submitButton.disabled = true;
+
+            setTimeout(() => {
+                window.location.href = 'index.html'; 
+            }, 1000);
+        });
+    </script>
+</body>
+</html>
+
